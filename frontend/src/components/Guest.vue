@@ -1,20 +1,24 @@
 <template>
     <vue-basic-alert :duration="300" :closeIn="4000" ref="alert" />
     <br>
-    <h1 style="text-align: center; margin-bottom: 0px; color: #ef87aa; font-weight:bold">Số Khách Mời</h1>
-    <div class="row d-flex justify-content-center" style="margin-top: 0px;">
+  
+    <div class="row d-flex justify-content-center" style="margin-top: 0px;height: 150px;">
       <br>
-        <br>
-          <div class="col-5 form-group pt-2 mr-1 borderNumber">
-            <div class="col-4 offset-4">
-                <h5 class="text-center ">Nhập số lượng</h5>
-                <input type="number" id="number" v-model="selectedNum" @input="validateNum" class="form-control" min="0" max="1000">
-                <h5 v-if="checkNum" class="text-center" style="color: #ef87aa;">Vui lòng chọn số lượng</h5>
-            </div> 
+          <div class="col-8 form-group borderNumber text-center" style="width: 150px;">
             <br>
-            <div class="" style="text-align: center;">
+            
+                <h2>Số Lượng Suốt Đãi Khách</h2>
+                <div class="container" style="width:60%;">
+                  <input type="number" id="number" v-model="selectedNum" @input="validateNum" class="form-control " min="0" max="1000" 
+                    style="border: none; text-align: center; background: #FFF0F5;">
+                </div>
+                <!-- <h5 v-if="checkNum" class="text-center" style="color: #ef87aa;">Vui lòng chọn số lượng</h5>
+                <h5 v-else> <br> </h5> -->
+                <br>
+                <br>
+                <div style="text-align: center; padding-bottom: 12px; padding-top: 1px;">
                 <button type="button" class="btn font-weight-bold" style="border-color: #FFF0F5; color: #ef87aa;" @click="submitNum">Xác Nhận</button>
-            </div>
+                </div>
           </div>
     </div>
     <br><br>
@@ -56,7 +60,7 @@
   
   
         async getNum() {
-            if (this.user) {
+          if (this.user) {
             try {
                 let existNum = await axios.get('/guestnumber/' + this.user.user_id);
     
@@ -72,7 +76,7 @@
             } catch (error) {
                 console.error('Lỗi khi lấy Số lượng khách:', error);
             }
-            }
+          }
         },
 
         async submitNum() {

@@ -3,6 +3,7 @@
 import {
     getAllUser,
     getUserByEmail,
+    getUserByID,
     insertUser
 } from "../models/UserModel.js";
 
@@ -21,6 +22,18 @@ export const allUsers=(req,res)=>{
 // get single user
 export const showAUser = (req,res)=>{
     getUserByEmail(req.params.email,(err,results)=> {
+        if (err) {
+            res.send(err);
+        }else {
+            res.json(results);
+        }
+    });
+};
+
+
+export const showUserbyID=(req,res)=>{
+    const id = req.params.id;
+    getUserByID(id,(err,results)=> {
         if (err) {
             res.send(err);
         }else {

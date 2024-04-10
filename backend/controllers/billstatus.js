@@ -5,8 +5,10 @@ import {
     getBillsByBill,
     getAll,
     updateStatus,
-    updatePaid,
-    cancelStatus
+    updateStatusCancelModel,
+    updateNotes,
+    cancelStatus,
+    updateTotal
 } from "../models/BillStatusModel.js";
 
 // get newest Bill Status
@@ -77,9 +79,20 @@ export const updateBillStatus=(req,res)=>{
     });
 };
 
-// update Paid
-export const updateBillPaid=(req,res)=>{
-    updatePaid(req.params.id,(err,results)=> {
+export const updateStatusCancelController=(req,res)=>{
+    updateStatusCancelModel(req.params.id,(err,results)=> {
+        if (err) {
+            res.send(err);
+        }else {
+            res.json(results);
+        }
+    });
+};
+
+// update Notes
+export const updateBillNotes=(req,res)=>{
+    const data = req.body;
+    updateNotes(data,(err,results)=> {
         if (err) {
             res.send(err);
         }else {
@@ -95,6 +108,20 @@ export const cancelBillStatus=(req,res)=>{
             res.send(err);
         }else {
             res.json(results);
+        }
+    });
+};
+
+export const updateBillTotal = (req, res) => {
+    const data = req.body;
+    const id = req.params.id;
+    updateTotal(data, id ,(err, results) => {
+        if (err) {
+            console.error('Error updating bill total:', err);
+            res.status(500).json({ error: 'Internal server error' });
+        } else {
+            console.log('Bill total updated successfully');
+            res.status(200).json({ message: 'Bill total updated successfully' });
         }
     });
 };

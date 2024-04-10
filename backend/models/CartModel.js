@@ -39,7 +39,7 @@ export const insertToCart = (data,result) => {
 
 // update qty of a cart item
 export const updateCartItemQty = (data,result) => {
-    db.query("UPDATE cart SET item_qty = ? WHERE user_id = ? AND product_id = ?",[data.item_qty, data.user_id, data.product_id], (err,results)=> {
+    db.query("UPDATE cart SET item_qty = ? , item_notes = ? WHERE user_id = ? AND product_id = ?",[data.item_qty, data.item_notes, data.user_id, data.product_id], (err,results)=> {
         if (err){
             console.log(err);
             result(err,null);

@@ -56,8 +56,8 @@
                     <div class="form-group">
                         <label for="sel1">Style:</label>
                         <select class="form-control" id="sel1" v-model="productObj.sty">
-                            <option>Món Chay</option>
-                            <option>Món Khác</option>
+                            <option>Món Tùy Chọn</option>
+                            <option>Món Chính Thức</option>
                         </select>
                     </div>
                 </div>
@@ -166,9 +166,10 @@ export default {
         async handleSubmit(e) {
             this.checkForm();
 
-            if (!this.checkEmptyErr()) {
+            if (!this.checkEmptyErr() && this.productObj.sty!="Món Tùy Chọn") {
                 e.preventDefault();
             } else {
+                if(this.productObj.sty=="Món Chính Thức") this.productObj.sty="";
                 let product = {
                     product_name: this.productObj.name,
                     product_price: this.productObj.price,

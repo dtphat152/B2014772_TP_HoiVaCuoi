@@ -1,53 +1,56 @@
 <template>
-    <div class="container" style="width: 1200px;">
+    <div class="container_manager" style="width: 100%; padding-left: 260px; padding-right: 10px;">
         <div class="row d-flex justify-content-between mt-5 ">
-            <h2 class="col-2">TP - Manager</h2>
+            <div class="col-2">
+                <h1>Manager</h1>
+            </div>
             <div class="col-5 input-group mb-3">
                 <input type="text" class="form-control" v-model="productObj.name" placeholder="Search . . .">
                 <div class="input-group-append">
-                    <button class="btn btn-info" type="submit">Search</button>
+                    <button class="btn " type="submit">Search</button>
                 </div>
             </div>
-            <router-link to="dashboard" class="col-2 text-right text-black-50">
-                    <button class="btn-info p-1 rounded-lg">Back to Dash Board</button>
-            </router-link>
+            <div class="col-2">
+                <router-link to='AddProduct'>
+                    <h4 class="font-weight-bold text-success d-flex justify-content-lg-end">+ Add </h4>
+                </router-link>
+            </div>
+            <div class="col-1"></div>
         </div>
 
         <br> 
-        <router-link to='AddProduct'>
-            <h4 class="font-weight-bold text-success d-flex justify-content-lg-end">+ Add </h4>
-        </router-link>
-        <hr>
+        
+        <hr style="background-color: #FFF0F5; height: 3px;">
                 <div class="row d-flex justify-content-center">
                     <div class="btn-group btn-group-lg ">
-                        <button type="button" class="btn btn-info mx-1 rounded-lg" value="all" @click="filterProductBtn($event)">All</button>
-                        <button type="button" class="btn btn-info mx-1 rounded-lg" value="Khai Vị" @click="filterProductBtn($event)">Khai Vị</button>
-                        <button type="button" class="btn btn-info mx-1 rounded-lg" value="Món Chính" @click="filterProductBtn($event)">Món Chính</button>
-                        <button type="button" class="btn btn-info mx-1 rounded-lg" value="Tráng Miệng" @click="filterProductBtn($event)">Tráng Miệng</button>
-                        <button type="button" class="btn btn-info mx-1 rounded-lg" value="Rạp Che" @click="filterProductBtn($event)">Rạp Che</button>
-                        <button type="button" class="btn btn-info mx-1 rounded-lg" value="Sảnh Tiệc" @click="filterProductBtn($event)">Sảnh Tiệc</button>
-                        <button type="button" class="btn btn-info mx-1 rounded-lg" value="Ban Nhạc" @click="filterProductBtn($event)">Ban Nhạc</button>
-                        <button type="button" class="btn btn-info mx-1 rounded-lg" value="MC" @click="filterProductBtn($event)">MC</button>
-                        <button type="button" class="btn btn-info mx-1 rounded-lg" value="Gia Tiên" @click="filterProductBtn($event)">Gia Tiên</button>
-                        <button type="button" class="btn btn-info mx-1 rounded-lg" value="Sân Khấu" @click="filterProductBtn($event)">Sân Khấu</button>
-                        <button type="button" class="btn btn-info mx-1 rounded-lg" value="Mâm Quả" @click="filterProductBtn($event)">Mâm Quả</button>
-                        <button type="button" class="btn btn-info mx-1 rounded-lg" value="Xe Hoa" @click="filterProductBtn($event)">Xe Hoa</button>
-                        <button type="button" class="btn btn-info mx-1 rounded-lg" value="Áo Cưới" @click="filterProductBtn($event)">Áo Cưới</button>
-                        <button type="button" class="btn btn-info mx-1 rounded-lg" value="Trang Điểm" @click="filterProductBtn($event)">Trang Điểm</button>
-                        <button type="button" class="btn btn-info mx-1 rounded-lg" value="Ghi Hình" @click="filterProductBtn($event)">Ghi Hình</button>
+                        <button type="button" class="btn but01 mx-1 rounded-lg" value="all" @click="filterProductBtn($event)">All</button>
+                        <button type="button" class="btn but01 mx-1 rounded-lg" value="Khai Vị" @click="filterProductBtn($event)">Khai Vị</button>
+                        <button type="button" class="btn but01 mx-1 rounded-lg" value="Món Chính" @click="filterProductBtn($event)">Món Chính</button>
+                        <button type="button" class="btn but01 mx-1 rounded-lg" value="Tráng Miệng" @click="filterProductBtn($event)">Tráng Miệng</button>
+                        <button type="button" class="btn but01 mx-1 rounded-lg" value="Rạp Che" @click="filterProductBtn($event)">Rạp Che</button>
+                        <button type="button" class="btn but01 mx-1 rounded-lg" value="Sảnh Tiệc" @click="filterProductBtn($event)">Sảnh Tiệc</button>
+                        <button type="button" class="btn but01 mx-1 rounded-lg" value="Ban Nhạc" @click="filterProductBtn($event)">Ban Nhạc</button>
+                        <button type="button" class="btn but01 mx-1 rounded-lg" value="MC" @click="filterProductBtn($event)">MC</button>
+                        <button type="button" class="btn but01 mx-1 rounded-lg" value="Gia Tiên" @click="filterProductBtn($event)">Gia Tiên</button>
+                        <button type="button" class="btn but01 mx-1 rounded-lg" value="Sân Khấu" @click="filterProductBtn($event)">Sân Khấu</button>
+                        <button type="button" class="btn but01 mx-1 rounded-lg" value="Mâm Quả" @click="filterProductBtn($event)">Mâm Quả</button>
+                        <button type="button" class="btn but01 mx-1 rounded-lg" value="Xe Hoa" @click="filterProductBtn($event)">Xe Hoa</button>
+                        <button type="button" class="btn but01 mx-1 rounded-lg" value="Áo Cưới" @click="filterProductBtn($event)">Áo Cưới</button>
+                        <button type="button" class="btn but01 mx-1 rounded-lg" value="Trang Điểm" @click="filterProductBtn($event)">Trang Điểm</button>
+                        <button type="button" class="btn but01 mx-1 rounded-lg" value="Ghi Hình" @click="filterProductBtn($event)">Ghi Hình</button>
                     </div>
                 </div>
         <br>
                 <div v-if="calculatePages > 1" class="row" style="margin-top: 30px;">
                     <div class=" col-2">
-                        <button type="button" class="btn btn-info fa fa-arrow-left" v-if="pageNum != 0" @click="previous()"> Back </button>
+                        <button type="button" class="btn but01 fa fa-arrow-left" v-if="pageNum != 0" @click="previous()"> Back </button>
                         <button type="button" class="btn btn-light" v-else > Back </button>
                     </div>
                     <div class="col-10 text-right">
-                        <button type="button" class="btn btn-info" v-if="pageNum != calculatePages - 1" @click="next()" >
+                        <button type="button" class="btn " v-if="pageNum != calculatePages - 1" @click="next()" >
                             Next <span class="fa fa-arrow-right"></span>
                         </button>
-                        <button type="button" class="btn btn-light" v-else > Next </button>
+                        <button type="button" class="btn but01 btn-light" v-else > Next </button>
                     </div>
                     
                 </div>
@@ -60,7 +63,7 @@
                 <div class="col-8 pl-5">
                     <h5>{{ f.product_category }}</h5>
                     <div class="d-flex justify-content-between">
-                        <h3>{{ f.product_name }} {{ f.product_style}} </h3>
+                        <h3>{{ f.product_name }} </h3>
                         
                     </div>
                     
@@ -69,7 +72,7 @@
                             
                         </div>
                     <div class="">
-                        ${{ parseFloat(f.product_price) }}
+                        {{ formatCurrency(f.product_price) }}
                         
                     </div>
                 </div>
@@ -127,6 +130,11 @@ export default {
     },
 
     methods: {
+        formatCurrency(amount) {
+          if (!amount) return '';
+          return parseFloat(amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        },
+
         next() {
             this.pageNum++;
         },
@@ -156,3 +164,15 @@ export default {
 };
 </script>
 
+<style>
+.but01 {
+    background-color: #d35ea4;
+    color: #fff;
+    font-weight: bold;
+}
+
+h1 {
+    font-weight: bold;
+    color: #d35ea4;
+}
+</style>

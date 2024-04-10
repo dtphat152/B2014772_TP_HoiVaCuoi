@@ -1,7 +1,7 @@
 <template>
     <div class="container" style="width: 600px; margin-top: 100px;">
         <div>
-            <router-link to="productmanager">
+            <router-link to="productoder">
                 <p class="text-black-50">Back</p>
             </router-link>
         </div>
@@ -9,7 +9,7 @@
         <div class="checkout-form-container">
             <form @submit="handleSubmit" autocomplete="off" class="myform">
                 <div class="form-group details-group">
-                    <h4>Add Product</h4>
+                    <h4>Add Temp Product</h4>
                     <div class="form-group">
                         <label for="sel1">Caterogy:</label>
                         <select class="form-control" id="sel1" v-model="productObj.cat">
@@ -40,11 +40,6 @@
                         <p class="error-mess" v-if="errorObj.priceErr.length > 0">{{ errorObj.priceErr[0] }}</p>
                     </div>
                     <div class="form-group">
-                        <textarea name="txtMsg" class="form-control" placeholder="Description" 
-                            style="width: 100%; height: 150px;"  v-model="productObj.desc" ></textarea>
-                        <p class="error-mess" v-if="errorObj.descErr.length > 0">{{ errorObj.descErr[0] }}</p>
-                    </div>
-                    <div class="form-group">
                         <input type="text"  placeholder="Src Image" class="form-control"
                             v-model="productObj.src" />
                         <p class="error-mess" v-if="errorObj.srcErr.length > 0">{{ errorObj.srcErr[0] }}</p>
@@ -67,12 +62,12 @@
 import axios from "axios";
 // import { mapState } from "vuex";
 export default {
-    name: "AddProduct",
+    name: "AddTempProduct",
 
     data() {
         return {
-            productObj: { name: "", price: "", desc: "", cat: "", src: "", dis:""},
-            errorObj: { nameErr: [], priceErr: [], descErr: [], catErr: [], srcErr: [] },
+            productObj: { name: "", price: "", cat: "", src: "", dis:"" , sty:""},
+            errorObj: { nameErr: [], priceErr: [], catErr: [], srcErr: [] },
         }
     },
 
@@ -89,7 +84,6 @@ export default {
         resetCheckErr: function () {
             this.errorObj.nameErr = [];
             this.errorObj.priceErr = [];
-            this.errorObj.descErr = [];
             this.errorObj.catErr = [];
             this.errorObj.srcErr = [];
         },
@@ -117,10 +111,6 @@ export default {
                 this.errorObj.priceErr.push('Entering price is required');
             }
 
-            // Desc validate
-            if (!this.productObj.desc) {
-                this.errorObj.descErr.push('Selecting desc method is required');
-            }
             // Cat validate
             if (!this.productObj.cat) {
                 this.errorObj.catErr.push('Selecting cat method is required');
@@ -140,10 +130,10 @@ export default {
                 let product = {
                     product_name: this.productObj.name,
                     product_price: this.productObj.price,
-                    product_desc: this.productObj.desc,
                     product_category: this.productObj.cat,
                     product_src: this.productObj.src,
                     product_discount: this.productObj.dis,
+                    product_style: 'Món Tùy Chọn',
                 }
 
                 axios.post("/products", product);

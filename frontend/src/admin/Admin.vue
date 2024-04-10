@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" value="admin access" class="btn">
+                    <input type="submit" value="admin access" class="btn" style="background-color: #FFC0CB; color: black; border-radius: 10px;">
                 </div>
             </form>
         </div>
@@ -32,7 +32,7 @@ export default {
     data() {
         return {
             adminObj: { pass: "" },
-            key: "190978",
+            key: "9",
             errors: [],
         }
     },
@@ -53,7 +53,7 @@ export default {
                 e.preventDefault();
                 if (this.key === this.adminObj.pass) {
                     this.setAdmin("admin");
-                    this.$router.push("/admin/dashboard");
+                    this.$router.push("/admin/adminHome");
                 }
                 else {
                     this.errors.push("Admin password wrong!")
@@ -71,11 +71,12 @@ export default {
 }
 
 .admin-container .admin-form-container {
-    background-color: #fff;
-    height: 100vh;
+    height: 50vh;
 }
 
 .admin-container .admin-form-container form {
+    background: #990099; 
+    opacity: 0.8;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -85,7 +86,7 @@ export default {
     box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.05);
     border: 0.1rem solid rgba(0, 0, 0, 0.2);
     padding: 2rem;
-    border-radius: .5rem;
+    border-radius: 15px;
     animation: fadeUp .4s linear;
 }
 
@@ -101,7 +102,7 @@ export default {
 .admin-container .admin-form-container form .form-control {
     margin: .7rem 0;
     border-radius: .5rem;
-    background: #f7f7f7;
+    background: rgba(0, 0, 0, 0.3);
     padding: 2rem 1.2rem;
     font-size: 1.6rem;
     color: #130f40;

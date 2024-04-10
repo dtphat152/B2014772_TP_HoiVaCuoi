@@ -2,17 +2,18 @@
     <div class="register-container">
         <div class="register-form-container">
             <form id="registerForm" @submit="handleSubmit" novalidate autocomplete="off">
-                <h3>Create your account</h3>
+                <h3>Tạo Tài Khoản</h3>
+
                 <div class="form-group">
-                    <label for="uName">Enter your name:
+                    <label for="uName">Họ và Tên:
                     </label>
-                    <input type="text" name="uName" placeholder="your full name" id="uName" class="form-control"
+                    <input type="text" name="uName" placeholder="Họ Và Tên" id="uName" class="form-control"
                         v-model="registerObj.name" />
                     <p class="error-mess" v-if="errorObj.nameErr.length > 0">{{ errorObj.nameErr[0] }}</p>
                 </div>
 
                 <div class="form-group">
-                    <label for="uEmail">Enter your email:
+                    <label for="uEmail">Địa Chỉ Email:
                     </label>
                     <input type="email" name="uEmail" placeholder="example@gmail.com" id="uEmail" class="form-control"
                         v-model="registerObj.email" />
@@ -20,52 +21,34 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="uPass">Enter your password:
-                    </label>
-                    <input type="password" name="uPass" placeholder="enter your password" id="uPass"
+                    <label for="uPass">Mật Khẩu Tài Khoản:</label> 
+                    <input type="password" name="uPass" placeholder="Lớn hơn hoặc bằng 8 kí tự và phải có ít nhất một kí tự đặc biệt" id="uPass"
                         class="form-control" v-model="registerObj.pass" />
                     <p class="error-mess" v-if="errorObj.passErr.length > 0">{{ errorObj.passErr[0] }}</p>
                 </div>
 
                 <div class="form-group">
-                    <label for="uPassConfirm">Check your password again:
+                    <label for="uPassConfirm">Nhập Lại Mật Khẩu:
                     </label>
-                    <input type="password" name="uPassConfirm" placeholder="enter your password again" id="uPassConfirm"
+                    <input type="password" name="uPassConfirm" placeholder="Nhập lại Mật Khẩu phía trên" id="uPassConfirm"
                         class="form-control" v-model="registerObj.confirm" />
                     <p class="error-mess" v-if="errorObj.confirmErr.length > 0">{{ errorObj.confirmErr[0] }}</p>
                 </div>
 
                 <div class="form-group">
-                    <label for="uPhone">Enter your phone number:
+                    <label for="uPhone">Số Điện Thoại:
                     </label>
-                    <input type="tel" name="uPhone" placeholder="enter your phone number" id="uPhone"
+                    <input type="tel" name="uPhone" placeholder="vd: 0987654321" id="uPhone"
                         class="form-control" v-model="registerObj.phone" />
                     <p class="error-mess" v-if="errorObj.phoneErr.length > 0">{{ errorObj.phoneErr[0] }}</p>
                 </div>
 
-                <div class="form-group">
-                    <label for="uBirth">Enter your birthday:
-                    </label>
-                    <input type="date" name="uBirth" id="uBirth" class="form-control" @click="availableTime()"
-                        v-model="registerObj.birth" />
-                    <p class="error-mess" v-if="errorObj.birthErr.length > 0">{{ errorObj.birthErr[0] }}</p>
-                </div>
+                
 
                 <div class="form-group">
-                    <label for="">Select your gender:
-                    </label>
-                    <div class="form-group">
-                        <input type="radio" name="gender" value="male" id="genderMale"
-                            v-model="registerObj.gender" /><span>Male</span>
-                        <input type="radio" name="gender" value="female" id="genderFemale"
-                            v-model="registerObj.gender" /><span>Female</span>
-                    </div>
-                    <p class="error-mess" v-if="errorObj.genderErr.length > 0">{{ errorObj.genderErr[0] }}</p>
-                </div>
-
-                <div class="form-group">
-                    <input type="submit" value="join us" class="btn-info rounded-lg p-3 mt-2" style="" />
-                    <p>have an account? <router-link @click="scrollToTop()" to="/login">login</router-link>
+                    <input type="submit" value="Đăng Ký" class="p-3 mt-2" 
+                        style="background-color: #ef87aa; border-radius: 15px; font-weight: bold;" />
+                    <p>Bạn đã có tài khoản? <router-link @click="scrollToTop()" to="/login">Đăng Nhập</router-link>
                     </p>
                 </div>
             </form>
@@ -80,8 +63,8 @@ export default {
 
     data() {
         return {
-            registerObj: { name: "", email: "", pass: "", confirm: "", phone: "", birth: "", gender: "" },
-            errorObj: { nameErr: [], emailErr: [], passErr: [], confirmErr: [], phoneErr: [], birthErr: [], genderErr: [] },
+            registerObj: { name: "", email: "", pass: "", confirm: "", phone: "",  },
+            errorObj: { nameErr: [], emailErr: [], passErr: [], confirmErr: [], phoneErr: [],  },
             matchUser: undefined,
 
         }
@@ -97,16 +80,6 @@ export default {
             window.scrollTo(0, 0);
         },
 
-        availableTime: function () {
-            var now = new Date();
-            var day = ("0" + now.getDate()).slice(-2);
-            var currentMonth = ("0" + (now.getMonth() + 1)).slice(-2);
-            var minRange = (now.getFullYear() - 150) + "-" + currentMonth + "-" + day;
-            var maxRange = now.getFullYear() + "-" + currentMonth + "-" + day;
-
-            document.getElementById("uBirth").setAttribute("min", minRange);
-            document.getElementById("uBirth").setAttribute("max", maxRange);
-        },
 
         resetCheckErr: function () {
             this.errorObj.nameErr = [];
@@ -114,8 +87,6 @@ export default {
             this.errorObj.passErr = [];
             this.errorObj.confirmErr = [];
             this.errorObj.phoneErr = [];
-            this.errorObj.birthErr = [];
-            this.errorObj.genderErr = [];
         },
 
         checkEmptyErr: function () {
@@ -132,91 +103,68 @@ export default {
 
             // Name validate
             if (!this.registerObj.name) {
-                this.errorObj.nameErr.push("Entering a name is required");
+                this.errorObj.nameErr.push("Họ Tên Không Được Bỏ Trống");
             }
             else {
                 if (!/^[A-Za-z]+$/.test(this.registerObj.name.replace(/\s/g, ""))) {
-                    this.errorObj.nameErr.push('A name can only contain letters');
+                    this.errorObj.nameErr.push('Tên Chỉ Có Thể Chứa Các Chữ Cái');
                 }
             }
 
             // Email validate
             if (!this.registerObj.email) {
-                this.errorObj.emailErr.push("Entering a email is required");
+                this.errorObj.emailErr.push("Email Không Được Bỏ Trống");
             }
             else {
                 if (!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(this.registerObj.email)) {
-                    this.errorObj.emailErr.push('Email must be valid');
+                    this.errorObj.emailErr.push('Email Không Hợp Lệ');
                 }
             }
 
             // Pass validate
             if (!this.registerObj.pass) {
-                this.errorObj.passErr.push('Password is required');
+                this.errorObj.passErr.push('Mật Khẩu Không Được Bỏ Trống');
             }
             else {
                 if (!/[!@#$%^&*]/.test(this.registerObj.pass)) {
-                    this.errorObj.passErr.push('Password must contain at least 1 special character');
+                    this.errorObj.passErr.push('Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt');
                 }
 
                 if (this.registerObj.pass.length < 8) {
-                    this.errorObj.passErr.push('Password must be more than or equal 8 characters');
+                    this.errorObj.passErr.push('Mật khẩu phải nhiều hơn hoặc bằng 8 ký tự');
                 }
             }
 
             // Confirm Pass validate
             if (!this.registerObj.confirm) {
-                this.errorObj.confirmErr.push('Confirm password is required');
+                this.errorObj.confirmErr.push('Xác nhận mật khẩu là bắt buộc');
             }
             else {
                 if (this.registerObj.pass !== this.registerObj.confirm) {
-                    this.errorObj.confirmErr.push('Confirm password must be match with password');
+                    this.errorObj.confirmErr.push('Xác nhận mật khẩu phải trùng với mật khẩu');
                 }
             }
 
 
             // Phone validate
             if (!this.registerObj.phone) {
-                this.errorObj.phoneErr.push('Entering phone number is required');
+                this.errorObj.phoneErr.push('Số Điện Thoại Không Được Bỏ Trống');
             }
             else {
-                if (!this.registerObj.phone.startsWith('84')) {
-                    this.errorObj.phoneErr.push('Phone numbers must start with 84');
+                if (!this.registerObj.phone.startsWith('0')) {
+                    this.errorObj.phoneErr.push('Số Điện Thoại Không Hợp Lệ');
                 }
 
-                if (this.registerObj.phone.length != 11) {
-                    this.errorObj.phoneErr.push('Phone numbers must have exactly 11 digits');
+                if (this.registerObj.phone.length != 10) {
+                    this.errorObj.phoneErr.push('Số điện thoại phải có chính xác 10 chữ số');
                 }
 
                 if (!/[0-9]{11}/.test(this.registerObj.phone)) {
-                    this.errorObj.phoneErr.push('Phone numbers can only contain numbers');
+                    this.errorObj.phoneErr.push('Số điện thoại chỉ có thể chứa số');
                 }
             }
 
-            // Birth validate
-            if (!this.registerObj.birth) {
-                this.errorObj.birthErr.push("Entering birthday is required");
-            }
-            else {
-                let minRange = document.getElementById("uBirth").getAttribute("min");
-                let maxRange = document.getElementById("uBirth").getAttribute("max");
-                let dateMin = new Date(minRange);
-                let dateMax = new Date(maxRange);
-                let dateInput = new Date(this.registerObj.birth);
-
-                if (dateInput === "Invalid Date") {
-                    this.errorObj.birthErr.push("Invalid date input");
-                }
-
-                if (dateInput.getTime() < dateMin.getTime() || dateInput.getTime() > dateMax.getTime()) {
-                    this.errorObj.birthErr.push("Available birthday range is from pass 150 years to now");
-                }
-            }
-
-            // Gender validate
-            if (!this.registerObj.gender) {
-                this.errorObj.genderErr.push("Please select a gender");
-            }
+            
         },
 
         async handleSubmit(e) {
@@ -255,21 +203,18 @@ export default {
     padding: 2rem 9%;
 }
 
-.register-container .register-form-container {
-    background: #fff;
-
-}
-
 .register-container .register-form-container form {
     position: relative;
     left: 50%;
     transform: translate(-50%, 0%);
     max-width: 70rem;
     width: 100%;
+    background: #990099; 
+    opacity: 0.8;
     box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.05);
     border: 0.1rem solid rgba(0, 0, 0, 0.2);
     padding: 2rem;
-    border-radius: 0.5rem;
+    border-radius: 15px;
     animation: fadeUp 0.4s linear;
 }
 
@@ -283,8 +228,8 @@ export default {
 
 .register-container .register-form-container form .form-control {
     margin: 0.7rem 0;
-    border-radius: 0.5rem;
-    background: #f7f7f7;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.3);
     padding: 2rem 1.2rem;
     font-size: 1.6rem;
     color: #130f40;
@@ -314,12 +259,12 @@ export default {
 .register-container .register-form-container form p {
     padding-top: 1rem;
     font-size: 1.5rem;
-    color: #666;
+    color: #fff9fa;
     margin: 0;
 }
 
 .register-container .register-form-container form p a {
-    color: #17a2b8;
+    color: #ff69b4;
 }
 
 .register-container .register-form-container form p a:hover {

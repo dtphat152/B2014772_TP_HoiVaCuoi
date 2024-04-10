@@ -1,25 +1,23 @@
 <template>
   <vue-basic-alert :duration="300" :closeIn="4000" ref="alert" />
-  <br><br>
-  <h1 style="text-align: center; margin-bottom: 0px; color: #ef87aa; font-weight:bold">Ngày Tổ Chức</h1>
+  <br>
   <div class="row d-flex justify-content-center" style="margin-top: 0px;">
     <br>
-    <div class="dateinput col-4 borderdate">
+    <div class="col-8" style="width: 150px;">
       <br>
       <div class="row d-flex justify-content-center">
-        <div class="col-5 form-group pt-2 mr-1">
-            <label for="startDateInput">Chọn ngày bắt đầu:</label>
-            <input type="date" class="form-control" id="startDateInput" v-model="formattedStartDate" @input="validateDateStart">
-            <br>
-        </div>
-        <div class="col-5 form-group pt-2 ml-1">
-            <label for="endDateInput">Chọn ngày kết thúc:</label>
-            <input type="date" class="form-control" id="endDateInput" v-model="formattedEndDate" @input="validateDateEnd">
+        <div class="col-7 form-group py-0">
+            <label style="width: 100%; padding: 0;" for="startDateInput"><h3 class="text-center font-weight-bold" 
+              style="color: white;">Ngày Tổ Chức Tiệc Cưới</h3></label>
+            <input type="date" class="form-control" id="startDateInput" v-model="formattedStartDate" 
+              style="border: none; text-align: center; background: #ffe6ea; border-radius: 10px;" @input="validateDateStart">
             <br>
         </div>
       </div>
-      <div class="" style="text-align: center;">
-        <button type="button" class="btn font-weight-bold" style="border-color: #FFF0F5; color: #ef87aa;" @click="submitDate">Xác Nhận</button>
+      <div class="py-0" style="text-align: center;">
+        <button type="button" class="btn font-weight-bold" style="background-color: #FFC0CB; color: black; border-radius: 10px;" 
+          @click="submitDate">Xác Nhận
+        </button>
       </div>
     </div>
   </div>
@@ -34,9 +32,8 @@ export default {
   name: "Date",
   data() {
     return {
-      selectedDate: { start: null, end: null },
-      checkDateStart: true,
-      checkDateEnd: true,
+      selectedDate: { date: null },
+      checkDate: true,
     };
   },
 
@@ -50,30 +47,19 @@ export default {
         formattedStartDate: {
           get() {
             // Chuyển đổi giá trị ngày từ đối tượng Date sang chuỗi có định dạng "yyyy-MM-dd"
-            return this.selectedDate.start ? this.formatDate(this.selectedDate.start) : null;
+            return this.selectedDate.date ? this.formatDate(this.selectedDate.date) : null;
           },
           set(value) {
             // Chuyển đổi giá trị ngày từ chuỗi có định dạng "yyyy-MM-dd" sang đối tượng Date
-            this.selectedDate.start = value ? new Date(value) : null;
-          },
-        },
-
-        formattedEndDate: {
-          get() {
-            // Chuyển đổi giá trị ngày từ đối tượng Date sang chuỗi có định dạng "yyyy-MM-dd"
-            return this.selectedDate.end ? this.formatDate(this.selectedDate.end) : null;
-          },
-          set(value) {
-            // Chuyển đổi giá trị ngày từ chuỗi có định dạng "yyyy-MM-dd" sang đối tượng Date
-            this.selectedDate.end = value ? new Date(value) : null;
+            this.selectedDate.date = value ? new Date(value) : null;
           },
         },
   },
 
   methods: {
     validateDateStart() {
-      if (this.selectedDate.start) {
-        const selectedDate = new Date(this.selectedDate.start);
+      if (this.selectedDate.date) {
+        const selectedDate = new Date(this.selectedDate.date);
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -81,30 +67,13 @@ export default {
         console.log('Ngày ngày mai:', tomorrow);
 
         if (selectedDate < tomorrow) {
-          this.checkDateStart = false;
+          this.checkDate = false;
           this.$refs.alert.showAlert('warning', 'Sorry!', 'Ngày bắt đầu không hợp lệ!');
         } else {
-          this.checkDateStart = true;
+          this.checkDate = true;
         }
       } else {
-        this.checkDateStart = false;
-      }
-    },
-
-    validateDateEnd() {
-      const selectedStartDate = new Date(this.selectedDate.start);
-      const selectedEndDate = new Date(this.selectedDate.end);
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-
-      if (selectedEndDate < tomorrow) {
-        this.checkDateEnd = false;
-        this.$refs.alert.showAlert('warning', 'Sorry!', 'Ngày kết thúc không hợp lệ!');
-      } else if (selectedEndDate < selectedStartDate) {
-        this.checkDateEnd = false;
-        this.$refs.alert.showAlert('warning', 'Sorry!', 'Ngày kết thúc không được trước ngày bắt đầu!');
-      } else {
-        this.checkDateEnd = true;
+        this.checkDate = false;
       }
     },
 
@@ -112,17 +81,13 @@ export default {
       if (this.user) {
         try {
           let existDate = await axios.get('/date/' + this.user.user_id);
-
           if (existDate.data.length > 0) {
-            this.selectedDate.start = new Date(existDate.data[0].date_start);
-            this.selectedDate.end = new Date(existDate.data[0].date_end);
+            this.selectedDate.date = new Date(existDate.data[0].date_date);  
             this.validateDateStart();
-            this.validateDateEnd();
             console.log('Selected Date:', this.selectedDate);
           } else {
             // Gán giá trị mặc định nếu không có dữ liệu
-            this.selectedDate.start = new Date('');
-            this.selectedDate.end = new Date('');
+            this.selectedDate.date = new Date('');
             console.log('Không có dữ liệu ngày tháng.');
           }
         } catch (error) {
@@ -147,11 +112,26 @@ export default {
       return null;
     },
 
+    formatDateToSubmit(date) {
+      if (date) {
+        const year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+
+        month = month < 10 ? `0${month}` : month;
+        day = day < 10 ? `0${day}` : day;
+
+        // Trả về chuỗi có định dạng "yyyy-MM-dd"
+        return `${day}-${month}-${year}`;
+      }
+
+      return null;
+    },
+
     async submitDate() {
       if (this.user) {
         let dateSelect = {
-          date_start: this.formatDate(this.selectedDate.start),
-          date_end: this.formatDate(this.selectedDate.end),
+          date_date: this.formatDateToSubmit(this.selectedDate.date),
           user_id: parseInt(this.user.user_id),
         };
 
@@ -180,16 +160,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.dateinput {
-  font-size: larger;
-  font-weight: 500;
-}
-
-.borderdate{
-  border: 5px solid transparent; 
-  border-image: linear-gradient(to right, #FFF0F5 0%, #FFF0F5 40%, transparent 40%, transparent 60%, #FFF0F5 60%, #FFF0F5 100%) 2;
-}
-
-</style>

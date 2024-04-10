@@ -27,7 +27,7 @@ export const insertDate = (data,result) => {
 
 // update date
 export const updateDate = (data,result) => {
-    db.query("UPDATE date SET date_start = ?, date_end = ? WHERE user_id = ?",[data.date_start, data.date_end, data.user_id], (err,results)=> {
+    db.query("UPDATE date SET date_date = ? WHERE user_id = ?",[data.date_date, data.user_id], (err,results)=> {
         if (err){
             console.log(err);
             result(err,null);

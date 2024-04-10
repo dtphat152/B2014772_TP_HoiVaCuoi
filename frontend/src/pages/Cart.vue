@@ -5,10 +5,11 @@
             <!-- <h3>Shopping cart</h3> -->
         </div>
         <section class="h-100 h-custom" style="background-color:none">
-            <div class="container py-5 h-100" style="width: 1000px;">
+            <div class="container h-100" style="width: 1200px;">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12">
-                    <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                    <div class="card card-registration card-registration-2" 
+                        style="background-color: #990099; opacity: 0.8;border-radius: 15px;">
                     <div class="card-body p-0">
                         <div class="row g-0">
 
@@ -18,415 +19,64 @@
                                 <h1 class="fw-bold mb-0" style="color: #FF66CC; ">Dánh sách Dịch Vụ</h1>
                             </div>
                             <hr class="my-4">
-                            <div>
-                                <h2 class="mb-2">Khai Vị:</h2>
-                                <div v-for="(f, index) in filterProducts" :key="index">
-                                    <div v-if="f.product_category == 'Khai Vị'" class="row mb-4 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img :src="require(`../assets/images/${f.product_src}`)" alt=""
-                                                class="cart-product-img" style="width: 100px;"/>
-                                        </div>
-                                        <div class="col-md-3 col-lg-3 col-xl-4">
-                                            <h6 class="text-muted">{{ f.product_category }}</h6>
-                                            <h6 class="text-black mb-0">{{ f.product_name }}</h6>
-                                        </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2"></div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2 ">
-                                            <h6 class="mb-0">Đơn giá: {{ f.product_price }} x {{ tableNum }}</h6>
-                                            <h6 class="mb-0"> {{ calculateItemPrice(index) }} vnd </h6>
-                                        </div>
-                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <button class="btn" @click="removeBtn(index)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                        <hr class="my-4">
-                                    </div>
-                                </div>
-                                <br>
-                                <hr class="my-4">
-                            </div>  
-                            <div>
-                                <h2 class="mb-2">Món Chính:</h2>
-                                <div v-for="(f, index) in filterProducts" :key="index">
-                                    <div v-if="f.product_category == 'Món Chính'" class="row mb-4 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img :src="require(`../assets/images/${f.product_src}`)" alt=""
-                                                class="cart-product-img" style="width: 100px;"/>
-                                        </div>
-                                        <div class="col-md-3 col-lg-3 col-xl-4">
-                                            <h6 class="text-muted">{{ f.product_category }}</h6>
-                                            <h6 class="text-black mb-0">{{ f.product_name }}</h6>
-                                        </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2"></div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2 ">
-                                            <h6 class="mb-0">Đơn giá: {{ f.product_price }} x {{ tableNum }}</h6>
-                                            <h6 class="mb-0"> {{ calculateItemPrice(index) }} vnd </h6>
-                                        </div>
-                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <button class="btn" @click="removeBtn(index)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                        <hr class="my-4">
-                                    </div>
-                                </div>
-                                <br>
-                                <hr class="my-4">
-                            </div>  
-                            <div>
-                                <h2 class="mb-2">Tráng Miệng:</h2>
-                                <div v-for="(f, index) in filterProducts" :key="index">
-                                    <div v-if="f.product_category == 'Tráng Miệng'" class="row mb-4 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img :src="require(`../assets/images/${f.product_src}`)" alt=""
-                                                class="cart-product-img" style="width: 100px;"/>
-                                        </div>
-                                        <div class="col-md-3 col-lg-3 col-xl-4">
-                                            <h6 class="text-muted">{{ f.product_category }}</h6>
-                                            <h6 class="text-black mb-0">{{ f.product_name }}</h6>
-                                        </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2"></div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2 ">
-                                            <h6 class="mb-0">Đơn giá: {{ f.product_price }} x {{ tableNum }}</h6>
-                                            <h6 class="mb-0"> {{ calculateItemPrice(index) }} vnd </h6>
-                                        </div>
-                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <button class="btn" @click="removeBtn(index)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                        <hr class="my-4">
-                                    </div>
-                                </div>
-                                <br>
-                                <hr class="my-4">
-                            </div>  
-                            <div>
-                                <h2 class="mb-2">Rạp Che:</h2>
-                                <div v-for="(f, index) in filterProducts" :key="index">
-                                    <div v-if="f.product_category == 'Rạp Che'" class="row mb-4 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img :src="require(`../assets/images/${f.product_src}`)" alt=""
-                                                class="cart-product-img" style="width: 100px;"/>
-                                        </div>
-                                            <div class="col-md-3 col-lg-3 col-xl-4">
-                                            <h6 class="text-muted">{{ f.product_category }}</h6>
-                                            <h6 class="text-black mb-0">{{ f.product_name }}</h6>
+
+                            <div class="" style="overflow-y: auto; height: 550px;">
+                                <div style="width: 95%;">
+                                <template v-for="(category, catIndex) in ['Khai Vị', 'Món Chính', 'Tráng Miệng']" :key="catIndex">
+                                    <h3 class="mb-2 mb-2" style="color: white;">{{ category }}</h3>
+                                    <div v-for="(f, index) in filterProducts" :key="index">
+                                        <div v-if="f.product_category === category" class="row mb-1 d-flex justify-content-between align-items-center"
+                                        style="background-color: #b300b3; border-radius: 15px;margin-left: 10px;">
+                                            <!-- Content for each product -->
+                                            <div class="col-md-2 col-lg-2 col-xl-2" style="padding-left: 0px;">
+                                                <img :src="require(`../assets/images/${f.product_src}`)" alt="" class="cart-product-img" 
+                                                style="width: 100px; border-radius: 10px;">
                                             </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
-                                            <input type="number" id="iQuantity" class="form-control item-quantity"
-                                                :value="itemQuantity[index]" min="1" max="1000"
-                                                @change="onQtyChange($event, index)">
-                                        </div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2">
-                                            <h6 class="mb-0">Đơn giá: {{ f.product_price }} x {{ itemQuantity[index] }}</h6>
-                                            <h6 class="mb-0"> {{ calculateItemPrice(index) }} vnd </h6>
-                                        </div>
-                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <button class="btn" @click="removeBtn(index)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                        <hr class="my-4">
-                                    </div>
-                                </div>
-                                <br>
-                                <hr class="my-4">
-                            </div>  
-                            <div>
-                                <h2 class="mb-2">Sảnh Tiệc:</h2>
-                                <div v-for="(f, index) in filterProducts" :key="index">
-                                    <div v-if="f.product_category == 'Sảnh Tiệc'" class="row mb-4 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img :src="require(`../assets/images/${f.product_src}`)" alt=""
-                                                class="cart-product-img" style="width: 100px;"/>
-                                        </div>
                                             <div class="col-md-3 col-lg-3 col-xl-4">
-                                            <h6 class="text-muted">{{ f.product_category }}</h6>
-                                            <h6 class="text-black mb-0">{{ f.product_name }}</h6>
+                                                <h6 class="text-black mb-0">{{ f.product_name }}</h6>
+                                                <h6>{{ formatCurrency(f.product_price) }}</h6>
                                             </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
-                                            <input type="number" id="iQuantity" class="form-control item-quantity"
-                                                :value="itemQuantity[index]" min="1" max="1000"
-                                                @change="onQtyChange($event, index)">
-                                        </div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2">
-                                            <h6 class="mb-0">Đơn giá: {{ f.product_price }} x {{ itemQuantity[index] }}</h6>
-                                            <h6 class="mb-0"> {{ calculateItemPrice(index) }} vnd </h6>
-                                        </div>
-                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <button class="btn" @click="removeBtn(index)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                        <hr class="my-4">
-                                    </div>
-                                </div>
-                                <br>
-                                <hr class="my-4">
-                            </div>  
-                            <div>
-                                <h2 class="mb-2">Sân Khấu:</h2>
-                                <div v-for="(f, index) in filterProducts" :key="index">
-                                    <div v-if="f.product_category == 'Sân Khấu'" class="row mb-4 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img :src="require(`../assets/images/${f.product_src}`)" alt=""
-                                                class="cart-product-img" style="width: 100px;"/>
-                                        </div>
-                                            <div class="col-md-3 col-lg-3 col-xl-4">
-                                            <h6 class="text-muted">{{ f.product_category }}</h6>
-                                            <h6 class="text-black mb-0">{{ f.product_name }}</h6>
+                                            <div class="col-md-3 col-lg-2 col-xl-2">
+                                                <input type="number" id="number" v-model="itemQuantity[index]" @change="onQtyChange(index)"
+                                                    class="form-control " min="0" max="1000" 
+                                                    style="border: none; text-align: center; background: rgba(0, 0, 0, 0.3); color: white; border-radius: 10px;">
                                             </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
-                                            <input type="number" id="iQuantity" class="form-control item-quantity"
-                                                :value="itemQuantity[index]" min="1" max="1000"
-                                                @change="onQtyChange($event, index)">
-                                        </div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2">
-                                            <h6 class="mb-0">Đơn giá: {{ f.product_price }} x {{ itemQuantity[index] }}</h6>
-                                            <h6 class="mb-0"> {{ calculateItemPrice(index) }} vnd </h6>
-                                        </div>
-                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <button class="btn" @click="removeBtn(index)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                        <hr class="my-4">
-                                    </div>
-                                </div>
-                                <br>
-                                <hr class="my-4">
-                            </div>  
-                            <div>
-                                <h2 class="mb-2">Gia Tiên:</h2>
-                                <div v-for="(f, index) in filterProducts" :key="index">
-                                    <div v-if="f.product_category == 'Gia Tiên'" class="row mb-4 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img :src="require(`../assets/images/${f.producguestt_src}`)" alt=""
-                                                class="cart-product-img" style="width: 100px;"/>
-                                        </div>
-                                            <div class="col-md-3 col-lg-3 col-xl-4">
-                                            <h6 class="text-muted">{{ f.product_category }}</h6>
-                                            <h6 class="text-black mb-0">{{ f.product_name }}</h6>
+                                            <div class="col-md-3 col-lg-2 col-xl-2">
+                                                <h6 class="mb-0">{{ formatCurrency(calculateItemPrice(index)) }}</h6>
                                             </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
-                                            <input type="number" id="iQuantity" class="form-control item-quantity"
-                                                :value="itemQuantity[index]" min="1" max="1000"
-                                                @change="onQtyChange($event, index)">
-                                        </div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2">
-                                            <h6 class="mb-0">Đơn giá: {{ f.product_price }} x {{ itemQuantity[index] }}</h6>
-                                            <h6 class="mb-0"> {{ calculateItemPrice(index) }} vnd </h6>
-                                        </div>
-                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <button class="btn" @click="removeBtn(index)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                        <hr class="my-4">
-                                    </div>
-                                </div>
-                                <br>
-                                <hr class="my-4">
-                            </div> 
-                            <div>
-                                <h2 class="mb-2">Mâm Quả:</h2>
-                                <div v-for="(f, index) in filterProducts" :key="index">
-                                    <div v-if="f.product_category == 'Mâm Quả'" class="row mb-4 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img :src="require(`../assets/images/${f.product_src}`)" alt=""
-                                                class="cart-product-img" style="width: 100px;"/>
-                                        </div>
-                                            <div class="col-md-3 col-lg-3 col-xl-4">
-                                            <h6 class="text-muted">{{ f.product_category }}</h6>
-                                            <h6 class="text-black mb-0">{{ f.product_name }}</h6>
+                                            <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                                <button class="btn" @click="removeBtn(index)" 
+                                                style="background: rgba(0, 0, 0, 0.3); color: white; border-radius: 10px;">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
                                             </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
-                                            <input type="number" id="iQuantity" class="form-control item-quantity"
-                                                :value="itemQuantity[index]" min="1" max="1000"
-                                                @change="onQtyChange($event, index)">
+                                            
                                         </div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2">
-                                            <h6 class="mb-0">Đơn giá: {{ f.product_price }} x {{ itemQuantity[index] }}</h6>
-                                            <h6 class="mb-0"> {{ calculateItemPrice(index) }} vnd </h6>
-                                        </div>
-                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <button class="btn" @click="removeBtn(index)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                        <hr class="my-4">
-                                    </div>
-                                </div>
-                                <br>
-                                <hr class="my-4">
-                            </div> 
-                            <div>
-                                <h2 class="mb-2">Xe Hoa:</h2>
-                                <div v-for="(f, index) in filterProducts" :key="index">
-                                    <div v-if="f.product_category == 'Xe Hoa'" class="row mb-4 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img :src="require(`../assets/images/${f.product_src}`)" alt=""
-                                                class="cart-product-img" style="width: 100px;"/>
-                                        </div>
-                                            <div class="col-md-3 col-lg-3 col-xl-4">
-                                            <h6 class="text-muted">{{ f.product_category }}</h6>
-                                            <h6 class="text-black mb-0">{{ f.product_name }}</h6>
+                                        <!-- Form group for each product -->
+                                        <div v-if="f.product_category === category" class="row mb-5" 
+                                            style="background-color: #b300b3; margin-left: 10px; border-radius: 10px;">
+                                            <div class="form-group col-10">
+                                                <input type="text" placeholder="Ghi chú..." class="form-control" 
+                                                    style="border: none; font-weight: bold; background-color: #b300b3; color: white;" 
+                                                    v-model="itemNotes[index]"
+                                                >
                                             </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
-                                            <input type="number" id="iQuantity" class="form-control item-quantity"
-                                                :value="itemQuantity[index]" min="1" max="1000"
-                                                @change="onQtyChange($event, index)">
-                                        </div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2">
-                                            <h6 class="mb-0">Đơn giá: {{ f.product_price }} x {{ itemQuantity[index] }}</h6>
-                                            <h6 class="mb-0"> {{ calculateItemPrice(index) }} vnd </h6>
-                                        </div>
-                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <button class="btn" @click="removeBtn(index)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                        <hr class="my-4">
-                                    </div>
-                                </div>
-                                <br>
-                                <hr class="my-4">
-                            </div> 
-                            <div>
-                                <h2 class="mb-2">Áo Cưới:</h2>
-                                <div v-for="(f, index) in filterProducts" :key="index">
-                                    <div v-if="f.product_category == 'Áo Cưới'" class="row mb-4 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img :src="require(`../assets/images/${f.product_src}`)" alt=""
-                                                class="cart-product-img" style="width: 100px;"/>
-                                        </div>
-                                            <div class="col-md-3 col-lg-3 col-xl-4">
-                                            <h6 class="text-muted">{{ f.product_category }}</h6>
-                                            <h6 class="text-black mb-0">{{ f.product_name }}</h6>
+                                            <div class="col-2 text-right mt-2">
+                                                <button @click="updateItemNotes(index)" style="background-color: #e600e6;border-radius: 5px; padding: 2px; margin: 2px;">Lưu</button>
+                                                <button @click="deleteNotes(index)" style="background-color: #e600e6; border-radius: 5px; padding: 2px;  margin: 2px;">Xóa</button>
                                             </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
-                                            <input type="number" id="iQuantity" class="form-control item-quantity"
-                                                :value="itemQuantity[index]" min="1" max="1000"
-                                                @change="onQtyChange($event, index)">
+                                            <br>
                                         </div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2">
-                                            <h6 class="mb-0">Đơn giá: {{ f.product_price }} x {{ itemQuantity[index] }}</h6>
-                                            <h6 class="mb-0"> {{ calculateItemPrice(index) }} vnd </h6>
-                                        </div>
-                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <button class="btn" @click="removeBtn(index)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                        <hr class="my-4">
                                     </div>
+                                   
+                                    <hr class="my-4">
+                                </template>
                                 </div>
-                                <br>
-                                <hr class="my-4">
-                            </div> 
-                            <div>
-                                <h2 class="mb-2">Vest Cưới:</h2>
-                                <div v-for="(f, index) in filterProducts" :key="index">
-                                    <div v-if="f.product_category == 'Vest Cưới'" class="row mb-4 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img :src="require(`../assets/images/${f.product_src}`)" alt=""
-                                                class="cart-product-img" style="width: 100px;"/>
-                                        </div>
-                                            <div class="col-md-3 col-lg-3 col-xl-4">
-                                            <h6 class="text-muted">{{ f.product_category }}</h6>
-                                            <h6 class="text-black mb-0">{{ f.product_name }}</h6>
-                                            </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
-                                            <input type="number" id="iQuantity" class="form-control item-quantity"
-                                                :value="itemQuantity[index]" min="1" max="1000"
-                                                @change="onQtyChange($event, index)">
-                                        </div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2">
-                                            <h6 class="mb-0">Đơn giá: {{ f.product_price }} x {{ itemQuantity[index] }}</h6>
-                                            <h6 class="mb-0"> {{ calculateItemPrice(index) }} vnd </h6>
-                                        </div>
-                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <button class="btn" @click="removeBtn(index)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                        <hr class="my-4">
-                                    </div>
-                                </div>
-                                <br>
-                                <hr class="my-4">
-                            </div> 
-                            <div>
-                                <h2 class="mb-2">Áo Dài:</h2>
-                                <div v-for="(f, index) in filterProducts" :key="index">
-                                    <div v-if="f.product_category == 'Áo Dài'" class="row mb-4 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img :src="require(`../assets/images/${f.product_src}`)" alt=""
-                                                class="cart-product-img" style="width: 100px;"/>
-                                        </div>
-                                            <div class="col-md-3 col-lg-3 col-xl-4">
-                                            <h6 class="text-muted">{{ f.product_category }}</h6>
-                                            <h6 class="text-black mb-0">{{ f.product_name }}</h6>
-                                            </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
-                                            <input type="number" id="iQuantity" class="form-control item-quantity"
-                                                :value="itemQuantity[index]" min="1" max="1000"
-                                                @change="onQtyChange($event, index)">
-                                        </div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2">
-                                            <h6 class="mb-0">Đơn giá: {{ f.product_price }} x {{ itemQuantity[index] }}</h6>
-                                            <h6 class="mb-0"> {{ calculateItemPrice(index) }} vnd </h6>
-                                        </div>
-                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <button class="btn" @click="removeBtn(index)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                        <hr class="my-4">
-                                    </div>
-                                </div>
-                                <br>
-                                <hr class="my-4">
-                            </div> 
-                            <div>
-                                <h2 class="mb-2">Khác:</h2>
-                                <div v-for="(f, index) in filterProducts" :key="index">
-                                    <div v-if="f.product_category == 'Khác'" class="row mb-4 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img :src="require(`../assets/images/${f.product_src}`)" alt=""
-                                                class="cart-product-img" style="width: 100px;"/>
-                                        </div>
-                                            <div class="col-md-3 col-lg-3 col-xl-4">
-                                            <h6 class="text-muted">{{ f.product_category }}</h6>
-                                            <h6 class="text-black mb-0">{{ f.product_name }}</h6>
-                                            </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
-                                            <input type="number" id="iQuantity" class="form-control item-quantity"
-                                                :value="itemQuantity[index]" min="1" max="1000"
-                                                @change="onQtyChange($event, index)">
-                                        </div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2">
-                                            <h6 class="mb-0">Đơn giá: {{ f.product_price }} x {{ itemQuantity[index] }}</h6>
-                                            <h6 class="mb-0"> {{ calculateItemPrice(index) }} vnd </h6>
-                                        </div>
-                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <button class="btn" @click="removeBtn(index)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                        <hr class="my-4">
-                                    </div>
-                                </div>
-                                <br>
-                                <hr class="my-4">
-                            </div> 
-                            
+                            </div>
 
 
                         <div class="pt-5">
-                            <router-link to="/menu" class="text-black-50"><i class="fa fa-arrow-left"></i>Continue shopping
+                            <router-link to="/booking" class="text-black-50"><i class="fa fa-arrow-left"></i>Continue shopping
                             </router-link>
                         </div>
                     </div>
@@ -436,13 +86,23 @@
                         <div class="p-5">
                         <h3 class="fw-bold mb-5 mt-2 pt-1" style="color: #FF66CC; ">Summary</h3>
                         <hr class="my-4">
-                        <div class="d-flex justify-content-between mb-4">
-                            <h5 class="text-uppercase">items: {{ filterProducts.length.toString() }}</h5>
+                        <div class="d-flex justify-content-between mb-4"></div>
+
+                        <div class="form-group">
+                            <textarea name="txtMsg" class="form-control" placeholder="Những điều bạn yêu cầu hoặc lưu ý" 
+                                style="width: 100%; height: 100px; border: none;  background: rgba(0, 0, 0, 0.3); color: white; border-radius: 10px;" 
+                                v-model="checkoutObj.notes" >
+                            </textarea>
                         </div>
-                        <div v-for="(f, index) in filterProducts" :key="index">
-                            <h5 class="text-uppercase mb-3 pl-4">{{ f.product_name }}</h5>
+                        <div class="form-group">
+                            <input type="text" name="coPhone" id="coPhone" placeholder="Phone number" class="form-control"
+                            style="width: 100%; border: none; background: rgba(0, 0, 0, 0.3); color: white; border-radius: 10px; font-weight: bold;" v-model="checkoutObj.phone" />
                         </div>
-                      
+                        <div class="form-group">
+                            <input type="text" name="coAddress" id="coAddress" placeholder="Address..."
+                            style="width: 100%; border: none;  background: rgba(0, 0, 0, 0.3); color: white; border-radius: 10px; font-weight: bold;" class="form-control" v-model="checkoutObj.address" />
+                        </div>
+                       
                         <hr class="my-4">
                         <div class="d-flex justify-content-between mb-5">
                             <h5 class="text-uppercase">Số lượng Bàn tiệc</h5>
@@ -450,16 +110,15 @@
                         </div>
                         <div class="d-flex justify-content-between mb-5">
                             <h5 class="text-uppercase">Giá mỗi Bàn (mâm)</h5>
-                            <h5>{{ PriceOfTable() }} vnd </h5>
+                            <h5>{{ formatCurrency(PriceOfTable())}} </h5>
                         </div>
                         <div class="d-flex justify-content-between mb-5">
                             <h5 class="text-uppercase">Tổng chi phí</h5>
-                            <h5>{{ calculateSummaryPrice() }} vnd</h5>
+                            <h5>{{ formatCurrency(calculateSummaryPrice()) }}</h5>
                         </div>
 
-                        <button type="button"  @click="checkOutBtn()" class="btn btn-block btn-lg"  style="background-color: #FFF0F5; "
-                            data-mdb-ripple-color="dark">Check out</button>
-
+                        <button type="button" @click="checkOutBtn()" class="btn btn-block font-weight-bold"  
+                            style="background-color: #FF66CC; color: white; border-radius: 15px;">Gửi Đơn Hàng</button>
                         </div>
                     </div>
                     </div>
@@ -475,19 +134,25 @@
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
+
 export default {
     name: "Cart",
-
     data() {
         return {
             cartItem: [],
             itemQuantity: [],
+            itemNotes: [],
+            checkoutObj: {notes:"", phone: "", address: ""},
+            dateID: '',
             tableNum: 0,
+            tien: 100000
         };
     },
 
     created() {
         this.getAllCartItem();
+        this.loadInfo();
+        this.getDate();
         this.getNum();
     },
 
@@ -495,30 +160,64 @@ export default {
         ...mapState(["allProducts", "user"]),
 
         filterProducts: function () {
-            return this.allProducts.filter(
-                (f) => this.matchID(f, this.cartItem)
-            );
+            return this.allProducts.filter((f) => this.matchID(f, this.cartItem));
         },
-    },
 
+    },
     methods: {
-        matchID: function (product, cartArray) {
-            let temp = "";
-            cartArray.forEach(element => {
-                if (parseInt(product.product_id) == element) {
-                    temp = product
-                }
-            });
-            return temp
+        formatCurrency(amount) {
+            if (!amount) return '';
+            return parseFloat(amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         },
+
+        matchID: function (product, cartArray) {
+            return cartArray.includes(product.product_id);
+        },
+        async getAllCartItem() {
+            if (this.user) {
+                let existItem = await axios.get('/cartItem/' + this.user.user_id);
+                existItem.data.forEach(element => {
+                    this.cartItem.push(element.product_id);
+                    this.itemQuantity.push(element.item_qty);
+                    this.itemNotes.push(element.item_notes);
+                });
+            }
+        },
+
+        async loadInfo() {
+            try {           
+
+            this.checkoutObj = {
+                phone: this.user.user_phone,
+                address: this.user.user_address,
+            };
+            } catch (error) {
+            console.error('Error fetching product:', error);
+            }
+        },
+
+        async getDate() {
+            try {
+                const response = await axios.get('/date/' + this.user.user_id);
+                if (response.data.length > 0) {
+                    this.dateID = response.data[0].date_id;
+                    // console.log('Ngày bắt đầu được trả về từ API:', this.dateStart);
+                } else {
+                    // console.log('Không có dữ liệu ngày bắt đầu từ API. Trả về một ngày mặc định.');
+                    this.dateID =  '';
+                }
+            } catch (error) {
+                console.error('Đã xảy ra lỗi khi lấy dữ liệu dateID:', error);
+                this.dateID =  '';
+            }
+        },
+
 
         calculateItemPrice: function (index) {
             let a = 0;
-            if ( this.filterProducts[index].product_category=="Khai Vị" || this.filterProducts[index].product_category=="Món Chính" || this.filterProducts[index].product_category=="Tráng Miệng") {
-                a = parseInt(this.filterProducts[index].product_price) * this.tableNum;
-            } else {
+            
                 a = parseInt(this.filterProducts[index].product_price) * this.itemQuantity[index];
-            }
+            
             return a;
         },
 
@@ -538,7 +237,7 @@ export default {
             let subtotal = 0;
             let i = 0;
             while (i < this.itemQuantity.length) {
-                subtotal = subtotal + parseInt(this.filterProducts[i].product_price) * this.itemQuantity[i]
+                subtotal = subtotal + this.calculateItemPrice(i)
                 i = i + 1
             }
             return subtotal;
@@ -546,41 +245,94 @@ export default {
 
         async getNum() {
             if (this.user) {
-            try {
-                let existNum = await axios.get('/guestnumber/' + this.user.user_id);
-                
-                if (existNum.data && existNum.data.length > 0) {
-                this.tableNum = existNum.data[0].guest_number /10;  
-                console.log('Table:', this.tableNum);
-                } else {
-                // Gán giá trị mặc định nếu không có dữ liệu
-                this.tableNum = 0;
-                console.log('Không có dữ liệu Số lượng bàn.');
+                try {
+                    await this.getDate();
+                    let response = await axios.get(`/datedetails/${this.dateID}`);
+                    let existNum = response.data;
+                    if (existNum && existNum.length > 0) {
+                        for ( let num of existNum ) this.tableNum += num.dd_guest;
+                        this.tableNum = this.tableNum / 10;
+                        console.log('Table:', this.tableNum);
+                        // Cập nhật itemQuantity của các cartItem có product_category = 'Khai Vị'
+                        this.setQuantity();
+                    } else {
+                        this.tableNum = 0;
+                        console.log('Không có dữ liệu Số lượng bàn.');
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi lấy Số lượng bàn:', error);
                 }
-            } catch (error) {
-                console.error('Lỗi khi lấy Số lượng bàn:', error);
-            }
             }
         },
 
-        async onQtyChange(e, i) {
-            if (e.target.value < 1) {
-                e.target.value = 1
-                this.itemQuantity[i] = 1
-            } else {
-                this.itemQuantity[i] = e.target.value;
+        async setQuantity(){
+            try {
+                this.itemQuantity.forEach((qty, index) => {
+                            if (this.filterProducts[index].product_category === 'Khai Vị' 
+                             || this.filterProducts[index].product_category === 'Món Chính'
+                             || this.filterProducts[index].product_category === 'Tráng Miệng') {
+                                this.itemQuantity[index] = this.tableNum;
+                            }
+                            let data = {
+                                user_id: parseInt(this.user.user_id),
+                                product_id: parseInt(this.cartItem[index]),
+                                item_qty: this.itemQuantity[index],
+                                item_notes: this.itemNotes[index]
+                            };
+                            axios.put("/cartItem/", data)
+                        });
+            } catch (error) {
+                console.error('Lỗi khi cài Số Lượng:', error);
             }
+        },
 
+        async onQtyChange(i) {
             let data = {
                 user_id: parseInt(this.user.user_id),
                 product_id: parseInt(this.cartItem[i]),
-                item_qty: this.itemQuantity[i]
+                item_qty: this.itemQuantity[i],
+                item_notes: this.itemNotes[i]
             };
-            await axios.put("/cartItem/", data)
+            let confirmResult = window.confirm("Bạn có chắc chắn muốn thay đổi số lượng sản phẩm thành " + this.itemQuantity[i] + "?" );
+            if (confirmResult) {
+                await axios.put("/cartItem/", data)
+            }
+        },
+        
+        async updateNotes(i) {
+            let data = {
+                user_id: parseInt(this.user.user_id),
+                product_id: parseInt(this.cartItem[i]),
+                item_qty: this.itemQuantity[i],
+                item_notes: this.itemNotes[i]
+            };
+            let confirmResult = window.confirm("Bạn có chắc chắn muốn thay đổi Ghi chú của sản phẩm?");
+            if (confirmResult) {
+                try {
+                    await axios.put("/cartItem/", data);
+                    console.log("Đã cập nhật Ghi chú thành công.");
+                } catch (error) {
+                    console.error("Đã xảy ra lỗi khi cập nhật Ghi chú:", error);
+                }
+            }
         },
 
-        checkOutBtn: function () {
-            this.$router.push("/checkout");
+        async deleteNotes(i) {
+            let data = {
+                user_id: parseInt(this.user.user_id),
+                product_id: parseInt(this.cartItem[i]),
+                item_qty: this.itemQuantity[i],
+                item_notes: ""
+            };
+            let confirmResult = window.confirm("Bạn có chắc chắn muốn xóa bỏ Ghi chú của sản phẩm?");
+            if (confirmResult) {
+                try {
+                    await axios.put("/cartItem/", data);
+                    console.log("Đã xóa Ghi chú thành công.");
+                } catch (error) {
+                    console.error("Đã xảy ra lỗi khi xóa Ghi chú:", error);
+                }
+            }
         },
 
         async removeBtn(index) {
@@ -590,13 +342,59 @@ export default {
             this.itemQuantity.splice(index, 1);
         },
 
-        async getAllCartItem() {
-            if (this.user) {
-                let existItem = await axios.get('/cartItem/' + this.user.user_id);
-                existItem.data.forEach(element => {
-                    this.cartItem.push(element.product_id);
-                    this.itemQuantity.push(element.item_qty);
+        async sendBillDetails(billId, productId, qty , notes) {
+            let billDetails = {
+                bill_id: parseInt(billId),
+                product_id: parseInt(productId),
+                item_qty: parseInt(qty),
+                item_notes: notes,
+            }
+
+            await axios.post("/billdetails", billDetails);
+        },
+
+        async checkOutBtn() {
+            let confirmResult = window.confirm("Xác Nhận Gửi Yêu Cầu" );
+            if (confirmResult) {
+                let billId = (await axios.get("/billstatus/new")).data;
+
+                if (billId == "") {
+                    billId = 1
+                } else {
+                    billId = parseInt(billId.bill_id) + 1
+                }
+
+                this.cartItem.forEach((productId, index) => {
+                    this.sendBillDetails(billId, productId, this.itemQuantity[index], this.itemNotes[index])
                 });
+
+                var now = new Date();
+                var day = ("0" + now.getDate()).slice(-2);
+                var month = ("0" + (now.getMonth() + 1)).slice(-2);
+                var hour = ("0" + (now.getHours())).slice(-2);
+                var min = ("0" + (now.getMinutes())).slice(-2);
+                var currentTime = day + "/" + month + "/" + now.getFullYear() + " - " + hour + ":" + min;
+
+
+                let billStatus = {
+                    bill_id: parseInt(billId),
+                    user_id: parseInt(this.user.user_id),
+                    date_id: this.dateID,
+                    bill_phone: this.checkoutObj.phone,
+                    bill_address: this.checkoutObj.address,
+                    bill_when: currentTime,
+                    bill_total: parseInt(this.calculateSummaryPrice()),
+                    bill_notes: this.checkoutObj.notes,
+                    bill_status: 1
+                }
+
+                axios.post("/billstatus", billStatus);
+                axios.delete("/cartItem/" + this.user.user_id);
+
+                this.cartItem = [];
+                this.itemQuantity = [];
+
+                this.$router.push("/myorder");
             }
         }
 

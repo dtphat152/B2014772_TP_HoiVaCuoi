@@ -1,8 +1,9 @@
 <template>
-    <div class="login-container">
+    <div class="login-container text-center"> 
+            <h1 style="color: #990099;">Chào Mừng Bạn Đến Với TP Hỏi Và Cưới</h1>
         <div class="login-form-container">
             <form id="loginForm" @submit="handleSubmit" novalidate autocomplete="off">
-                <h3>LOGIN</h3>
+                <h3>Đăng Nhập</h3>
 
                 <div v-if="errors.length" class="error-box">
                     <ul>
@@ -11,18 +12,19 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="email" id="uEmail" name="uEmail" class="form-control" placeholder="enter your email"
+                    <input type="email" id="uEmail" name="uEmail" class="form-control" placeholder="Email của bạn..."
                         v-model="loginObj.email" />
                 </div>
 
                 <div class="form-group">
                     <input type="password" id="uPass" name="uPass" class="form-control"
-                        placeholder="enter your password" v-model="loginObj.pass" />
+                        placeholder="Mật khẩu..." v-model="loginObj.pass" />
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" value="login now" class="ounded-lg p-3 mt-2" style="background-color: #ef87aa;">
-                    <p>don't have an account? <router-link @click="scrollToTop()" to="/register" style="color: #ef87aa;">create one
+                    <input type="submit" value="Đăng Nhập" class="ounded-lg p-3 mt-2" 
+                    style="background-color: #ef87aa; border-radius: 15px; font-weight: bold;">
+                    <p>Bạn chưa có tài khoản? <router-link @click="scrollToTop()" to="/register" style="color: #ef87aa;">Tạo Mới
                         </router-link>
                     </p>
                 </div>
@@ -108,13 +110,14 @@ export default {
 }
 
 .login-container .login-form-container {
-    background-color: #fff;
-    height: 90vh;
+    height: 50vh;
 }
 
 .login-container .login-form-container form {
+    background: #990099; 
+    opacity: 0.8;
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 40rem;
@@ -122,7 +125,7 @@ export default {
     box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.05);
     border: 0.1rem solid rgba(0, 0, 0, 0.2);
     padding: 2rem;
-    border-radius: .5rem;
+    border-radius: 15px;
     animation: fadeUp .4s linear;
 }
 
@@ -137,11 +140,12 @@ export default {
 
 .login-container .login-form-container form .form-control {
     margin: .7rem 0;
-    border-radius: .5rem;
-    background: #f7f7f7;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.3);
     padding: 2rem 1.2rem;
     font-size: 1.6rem;
-    color: #130f40;
+    color: white;
+    /* font-weight: bold; */
     text-transform: none;
     width: 100%;
     border: none;
@@ -156,12 +160,8 @@ export default {
 .login-container .login-form-container form p {
     padding-top: 1rem;
     font-size: 1.5rem;
-    color: #666;
+    color: #fff9fa;
     margin: 0;
-}
-
-.login-container .login-form-container form p a {
-    color: #17a2b8;
 }
 
 .login-container .login-form-container form p a:hover {
@@ -186,6 +186,6 @@ export default {
 
 .login-container .login-form-container form .error-box ul li {
     padding-left: 10px;
-    color: #ef87aa;
+    color: rgb(182, 0, 0);
 }
 </style>

@@ -10,11 +10,16 @@ import Checkout from '../pages/Checkout.vue';
 import Thank from '../pages/Thank.vue';
 import MyOrder from '../pages/MyOrder.vue';
 import Admin from '../admin/Admin.vue';
+import AdminHome from '../admin/AdminHome.vue';
 import Dashboard from '../admin/Dashboard.vue';
 import ProductManager from '../admin/ProductManager.vue';
+import Order from '../admin/Order.vue';
+import ComboManager from "../admin/ComboManager.vue";
 import AddProduct from '../admin/AddProduct.vue';
+import AddTempProduct from '../admin/AddTempProduct.vue';
+import AddCombo from '../admin/AddCombo.vue';
 import EditProduct from '../admin/EditProduct.vue';
-
+import EditCombo from '../admin/EditCombo.vue';
 const routes = [
   {
     path: "/",
@@ -27,7 +32,7 @@ const routes = [
     component: About,
   },
   {
-    path: "/product",
+    path: "/booking",
     name: "Product",
     component: Product,
   },
@@ -72,9 +77,9 @@ const routes = [
     component: Admin,
   },
   {
-    path: "/admin/dashboard",
-    name: "Dashboard",
-    component: Dashboard,
+    path: "/admin/adminHome",
+    name: "AdminHome",
+    component: AdminHome,
   },
   {
     path: "/admin/productmanager",
@@ -82,14 +87,45 @@ const routes = [
     component: ProductManager,
   },
   {
+    path: "/admin/dashboard",
+    name: "Dashboard",
+    component: Dashboard,
+  },
+  {
+    path: "/admin/order",
+    name: "Order",
+    component: Order,
+  },
+  {
+    path: "/admin/combomanager",
+    name: "ComboManager",
+    component: ComboManager,
+  },
+  {
     path: "/admin/addproduct",
     name: "AddProduct",
     component: AddProduct,
   },
   {
+    path: "/admin/addtempproduct",
+    name: "AddTempProduct",
+    component: AddTempProduct,
+  },
+  {
+    path: "/admin/addcombo",
+    name: "AddCombo",
+    component: AddCombo,
+  },
+  {
     path: "/admin/editproduct/:id",
     name: "EditProduct",
     component: EditProduct,
+    props: true
+  },
+  {
+    path: "/admin/editcombo/:id",
+    name: "EditCombo",
+    component: EditCombo,
     props: true
   },
   {

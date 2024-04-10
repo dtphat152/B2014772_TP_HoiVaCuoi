@@ -1,10 +1,13 @@
 <template>
+    
     <div class="container" style="width: 500px; margin-top: 50px; border: 1px solid #ddd;  border-radius: 8px;">
         <div class="checkout-form-container">
             <form @submit="handleSubmit" novalidate autocomplete="off" >
                 <div class="pt-5" v-if="user">
-                    <h1 style="color: #FF66CC;">Your Order</h1>
-                    <h4>Total: <span>${{ calculateSummaryPrice() }}</span></h4>
+                    <h1 style="color: #FF66CC; background-color: #FFF0F5;">{{ this.user.user_name }}'s Order</h1> 
+                    <h4>Total: <span>${{ calculateSummaryPrice() }}</span></h4> 
+                    <h5>SDT: {{ this.user.user_phone }}</h5>
+                    <h4>Date: <span>{{  this.dateStart  }}  to  {{ this.dateEnd }}</span></h4>
                 </div>
                 <hr style="border-color: #ef87aa;">
                 <div class="form-group details-group">
@@ -21,56 +24,10 @@
                         <p class="error-mess" v-if="errorObj.addressErr.length > 0">{{ errorObj.addressErr[0] }}</p>
                     </div>
                 </div>
-                <h4>Payment Method</h4>
-                <div class="form-check-inline">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="payment" v-model="checkoutObj.paymentMethod" value="cash"><span>Cash</span>
-                    </label>
-                </div>
-                <div class="form-check-inline">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="payment" v-model="checkoutObj.paymentMethod" value="card"><span>Card (Visa)</span>
-                    </label>
-                </div>
-                <br>
-                <div v-if="checkoutObj.paymentMethod == 'card'">
-                    <br>
-                    <h6>Card number</h6>
-                        <div class="form-group">
-                            <input type="text" name="coCardNum" placeholder="Enter your card number" id="coCardNum"
-                                    class="form-control" v-model="cardObj.number" size="16" maxlength="16" />
-                                <p class="error-mess" v-if="errorObj.numErr.length > 0">{{ errorObj.numErr[0] }}</p>
-                        </div>
-                    <h6>Name</h6>
-                        <div class="form-group">
-                            <input v-upcase type="text" name="coCardName" placeholder="Enter the name in your card "
-                                id="coCardName" class="form-control" v-model="cardObj.name" />
-                            <p class="error-mess" v-if="errorObj.nameErr.length > 0">{{ errorObj.nameErr[0] }}</p>
-                        </div>
-                    <h6>Expiry Date</h6>
-                        <div class="form-group" >
-                            <div class="form-control" style="border: none; margin-left: 0; padding-left: 0;">
-                                <input
-                                    style="position: absolute;  background: #999999;"
-                                    type="month" name="coCardEx" id="coCardEx" v-model="cardObj.expiryDate"
-                                    @click="availableTime()" />
-                            </div>
-                            <p class="error-mess" v-if="errorObj.exDateErr.length > 0">{{ errorObj.exDateErr[0] }}</p>
-                        </div>
-                        <h6>CVV</h6>
-                        <div class="form-group">
-                            <input type="text" name="coCardCvv" placeholder="CVV" id="coCardCvv" class="form-control"
-                                v-model="cardObj.cvv" />
-                            <p class="error-mess" v-if="errorObj.cvvErr.length > 0">{{ errorObj.cvvErr[0] }}</p>
-                        </div>
 
-                </div>
-                <br>
+
                 <div v-if="user" class="form-group">
-                    <!-- <input type="submit" value="CONFIRM & PAY" class="btn-info p-2" 
-                        :disabled="filterProducts.length ? false : true" /> -->
-                    <button type="submit" value="CONFIRM & PAY" @click="checkOutBtn()" class="btn btn-block btn-lg"  style="background-color: #FFF0F5; "
-                            data-mdb-ripple-color="dark" :disabled="filterProducts.length ? false : true" >Check out</button>
+                    <button type="submit" value="submit">Check Out</button>
                 </div>
             </form>
         </div>
@@ -85,16 +42,25 @@ export default {
 
     data() {
         return {
-            checkoutObj: { phone: "", address: "", paymentMethod: "" },
-            cardObj: { number: "", name: "", expiryDate: "", cvv: "" },
-            errorObj: { phoneErr: [], addressErr: [], payErr: [], numErr: [], nameErr: [], exDateErr: [], cvvErr: [] },
+            checkoutObj: { phone: "", address: ""},
+            errorObj: { phoneErr: [], addressErr: [] },
             cartItem: [],
             itemQuantity: [],
+            itemNotes: [],
+            dateStart: '',
+            dateEnd: '',
+            guestNumber: 0,
         }
     },
 
     created() {
         this.getAllCartItem();
+    },
+
+    async mounted() {
+        this.getDateStart(this.user.user_id);
+        this.getDateEnd(this.user.user_id); 
+        this.getGuestNumber(this.user.user_id);
     },
 
     computed: {
@@ -108,6 +74,72 @@ export default {
     },
 
     methods: {
+
+        async getDateStart(id) {
+            try {
+                const response = await axios.get('/date/' + id);
+                if (response.data.length > 0) {
+                    this.dateStart = response.data[0].date_start;
+                    console.log('Ngày bắt đầu được trả về từ API:', this.dateStart);
+                } else {
+                    console.log('Không có dữ liệu ngày bắt đầu từ API. Trả về một ngày mặc định.');
+                    this.dateStart =  '';
+                }
+            } catch (error) {
+                console.error('Đã xảy ra lỗi khi lấy dữ liệu ngày bắt đầu:', error);
+                this.dateStart =  '';
+            }
+        },
+
+        async getGuestNumber(id) {
+            try {
+                const response = await axios.get('/guestnumber/' + id);
+                if (response.data.length > 0) {
+                    this.guestNumber = response.data[0].guest_number;
+                    console.log('Số lượng khách được trả về từ API:', this.guestNumber);
+                } else {
+                    console.log('Không có dữ liệu Số lượng khách từ API.');
+                    this.guestNumber =  0;
+                }
+            } catch (error) {
+                console.error('Đã xảy ra lỗi khi lấy dữ liệu Số lượng khách:', error);
+                this.guestNumber =  0;
+            }
+        },
+
+        async getDateEnd(id) {
+            try {
+                const response = await axios.get('/date/' + id);
+                if (response.data.length > 0) {
+                    this.dateEnd = response.data[0].date_end;
+                    console.log('Ngày bắt đầu được trả về từ API:', this.dateEnd);
+                } else {
+                    console.log('Không có dữ liệu ngày bắt đầu từ API. Trả về một ngày mặc định.');
+                    this.dateEnd =  '';
+                }
+            } catch (error) {
+                console.error('Đã xảy ra lỗi khi lấy dữ liệu ngày bắt đầu:', error);
+                this.dateEnd =  '';
+            }
+        },
+
+
+        formatDate(date) {
+        if (date) {
+            const year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            let day = date.getDate();
+
+            month = month < 10 ? `0${month}` : month;
+            day = day < 10 ? `0${day}` : day;
+
+            // Trả về chuỗi có định dạng "yyyy-MM-dd"
+            return `${year}-${month}-${day}`;
+        }
+
+        return null;
+        },
+        
         availableTime: function () {
             var now = new Date();
             var currentMonth = ("0" + (now.getMonth() + 1)).slice(-2);
@@ -133,7 +165,11 @@ export default {
             let subtotal = 0;
             let i = 0;
             while (i < this.itemQuantity.length) {
-                subtotal = subtotal + parseInt(this.filterProducts[i].product_price) * this.itemQuantity[i]
+                if ( this.filterProducts[i].product_category=="Khai Vị" || this.filterProducts[i].product_category=="Món Chính" || this.filterProducts[i].product_category=="Tráng Miệng") {
+                    subtotal = subtotal + parseInt(this.filterProducts[i].product_price) * this.guestNumber
+                } else {
+                    subtotal = subtotal + parseInt(this.filterProducts[i].product_price) * this.itemQuantity[i]
+                }
                 i = i + 1
             }
             return subtotal;
@@ -145,6 +181,7 @@ export default {
                 existItem.data.forEach(element => {
                     this.cartItem.push(element.product_id);
                     this.itemQuantity.push(element.item_qty);
+                    this.itemNotes.push(element.item_notes);
                 });
             }
         },
@@ -152,11 +189,6 @@ export default {
         resetCheckErr: function () {
             this.errorObj.phoneErr = [];
             this.errorObj.addressErr = [];
-            this.errorObj.payErr = [];
-            this.errorObj.numErr = [];
-            this.errorObj.nameErr = [];
-            this.errorObj.exDateErr = [];
-            this.errorObj.cvvErr = [];
         },
 
         checkEmptyErr: function () {
@@ -166,10 +198,6 @@ export default {
                 }
             }
             return true;
-        },
-
-        inputUpcase: function (e) {
-            e.target.value = e.target.value.toUpperCase()
         },
 
         checkForm: function () {
@@ -197,82 +225,14 @@ export default {
             if (!this.checkoutObj.address) {
                 this.errorObj.addressErr.push('Entering address is required');
             }
-
-            // Card validate
-            if (!this.checkoutObj.paymentMethod) {
-                this.errorObj.payErr.push('Selecting payment method is required');
-            }
-            else if (this.checkoutObj.paymentMethod == "card") {
-                if (!this.cardObj.number) {
-                    this.errorObj.numErr.push('Entering card number is required');
-                }
-                else {
-                    if (!this.cardObj.number.startsWith('4')) {
-                        this.errorObj.numErr.push('Visa card numbers must start with 4');
-                    }
-
-                    if (this.cardObj.number.length != 16) {
-                        this.errorObj.numErr.push('Visa card numbers must have exactly 16 digits');
-                    }
-
-                    if (!/[0-9]{16}/.test(this.cardObj.number)) {
-                        this.errorObj.numErr.push('Visa card numbers can only contain numbers');
-                    }
-                }
-
-                if (!this.cardObj.name) {
-                    this.errorObj.nameErr.push('Entering name is required');
-                }
-                else {
-                    if (!/^[A-Za-z]+$/.test(this.cardObj.name.replace(/\s/g, ""))) {
-                        this.errorObj.nameErr.push('A name can only contain letters');
-                    }
-                }
-
-                if (!this.cardObj.expiryDate) {
-                    this.errorObj.exDateErr.push('Entering expiry date is required');
-                }
-
-
-                if (!this.cardObj.cvv) {
-                    this.errorObj.cvvErr.push('Entering cvv code is required');
-                }
-                else {
-                    if (this.cardObj.cvv.length != 3) {
-                        this.errorObj.cvvErr.push('Cvv code must have exactly 3 digits');
-                    }
-
-                    if (!/[0-9]{3}/.test(this.cardObj.cvv)) {
-                        this.errorObj.cvvErr.push('Cvv code can only contain numbers');
-                    }
-                }
-            } else if (this.checkoutObj.paymentMethod == "cash") {
-                this.cardObj.number = "";
-                this.cardObj.name = "";
-                this.cardObj.expiryDate = "";
-                this.cardObj.cvv = "";
-
-                this.errorObj.numErr = [];
-                this.errorObj.nameErr = [];
-                this.errorObj.exDateErr = [];
-                this.errorObj.cvvErr = [];
-            }
         },
 
-        isPaid: function () {
-            if (this.checkoutObj.paymentMethod == "cash") {
-                return "false"
-            }
-            else if (this.checkoutObj.paymentMethod == "card") {
-                return "true"
-            }
-        },
-
-        async sendBillDetails(billId, productId, qty) {
+        async sendBillDetails(billId, productId, qty , notes) {
             let billDetails = {
                 bill_id: parseInt(billId),
                 product_id: parseInt(productId),
-                item_qty: parseInt(qty)
+                item_qty: parseInt(qty),
+                item_notes: notes,
             }
 
             await axios.post("/billdetails", billDetails);
@@ -294,7 +254,7 @@ export default {
                 }
 
                 this.cartItem.forEach((productId, index) => {
-                    this.sendBillDetails(billId, productId, this.itemQuantity[index])
+                    this.sendBillDetails(billId, productId, this.itemQuantity[index], this.itemNotes[index])
                 });
 
                 var now = new Date();
@@ -304,15 +264,18 @@ export default {
                 var min = ("0" + (now.getMinutes())).slice(-2);
                 var currentTime = day + "/" + month + "/" + now.getFullYear() + " - " + hour + ":" + min;
 
+
                 let billStatus = {
                     bill_id: parseInt(billId),
                     user_id: parseInt(this.user.user_id),
                     bill_phone: this.checkoutObj.phone,
                     bill_address: this.checkoutObj.address,
+                    date_start: this.dateStart,
+                    date_end: this.dateEnd,
                     bill_when: currentTime,
                     bill_method: this.checkoutObj.paymentMethod,
                     bill_total: parseInt(this.calculateSummaryPrice()),
-                    bill_paid: this.isPaid(),
+                    bill_notes: "true",
                     bill_status: 1
                 }
 
@@ -330,17 +293,5 @@ export default {
 };
 </script>
 
-<script setup>
-// enables v-focus in templates
-const vUpcase = {
-    mounted(el) {
-        el.style.textTransform = "uppercase";
-    }
-}
-</script>
-
 <style>
-.error-mess{
-    color: red;
-}
 </style>

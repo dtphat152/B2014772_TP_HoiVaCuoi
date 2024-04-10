@@ -1,80 +1,188 @@
 <template>
-    <div class="container" style="width: 800px; margin-top: 30px;" :class="filterBills.length > 0 ? '' : 'fit-screen'">
-        <div v-if="filterBills.length > 0" class="my-order-cards">
-            <div v-for="b in filterBills.slice().reverse()" class="card" :key="b.bill_id" style="margin-bottom: 10px;">
-                <div class="d-flex justify-content-between p-3">
-                    <div>
-                        <span>Order No - </span>
-                        <span>{{ b.bill_id }}</span>
-                    </div>
-                    <button @click="sendBillId(b.bill_id)" class="btnDetails">show order details</button>
-                </div>
-
-                <div class="d-flex justify-content-between">
-                    <div class="w-50  py-1 pl-5"><span class="font-weight-bold">Paid:</span>{{ " " + b.bill_paid }}
-                    </div>
-                    <div class="w-100  py-1 px-1"><span class="font-weight-bold">Status:</span>{{ " " + avaiableStatus[b.bill_status] }}
-                    </div>
-                    <div class="w-50  py-1 pl-5"><span class="font-weight-bold">When:</span> {{ b.bill_when }}</div>
-                </div>
-                <div class="d-flex justify-content-between">
-
-                    <div class="w-50  py-1 pl-5"><span class="font-weight-bold">Total:</span> ${{ b.bill_total }}</div>
-                    <div class="w-100  py-1 px-1"><span class="font-weight-bold">Address:</span>{{ " " + b.bill_address }}
-                    </div>
-                    <div class="w-50  py-1 pl-5"><span class="font-weight-bold">Phone:</span>{{ " " + b.bill_phone }}
-                    </div>
-                </div>
-                <hr class="" style="margin-left: 50px; margin-right: 50px;">
-                <div v-if="b.bill_status==0">
-                    <h4 class="pl-3 text-warning">The order was canceled for some reason. So sorry!!</h4>
-                </div>
-                <div v-else class="card-body">
-                    <div class="d-flex">
-                        <div :class="b.bill_status >= 1 ? 'text-color' : '' ">
-                            <h4 class=" pl-3">Waiting_____</h4>
-                        </div>
-                        <div :class="b.bill_status >= 2 ? 'text-color' : ''">
-                            <h4 class="">Confirmed_and_Preparing_____</h4>
-                        </div>
-                        <div :class="b.bill_status >= 3 ? 'text-color' : ''">
-                            <h4 class="">Prepared_____</h4>
-                        </div>
-                        <div :class="b.bill_status >= 4 ? 'text-color' : ''">
-                            <h4 class="">Delivering_____</h4>
-                        </div>
-                        <div :class="b.bill_status >= 5 ? 'text-color' : ''">
-                            <h4 class="">Received</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div v-else class="container text-center">
-            <div>
-                <img src="../assets/images/notfound.jpg" alt="" />
-            </div>
-            <div class="">
-                <h2 style="color: #17a2b8;">You do not have any orders yet</h2>
+   <div class="my-order">
+        <div class="my-order-inner" v-for="b in filterBills.slice().reverse()" :key="b.bill_id">
+            <div class="row">
+                <h4 class="col-1 ml-4 pt-1 mb-0 text-center font-weight-bold" 
+                    style="background-color:rgba(0, 0, 0, 0.3); border-radius: 10px; color: Violet;">
+                    Mã đơn #{{ b.bill_id }} 
+                </h4>
+                <button v-if="b.bill_status==0 || b.bill_status==4" @click="hideBill(b.bill_id,b.bill_status)"
+                    class="col-1 btn ml-1" style="background-color:Orange; border-radius: 10px;"> Ẩn </button>
+                <button v-if="b.bill_status==1" @click="cancelBill(b.bill_id)"
+                    class="col-1 btn ml-1" style="background-color:Tomato; border-radius: 10px;"> Hủy </button>
+                <button v-if="b.bill_status==2" 
+                    class="col-1 btn ml-1" style="background-color:MediumSeaGreen; border-radius: 10px;"> Thanh Toán Cọc</button>
+                <button v-if="b.bill_status==3" 
+                    class="col-1 btn ml-1" style="background-color:SteelBlue; border-radius: 10px;"> Thanh Toán Đơn</button>
             </div>
             <br>
-            <router-link to="/product">
-                <button class="bg-info p-1 rounded-lg">Order Now</button>
-            </router-link>
-        </div>
+            <div class="row d-flex justify-content-around" > 
+                <div class="col-10 " style="border-radius: 20px; background-color: rgba(0, 0, 0, 0.3)">
+                    <div v-if="b.bill_status==0">
+                        <h4 class="pl-3 text-warning text-center">Đơn Hàng của bạn đã Hủy. Rất Xin Lỗi !!!</h4>
+                    </div>
+                    <div v-else class="row d-flex justify-content-around p-2">
+                        <div class="col text-center" :style="b.bill_status >= 1 ? { 'background-color': '#ffb3cc', 'border-start-start-radius': '10px', 'border-end-start-radius': '10px' } : ''">
+                            <h4 class="font-weight-bold">Đang Chờ Chấp Nhận</h4>
+                        </div>
+                        <div class="col text-center" :style="b.bill_status >= 2 ? { 'background-color': '#ffb3cc'} : ''">
+                            <h4 class="font-weight-bold">Đang Chờ Thanh Toán Cọc</h4>
+                        </div>
+                        <div class="col text-center" :style="b.bill_status >= 3 ? { 'background-color': '#ffb3cc'} : ''">
+                            <h4 class="font-weight-bold">Đang Chuẩn Bị Và Tiến Hành</h4>
+                        </div>
+                        <div class="col text-center" :style="b.bill_status >= 4 ? { 'background-color': '#ffb3cc', 'border-end-end-radius': '10px', 'border-start-end-radius': '10px' } : ''">
+                            <h4 class="font-weight-bold">Hoàn Thành Đơn Hàng</h4>
+                        </div>  
+                    </div>
+                </div>
+            </div>
 
-        <OrderDetails v-if="showOrderDetails" :bill="sendId">
-            <button class="btn" @click="closeView">X</button>
-        </OrderDetails>
+            <br>
+            
+            <div class="row">
+                <div class="col-8" style="border-radius: 20px; background-color: rgba(0, 0, 0, 0.3)">
+                    <ProductBill @send-price="handlePriceFromChild" :Bill="b.bill_id" ></ProductBill>
+
+                    <!-- <ProductOrder v-if="showProductOrder" :ID="sendId" >
+                        <button style="color: #c0c0c0; background-color: white;" @click="closeView()"><h5>Trở Về</h5></button>
+                    </ProductOrder>                     -->
+                </div>
+                <div class="col-4">
+                    
+                    <div class="container-datetime" style="background-color: rgba(0, 0, 0, 0.3); border-radius: 20px; padding: 5px;">
+                        <div class="date-mealset">
+                            <div class="row mt-2 m-1">
+                                <div class="col-8" style="background-color: #ffccdd; border-radius: 15px;">
+                                    <div class="row d-flex justify-content-around p-2">
+                                        <h5 class="font-weight-bold mt-1">Ngày tổ chức:</h5>
+                                        <input type="text" v-model="this.date" class="my-1"
+                                            style="background-color: #FFF0F5; font-weight: bold; text-align: center; border-radius: 15px;" >
+                                        <button @click="sendDate(b.bill_id,b.bill_status)" 
+                                            style="background-color: #ffb3cc; border-radius: 15px;" class="px-2 my-1">Lưu</button>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-center" style="background-color: #ffb3cc; border-radius: 15px;">
+                                    <button @click="showAddMealSetFunction()" style="background-color: #ffb3cc; padding-top: 5px;">Thêm Suất</button>
+                                </div>
+                            </div>
+
+                            <div v-if="this.showAddMealSet==true" class="row pt-2 align-items-center m-1" style="background-color: #ffb3cc; border-radius: 15px;">
+                                <div class="col-3 text-left">
+                                    <h6>Suất Mới: </h6>
+                                </div>
+                                <div class="col-3">
+                                    <input title="Số Khách" type="number" class="form-control" min="0" max="1000" 
+                                    v-model="this.tempGuest" style="border: none; text-align: center; background: #ffb3cc;">
+                                </div>
+                                <div class="col-3">
+                                    <input type="time" v-model="this.tempTime" style=" background: #ffb3cc;">
+                                </div>
+                                <div class="col-1 ">
+                                </div>
+                                <div class="col-1 ">
+                                    <button class="btn" @click="saveDateBtn(b.bill_id,b.bill_status)">
+                                        Lưu
+                                    </button>
+                                </div>
+                            </div>  
+                            
+
+                            <div v-for="(time, index) in this.selectedTime" :key="index">
+                                <div class="row align-items-center m-1 mt-3" style="background-color: #FFF0F5; border-radius: 15px; padding-top: 5px;">
+                                    <div class="col-3 text-left">
+                                        <h6>Suất thứ {{ index+1 }} : </h6>
+                                    </div>
+                                    <div class="col-3">
+                                        <input title="Số Khách" type="number" :id="'number-' + index" class="form-control " min="0" max="1000" 
+                                        v-model="this.selectedGuest[index]" style="border: none; text-align: center; background: #FFF0F5;">
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="time" :id="'time-' + index" v-model="this.selectedTime[index]" style=" background: #FFF0F5;">
+                                    </div>
+                                    <div class="col-1 ">
+                                        <button class="btn" @click="removeDateBtn(index,b.bill_id,b.bill_status)">
+                                            Xóa
+                                        </button>
+                                    </div>
+                                    <div class="col-1 ">
+                                        <button class="btn" @click="updateDateBtn(index,b.bill_id,b.bill_status)">
+                                            Lưu
+                                        </button>
+                                    </div>
+                                </div>   
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="container-info" style="background-color: rgba(0, 0, 0, 0.3); border-radius: 20px; padding: 10px;">
+                        <div class="row">
+                            <div class="col-10 pr-0">
+                                <textarea name="txtMsg" class="form-control text-center" placeholder="Những điều bạn yêu cầu hoặc lưu ý" 
+                                    style="width: 100%; height: 25px; border: none;  background: #FFF0F5; border-radius: 15px;" 
+                                    v-model="b.bill_address" >   
+                                </textarea>
+                            </div>
+                            <div class="col-2 pl-1">
+                                <button @click="saveAdd(b.bill_address,b.bill_id,b.bill_status)" style="height: 100%; width: 100%; border-radius: 15px; background-color: #ffccdd;">Lưu</button>
+                            </div>
+                        </div>
+                        
+                        <div class="row pt-3">
+                            <div class="col-10 pr-0">
+                                <input type="text" style="border-radius: 15px; background-color: #FFF0F5; text-align: center; height: 25px; width: 100%;" 
+                                    v-model="b.bill_phone" >
+                            </div>
+                            <div class="col-2 pl-1">
+                                <button @click="savePhone(b.bill_phone,b.bill_id,b.bill_status)" style="height: 100%; width: 100%; border-radius: 15px; background-color: #ffccdd;">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="container-info" style="background-color: rgba(0, 0, 0, 0.3); border-radius: 20px; padding: 10px;">
+                        <div class="row mr-1">
+                            <div class="col-8 pr-1">
+                                <textarea name="txtMsg" class="form-control text-center" placeholder="Những điều bạn yêu cầu hoặc lưu ý" 
+                                    style="width: 100%; height: 25px; border: none;  background: #ffccdd; border-radius: 15px;" 
+                                    v-model="b.bill_notes" >   
+                                </textarea>
+                            </div>
+                            <div class="col-4 pl-1 pt-1" style="border-radius: 15px; background-color: #ffccdd; text-align: center; height: 25px;">
+                                   {{b.bill_when}}
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <br>
+                    <div class="container-info" style="background-color: rgba(0, 0, 0, 0.3); border-radius: 20px; padding: 10px;">
+                        <div class="mx-1" style="background: #FFF0F5; border-radius: 15px;">
+                            <div class="row mx-1 p-3 d-flex justify-content-between">
+                                <h5 class="">Số lượng Bàn tiệc (Mâm): </h5>
+                                <h5>{{ this.tableNum }} bàn</h5>
+                            </div>
+                            <div class="row mx-1 p-3 d-flex justify-content-between">
+                                <h5 class="">Giá cả mỗi Bàn tiệc (Mâm): </h5>
+                                <h5>{{ formatCurrency(this.priceOfTable) }}</h5>
+                            </div>
+                            
+                        </div>
+                        <div class="row pt-3 mx-1">
+                            <div class="col-12" style="width: 100%; height: 25px; border: none;  background: #ffccdd; border-radius: 15px;">
+                                <h4 class="text-center font-weight-bold pt-1">{{ formatCurrency(b.bill_total) }}</h4>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
     </div>
 
 </template>
 
 
 <script>
-import OrderDetails from "@/components/OrderDetails.vue";
+import ProductBill from "../components/ProductBill.vue"
 import axios from "axios";
 import { mapState } from "vuex";
 export default {
@@ -84,7 +192,14 @@ export default {
         return {
             avaiableStatus: ["cancel", "confirmed", "preparing", "checking", "delivering", "delivered"],
             allBills: [],
-
+            selectedTime: [],
+            selectedGuest: [],
+            date: [],
+            showAddMealSet : false,
+            tempGuest: '',
+            tempTime: '',
+            tableNum: '',
+            priceOfTable:'',
             showOrderDetails: false,
             sendId: null,
 
@@ -93,10 +208,11 @@ export default {
     },
 
     created() {
-        this.getAllBills();
+        
     },
 
     mounted: function () {
+        this.getAllBills();
         this.autoUpdate();
     },
 
@@ -108,15 +224,36 @@ export default {
         ...mapState(["allProducts", "user"]),
 
         filterBills: function () {
-            return this.allBills.filter((b) => b.bill_status <= 6 && b.bill_status >= 0);
+            return this.allBills.filter((b) => b.bill_status <= 4 && b.bill_status >= 0);
         },
     },
 
     methods: {
         async getAllBills() {
             if (this.user) {
-                this.allBills = (await axios.get('/billstatus/user/' + this.user.user_id)).data;
+                let bills = (await axios.get('/billstatus/user/' + this.user.user_id)).data;
+                this.allBills = bills;
+                for (const bill of bills) {
+                    this.getMeatSet(bill.date_id);
+                }
             }
+        },
+
+        formatCurrency(amount) {
+          if (!amount) return '';
+          return parseFloat(amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        },
+
+        formatDate(inputDate) {
+            let parts = inputDate.split('-');
+            let month = parts[0];
+            let day = parts[1];
+            let year = parts[2];
+            
+            // Chuyển đổi thành chuỗi với định dạng mong muốn
+            let formattedDate = day + '/' + month + '/' + year;
+            
+            return formattedDate;
         },
 
         sendBillId: function (id) {
@@ -128,30 +265,302 @@ export default {
             this.showOrderDetails = !this.showOrderDetails;
         },
 
+        showAddMealSetFunction() {
+            this.showAddMealSet = !this.showAddMealSet;
+        },
+
         autoUpdate: function () {
             this.interval = setInterval(function () {
                 this.getAllBills();
             }.bind(this), 1000);
-        }
+        },
+
+        handlePriceFromChild(price) {
+            // Bắt sự kiện từ component con và cập nhật giá trị trong component cha
+            this.priceOfTable = price;
+        },
+
+
+        async getMeatSet(date_id) {
+            let table = 0;
+            if (date_id) {
+                try {
+                    let response = await axios.get(`/datedetails/${date_id}`);
+                    let data = response.data;
+                    this.date = this.formatDate(data[0].date_date);
+                    
+                    if (Array.isArray(data) && data.length > 0) {
+                        // Khởi tạo các mảng để lưu trữ dữ liệu từ mỗi phần tử
+                        let selectedTimes = [];
+                        let selectedGuests = [];
+                        // Lặp qua mỗi phần tử trong mảng data
+                        data.forEach(item => {
+                            selectedTimes.push(item.dd_time);
+                            selectedGuests.push(item.dd_guest);
+                            table+=item.dd_guest;
+                        });
+                        // Gán giá trị của các mảng cho selectedTime và selectedGuest
+                        this.selectedTime = selectedTimes;
+                        this.selectedGuest = selectedGuests;
+                    } else {
+                        this.selectedTime = []; 
+                        this.selectedGuest = []; 
+                    }
+                    this.tableNum = table/10;
+                } catch (error) {
+                    console.error('Lỗi khi lấy dữ liệu từ API:', error);
+                }
+                
+            }
+        },
+        
+        async hideBill(id,bill_status) {
+            if (bill_status==4) {
+                await axios.put('/billstatus/' + id);
+                this.getAllBills();
+            } else if (bill_status==0) {
+                await axios.put('billstatus/statuscancel/' + id);
+                this.getAllBills();
+            } 
+        },
+
+        async cancelBill(id) {
+            await axios.put('/billstatus/cancel/' + id);
+            this.getAllBills();
+        },
+
+
+        async sendDate(bill_id,status){
+            if (status>=2 && status<=3) {
+                let confirmResult = window.confirm(`Thay đổi Ngày tổ chức? Thời gian:`+this.date+`. Yêu cầu sẽ được gửi cho cửa hàng!` );
+                if (confirmResult) {
+                    let data1 = {
+                        email: '',
+                        title:`Đơn hàng #${bill_id} được yêu cầu cập nhật!`,
+                        content: `Nội dung: Thay đổi Ngày tổ chức thành ${this.date}.`,
+                        auth: `Khách hàng `+this.user.user_name+`.`,
+                    }
+                    try {
+                        axios.post(`/sendemail/request`,data1);
+                    } catch (error) {
+                        console.error("Error Send email request:", error);
+                    }
+                }
+            } else if (status==1) {window.confirm(`Bạn Chưa Thể Thay Đổi Thông Tin` );}
+            else window.confirm(`Bạn Không Thể Thay Đổi Thông Tin` );
+        },
+
+        async saveDateBtn(bill_id,status) {
+            if (status>=2 && status<=3) {
+                let confirmResult = window.confirm(`Thêm Suất? Thời gian:`+this.tempTime+` và Khách: `+this.tempGuest+` Yêu cầu sẽ được gửi cho cửa hàng!` );
+                if (confirmResult) {
+                    let data1 = {
+                        email: '',
+                        title:`Đơn hàng #${bill_id} được yêu cầu cập nhật!`,
+                        content: `Nội dung: Thêm Suất đãi khách, thời gian là ${this.tempTime} và số lượng khách ${this.tempGuest}.`,
+                        auth: `Khách hàng `+this.user.user_name+`.`,
+                    }
+                    try {
+                        axios.post(`/sendemail/request`,data1);
+                    } catch (error) {
+                        console.error("Error Send email request:", error);
+                    }
+                    this.tempTime = '';
+                    this.tempGuest = '';
+                    this.showAddMealSet = false;
+                }
+            } else if (status==1) {window.confirm(`Bạn Chưa Thể Thay Đổi Thông Tin` );}
+            else window.confirm(`Bạn Không Thể Thay Đổi Thông Tin` );
+        },
+
+        removeDateBtn(index,bill_id,status) {
+            if (status>=2 && status<=3) {
+                let temp = index + 1 ;
+                let confirmResult = window.confirm(`Hủy Suất thứ ` + temp +`? Yêu cầu sẽ được gửi cho cửa hàng!` );
+                if (confirmResult) {
+                    let data1 = {
+                        email: '',
+                        title:`Đơn hàng #${bill_id} được yêu cầu cập nhật!`,
+                        content: `Nội dung: Xóa Suất đãi khách thứ ${parseInt(index + 1)}.`,
+                        auth: `Khách hàng `+this.user.user_name+`.`,
+                    }
+                    try {
+                        axios.post(`/sendemail/request`,data1);
+                    } catch (error) {
+                        console.error("Error Send email request:", error);
+                    }        
+                }
+            } else if (status==1) {window.confirm(`Bạn Chưa Thể Thay Đổi Thông Tin` );}
+            else window.confirm(`Bạn Không Thể Thay Đổi Thông Tin` );
+        },
+
+        updateDateBtn(index,bill_id,status) {
+            if (status>=2 && status<=3) {
+                let temp = index + 1 ;
+                let confirmResult = window.confirm(`Hủy Suất thứ ` + temp +`? Yêu cầu sẽ được gửi cho cửa hàng!` );
+                if (confirmResult) {
+                    let data = {
+                        dd_time: this.selectedTime[index],
+                        dd_guest: this.selectedGuest[index],
+                    };
+                    let data1 = {
+                        email: '',
+                        title:`Đơn hàng #${bill_id} được yêu cầu cập nhật!`,
+                        content: `Nội dung: Cập nhật Suất đãi khách thứ ${parseInt(index + 1)} thành ${data.dd_time} với số lượng khách ${data.dd_guest}.`,
+                        auth: `Khách hàng `+this.user.user_name+`.`,
+                    }
+                    try {
+                        axios.post(`/sendemail/request`,data1);
+                    } catch (error) {
+                        console.error("Error Send email request:", error);
+                    }
+                }
+            } else if (status==1) {window.confirm(`Bạn Chưa Thể Thay Đổi Thông Tin` );}
+            else window.confirm(`Bạn Không Thể Thay Đổi Thông Tin` );
+        },
+
+        saveAdd(address,bill_id,status){
+            if (status>=2 && status<=3) {
+                let confirmResult = window.confirm(`Thay đổi địa chỉ thành ` + address +`? Yêu cầu sẽ được gửi cho cửa hàng!` );
+                if (confirmResult) {
+                    let data1 = {
+                        email: '',
+                        title:`Đơn hàng #${bill_id} được yêu cầu cập nhật!`,
+                        content: `Nội dung: Cập nhật Địa chỉ khách hàng thành ${address}.`,
+                        auth: `Khách hàng `+this.user.user_name+`.`,
+                    }
+                    try {
+                        axios.post(`/sendemail/request`,data1);
+                    } catch (error) {
+                        console.error("Error Send email request:", error);
+                    }
+                }
+            } else if (status==1) {window.confirm(`Bạn Chưa Thể Thay Đổi Thông Tin` );}
+            else window.confirm(`Bạn Không Thể Thay Đổi Thông Tin` );
+        },
+
+        savePhone(phone,bill_id,status){
+            if (status>=2 && status<=3) {
+                let confirmResult = window.confirm(`Thay đổi Số điện thoại thành ` + phone +`? Yêu cầu sẽ được gửi cho cửa hàng!` );
+                if (confirmResult) {
+                    let data1 = {
+                        email: '',
+                        title:`Đơn hàng #${bill_id} được yêu cầu cập nhật!`,
+                        content: `Nội dung: Cập nhật Số điện thoại khách hàng thành ${phone}.`,
+                        auth: `Khách hàng `+this.user.user_name+`.`,
+                    }
+                    try {
+                        axios.post(`/sendemail/request`,data1);
+                    } catch (error) {
+                        console.error("Error Send email request:", error);
+                    }
+                }
+            } else if (status==1) {window.confirm(`Bạn Chưa Thể Thay Đổi Thông Tin` );}
+            else window.confirm(`Bạn Không Thể Thay Đổi Thông Tin` );
+        },
+
+
+
+
     },
-    components: { OrderDetails }
+    components: { ProductBill }
 }
 </script>
-<style>
-.text-color{
+
+<style scoped>
+.my-order{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 3%;
+    padding-bottom: 5%;
+}
+
+.my-order .my-order-inner {
+    width: 80%;
+    height: 80%;
+    background-color: #990099; 
+    opacity: 0.8;
+    padding: 32px;
+    border: none; /* Clear border */
+    border-radius: 20px;
+}
+
+.my-order .my-order-inner h2 {
+    margin: 0;
+    font-size: 32px;
+    color: #ef87aa;
+    margin-bottom: 20px;
+}
+
+.my-order .my-order-inner .product-detail .image img {
+    height: 8rem;
+    width: 8rem;
+    margin: 20px;
+}
+
+.my-order .my-order-inner .product-detail .content {
+    margin-top: 20px;
+    font-size: 12px;
+    width: 100%;
+}
+
+.my-order .my-order-inner .product-detail .content p:first-of-type {
+    font-size: 16px;
     color: #ef87aa;
 }
 
-.btnDetails
-{
-    width: 20%;
-    border-radius: 1rem;
-    padding: 1%;
-    color: #000000;
-    font-weight: bold;
-    background-color: #FFF0F5;
-    border: none;
-    cursor: pointer;
+.my-order .my-order-inner .product-detail .content p span {
+    font-size: 14px;
+    color: black;
+}
+
+.my-order .my-order-inner .price {
+    margin-top: 30px;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .my-order .my-order-inner {
+        width: 80vw;
+        height: 60vh;
+    }
+
+    .my-order .my-order-inner h2 {
+        font-size: 20px;
+    }
+
+    .my-order .my-order-inner .product-detail .content .desc,
+    .my-order .my-order-inner .product-detail .content .name span {
+        font-size: 12px !important;
+    }
+
+    .my-order .my-order-inner .product-detail .content .name {
+        font-size: 14px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .my-order .my-order-inner {
+        width: 90vw;
+        height: 65vh;
+    }
+
+    .my-order .my-order-inner div:first-of-type {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 376px) {
+    .my-order .my-order-inner {
+        width: 90vw;
+        height: 65vh;
+        padding: 5px !important;
+    }
+
+    .my-order .my-order-inner .product-detail .content .name {
+        font-size: 12px !important;
+    }
 }
 
 </style>

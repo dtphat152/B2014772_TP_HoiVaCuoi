@@ -67,6 +67,19 @@ export const getAll = (result) => {
 };
 
 
+export const updateTotal = (data,id,result) => {
+    db.query("UPDATE billstatus SET bill_total = ? WHERE bill_id = ?",[data.bill_total, id], (err,results)=> {
+        if (err){
+            console.error("Error updating bill total:", err);
+            result(err,null);
+        }else{
+            console.log("Successfully updated bill total:", results);
+            result(null,results);
+        }
+    });
+};
+
+
 export const updateStatus = (id,result) => {
     db.query("UPDATE billstatus SET bill_status = bill_status + 1  WHERE bill_id = ?",id, (err,results)=> {
         if (err){
@@ -78,8 +91,19 @@ export const updateStatus = (id,result) => {
     });
 };
 
-export const updatePaid = (id,result) => {
-    db.query("UPDATE billstatus SET bill_paid = 'true' WHERE bill_id = ?",id, (err,results)=> {
+export const updateStatusCancelModel = (id,result) => {
+    db.query("UPDATE billstatus SET bill_status = bill_status - 1  WHERE bill_id = ?",id, (err,results)=> {
+        if (err){
+            console.log(err);
+            result(err,null);
+        }else{
+            result(null,results);
+        }
+    });
+};
+
+export const updateNotes = (data,result) => {
+    db.query("UPDATE billstatus SET bill_notes = ? WHERE bill_id = ?",[data.bill_notes, data.bill_id], (err,results)=> {
         if (err){
             console.log(err);
             result(err,null);
@@ -96,12 +120,6 @@ export const cancelStatus = (id,result) => {
             result(err,null);
         }else{
             result(null,results);
-        }
-    });
-    db.query("UPDATE billstatus SET bill_paid = 'false' WHERE bill_id = ?",id, (err,results)=> {
-        if (err){
-            console.log(err);
-            result(err,null);
         }
     });
 };

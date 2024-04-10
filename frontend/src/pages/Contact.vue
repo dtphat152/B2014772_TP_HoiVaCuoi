@@ -1,10 +1,11 @@
 <template>
+    <div class="">
     <div class="container contact-form" style="width: 1000px;">
             <div class="container" style="height: 100px;">
                
             </div>
             <form method="post">
-                <h3 style="background-color: #FFF0F5;">Drop Us a Message</h3>
+                <h3 >Drop Us a Message</h3>
                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -27,7 +28,8 @@
                     </div>
                 </div>
             </form>
-</div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -38,9 +40,7 @@
 
 <style>
 
-
 .contact-form{
-    background: #fff;
     margin-top: 10%;
     margin-bottom: 5%;
     width: 90%;

@@ -1,6 +1,7 @@
 <template>
     <div id="app">
         <div v-if="admin">
+            <Sidebar />
             <router-view></router-view>
         </div>
         <div v-else>
@@ -17,6 +18,7 @@
 </template>
 
 <script>
+import Sidebar from './admin/component/Sidebar.vue';
 import NavBar from './components/NavBar.vue';
 import FooterComponent from './components/FooterComponent.vue';
 import { mapActions } from 'vuex';
@@ -24,6 +26,7 @@ import { mapState } from 'vuex';
 export default {
     name: 'App',
     components: {
+        Sidebar,
         NavBar,
         FooterComponent
     },

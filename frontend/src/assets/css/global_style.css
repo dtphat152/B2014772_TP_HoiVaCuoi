@@ -1,8 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Satisfy&display=swap");
 
+
 * {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Roboto Condensed', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -10,15 +11,24 @@
     border: none;
     text-decoration: none;
     text-transform: capitalize;
-    transition: .2s linear;
+    /* transition: fade-in;  */
+    animation: fadeIn 0.3s ease-in;
 }
+
+body {
+    background-image: url('D:\Luan_Van\TP_HoiVaCuoi\frontend\src\assets\images\bg.jpg');
+    background-size: cover; /* Đảm bảo hình ảnh được điều chỉnh kích thước để phù hợp với toàn bộ cửa sổ trình duyệt */
+    background-repeat: no-repeat; /* Ngăn chặn lặp lại hình ảnh nền */
+    background-attachment: fixed;
+  }
+
 
 a {
     text-decoration: none !important;
 }
 
 html {
-    font-size: 62.5%;
+    font-size: 65%;
     overflow-x: hidden;
     scroll-behavior: smooth;
     scroll-padding-top: 8.5rem;
@@ -29,11 +39,12 @@ html::-webkit-scrollbar {
 }
 
 html::-webkit-scrollbar-track {
-    background: #fff;
+    background: #250826;
 }
 
 html::-webkit-scrollbar-thumb {
-    background: #ef87aa;
+    background: #b300b3;
+    opacity: 0.5;
     border-radius: 4rem;
 }
 
@@ -48,21 +59,20 @@ html::-webkit-scrollbar-thumb {
     color: #FF66CC;
 }
 
-.heading h3 {
-    font-size: 3rem;
-    color: #130f40;
-}
-
-
 .btn:hover {
     background-color: #e2a1c8;
     color: #fff;
 }
 
-.btn:disabled {
-    background-color: #130f40 !important;
-    color: #fff;
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
+
 
 @media (max-width: 768px) {
     html {
