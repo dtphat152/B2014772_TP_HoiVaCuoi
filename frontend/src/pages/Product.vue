@@ -1,24 +1,23 @@
 <template>
     <vue-basic-alert :duration="300" :closeIn="2000" ref="alert" />
     <div class="py-4" style="background-color: #660066; opacity: 1; width: 100%; border-radius: 15px; z-index: 90; 
-        position: fixed; top: 91.9px;"> 
+        position: fixed; top: 77px;"> 
         <div class="row d-flex">
             <div class="col-10 offset-1 btn-group btn-group-lg pl-4">
-                    <button type="button" class="btn btnheadingmennu mx-1 " 
-                    :style="{color: timecolor}" style="border-radius: 10px; padding: 5px;" value="time" @click="filterProductBtn($event)">Thời Gian</button>
-                    <button type="button" class="btn btnheadingmennu mx-1 " 
-                    style="border-radius: 10px; padding: 5px;" value="combo" @click="filterProductBtn($event)">Combo</button>
-                    <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="all" @click="filterProductBtn($event)">Tất Cả</button>
-                    <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Khai Vị" @click="filterProductBtn($event)">Khai Vị</button>
-                    <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Món Chính" @click="filterProductBtn($event)">Món Chính</button>
-                    <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Tráng Miệng" @click="filterProductBtn($event)">Tráng Miệng</button>
-                    <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Rạp Che" @click="filterProductBtn($event)">Rạp Che</button>
-                    <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Sảnh Tiệc" @click="filterProductBtn($event)">Sảnh Tiệc</button>
-                    <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Sân Khấu" @click="filterProductBtn($event)">Sân Khấu</button>
-                    <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Gia Tiên" @click="filterProductBtn($event)">Gia Tiên</button>
-                    <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Mâm Quả" @click="filterProductBtn($event)">Mâm Quả</button>
-                    <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Xe Hoa" @click="filterProductBtn($event)">Xe Hoa</button>
-                </div>
+                <button type="button" class="btn btnheadingmennu mx-1 " 
+                :style="{color: timecolor}" style="border-radius: 10px; padding: 5px;" value="time" @click="filterProductBtn($event)">Thời Gian</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="combo" @click="filterProductBtn($event)">Combo</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="all" @click="filterProductBtn($event)">Tất Cả</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Khai Vị" @click="filterProductBtn($event)">Khai Vị</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Món Chính" @click="filterProductBtn($event)">Món Chính</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Tráng Miệng" @click="filterProductBtn($event)">Tráng Miệng</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Rạp Che" @click="filterProductBtn($event)">Rạp Che</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Sảnh Tiệc" @click="filterProductBtn($event)">Sảnh Tiệc</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Sân Khấu" @click="filterProductBtn($event)">Sân Khấu</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Gia Tiên" @click="filterProductBtn($event)">Gia Tiên</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Mâm Quả" @click="filterProductBtn($event)">Mâm Quả</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Xe Hoa" @click="filterProductBtn($event)">Xe Hoa</button>
+            </div>
         </div>     
     </div>
     
@@ -54,7 +53,7 @@
     </div>
     
     <div v-if="this.productObj.category != 'time' && this.productObj.category != 'combo'" >
-        <div class="sticky-top" style="top: 160px; z-index: 90; background-color: none; padding-top: 10px; padding-bottom: 10px; ">
+        <div class="sticky-top" style="top: 140px; z-index: 90; background-color: none; padding-top: 10px; padding-bottom: 10px; ">
             
             <div class="row d-flex justify-content-center">
                 
@@ -125,7 +124,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            
+
                         </div>
                         
 

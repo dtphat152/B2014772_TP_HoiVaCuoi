@@ -10,10 +10,19 @@
                     class="col-1 btn ml-1" style="background-color:Orange; border-radius: 10px;"> Ẩn </button>
                 <button v-if="b.bill_status==1" @click="cancelBill(b.bill_id)"
                     class="col-1 btn ml-1" style="background-color:Tomato; border-radius: 10px;"> Hủy </button>
-                <button v-if="b.bill_status==2" 
+                <button v-if="b.bill_status==2"  @click="showPaymentBTN()" 
                     class="col-1 btn ml-1" style="background-color:MediumSeaGreen; border-radius: 10px;"> Thanh Toán Cọc</button>
-                <button v-if="b.bill_status==3" 
+                    <button v-if="showPayment && b.bill_status==2" @click="sendMomo(b.bill_id,b.bill_total)"
+                    class="col-1 btn ml-1 font-weight-bold" style="background-color:rgba(0, 0, 0, 0.3); border-radius: 10px; color: Violet;">MOMO</button>
+                    <button v-if="showPayment && b.bill_status==2" @click="sendVnPay(b.bill_status,b.bill_id,b.bill_total)"
+                    class="col-1 btn ml-1 font-weight-bold" style="background-color:rgba(0, 0, 0, 0.3); border-radius: 10px; color: Violet;">VN PAY</button>
+
+                <button v-if="b.bill_status==3" @click="showPaymentBTN()"
                     class="col-1 btn ml-1" style="background-color:SteelBlue; border-radius: 10px;"> Thanh Toán Đơn</button>
+                    <button v-if="showPayment && b.bill_status==3" @click="sendMomo(b.bill_id,b.bill_total)"
+                    class="col-1 btn ml-1 font-weight-bold" style="background-color:rgba(0, 0, 0, 0.3); border-radius: 10px; color: Violet;">MOMO</button>
+                    <button v-if="showPayment && b.bill_status==3" @click="sendVnPay(b.bill_status,b.bill_id,b.bill_total)"
+                    class="col-1 btn ml-1 font-weight-bold" style="background-color:rgba(0, 0, 0, 0.3); border-radius: 10px; color: Violet;">VN PAY</button>
             </div>
             <br>
             <div class="row d-flex justify-content-around" > 
@@ -66,7 +75,7 @@
                                     <button @click="showAddMealSetFunction()" style="background-color: #ffb3cc; padding-top: 5px;">Thêm Suất</button>
                                 </div>
                             </div>
-
+                            
                             <div v-if="this.showAddMealSet==true" class="row pt-2 align-items-center m-1" style="background-color: #ffb3cc; border-radius: 15px;">
                                 <div class="col-3 text-left">
                                     <h6>Suất Mới: </h6>
@@ -86,7 +95,6 @@
                                     </button>
                                 </div>
                             </div>  
-                            
 
                             <div v-for="(time, index) in this.selectedTime" :key="index">
                                 <div class="row align-items-center m-1 mt-3" style="background-color: #FFF0F5; border-radius: 15px; padding-top: 5px;">
@@ -172,6 +180,21 @@
                             </div>
                         </div>
                     </div>
+                    <br>
+                    <div class="container-info" style="background-color: rgba(0, 0, 0, 0.3); border-radius: 20px; padding: 10px;">
+                        <div class="mx-1" style="background: #FFF0F5; border-radius: 15px;">
+                            <div class="row mx-1 p-3 d-flex justify-content-between font-weight-bold" 
+                                :style="b.bill_status >= 3 ? { 'color': 'MediumSeaGreen'} : '' ">
+                                <h5 class="">Tiền Cọc: </h5>
+                                <h5>{{ formatCurrency(b.bill_total/10) }}</h5>
+                            </div>
+                            <div class="row mx-1 p-3 d-flex justify-content-between font-weight-bold" 
+                                :style="b.bill_status >= 4 ? { 'color': 'MediumSeaGreen'} : '' ">
+                                <h5 class="">Còn Lại: </h5>
+                                <h5>{{ formatCurrency(b.bill_total*9/10) }}</h5>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -202,7 +225,7 @@ export default {
             priceOfTable:'',
             showOrderDetails: false,
             sendId: null,
-
+            showPayment: false,
             interval: "",
         }
     },
@@ -269,6 +292,10 @@ export default {
             this.showAddMealSet = !this.showAddMealSet;
         },
 
+        showPaymentBTN() {
+            this.showPayment = !this.showPayment;
+        },
+
         autoUpdate: function () {
             this.interval = setInterval(function () {
                 this.getAllBills();
@@ -280,6 +307,44 @@ export default {
             this.priceOfTable = price;
         },
 
+        async sendMomo( bill_id, bill_total) {
+            try {
+                let tien = parseInt(bill_total) / 10;
+                let data = {
+                    bill_id: bill_id,
+                    bill_total: tien
+                };
+                console.log("check:");
+                const response = await axios.post(`/payment-online`, data);
+                const redirectUrl = response.data.redirectUrl;
+                console.log('Redirect URL:', redirectUrl);
+                window.open(redirectUrl, '_blank');
+            } catch (error) {
+                console.error("Error in send Momo", error);
+            }
+        },
+        
+        async sendVnPay(bill_status,bill_id,bill_total) {
+            try {
+                let tien = parseInt(bill_total)*9/10;
+                let type = 'Thanh Toán Kết Sổ'
+                if (bill_status==2) {
+                    tien = parseInt(bill_total) / 10;
+                    type = 'Thanh Toán Cọc'
+                }        
+                let data = {
+                    bill_id: bill_id,
+                    amount: tien,
+                    bill_type: type
+                };
+                const response = await axios.post(`/create_payment_vnpay`, data);
+                const redirectUrl = response.data.redirectUrl;
+                console.log('Redirect URL:', redirectUrl);
+                window.open(redirectUrl, '_blank');
+            } catch (error) {
+                console.error('Error in send VN Pay: ', error);
+            }
+        },
 
         async getMeatSet(date_id) {
             let table = 0;

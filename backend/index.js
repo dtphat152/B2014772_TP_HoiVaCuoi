@@ -1,4 +1,3 @@
-
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -6,22 +5,29 @@ import router from "./routes/routes.js";
 
 const app = express();
 
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
-app.use(cors({
-  origin: 'http://localhost:8080', 
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-  optionsSuccessStatus: 204,
-}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.options('*', cors());
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
+const corsOptions ={
+  origin: '*', 
+  credentials: true,  
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
+  optionSuccessStatus: 200,
+  // Tắt CORS preflight request cho các yêu cầu đến 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'
+  preflightContinue: false
+}
+
+app.use(cors(corsOptions));
 
 app.use(router);
-
 
 const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
-

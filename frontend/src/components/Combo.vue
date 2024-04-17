@@ -1,17 +1,17 @@
 <template>
   <vue-basic-alert :duration="300" :closeIn="4000" ref="alert" />
-  <div class="container-combo" style="margin-top: 150px; margin-left: 10%; width: 80%; " >
+  <div class="container-combo" style="margin-top: 150px; margin-left: 20%; width: 60%; " >
     <div class="row" >
       <div class="col-1 d-flex align-items-center justify-content-center">
         <button @click="prevCombo" style="background: none; border: none; ">
           <span class="carousel-control-prev-icon" style="background-color: #b300b3; padding: 25px; border-radius: 15px;"></span>
         </button> 
       </div>
-      <div class="col-10" style="background-color: #990099; border-radius: 100px; opacity: 0.8;">
+      <div class="col-10" style="background-color: #990099; border-radius: 100px; opacity: 0.8; width: 80%;">
         <br>
         <div class="row align-content-center">
           <div class="col-12">
-            <div class="container zoom-light" style="border-radius: 100px; background-color: #b300b3;">
+            <div class="container zoom-light" style="border-radius: 100px; background-color: #b300b3; width: 60%;">
               <!-- Phần tử đầu tiên -->
               <br>
               <div class="row justify-content-center mb-5">
@@ -45,32 +45,39 @@
               <br>
             </div>
             <br>
-            <div class="row justify-content-center">
-              <div class="col-4  offset-1" >
-                <div class="row" v-for="(f, index) in sortedComboDetails" :key="index" >
-                  <div class="col text-right">
-                    <h5 style="color: white; font-weight: bold;">{{ f.product_name }} : {{ f.product_category }}</h5>
-                  </div>
-                </div>
-              </div>
             
-              <div class="col-3">
-                <div class="row">
-                  <h5 style="color: white; font-weight: bold;">{{ currentComboDesc() }}</h5>
-                </div>
+            <div class="row d-flex justify-content-center" v-for="(f, index) in sortedComboDetails" :key="index" >
+              <div class="col text-right">
+                <h4 style="color: white; font-weight: bold;"> {{ f.product_category }} : </h4>
               </div>
-              <div class="col-2"></div>
-            </div>
-            <div class="row justify-content-center">
-              <h3 style="color: white; font-weight: bold;"> Giá: {{ formatCurrency(currentComboPrice()) }}</h3>
-            </div>
-            <div class="row justify-content-center">
-              <button @click="addToCart()" type="button" class="btn btn-lg font-weight-bold" 
-                style="background-color: #FFC0CB; color: black; border-radius: 10px;">
-                Add Combo
-              </button>
+              <div class="col text-center ">
+                <h4 style="color: white; font-weight: bold;">: {{ f.product_name }} : </h4>
+              </div>
+              <div class="col text-left">
+                <h4 style="color: white; font-weight: bold;">: {{ formatCurrency(f.product_price) }}</h4>
+              </div>
             </div>
             <br>
+            <hr>
+            <div>
+              <div class="row d-flex justify-content-center"> 
+                <div class="col-8 text-center ">
+                  <h4 style="color: white; font-weight: bold;">{{ currentComboDesc() }}</h4>
+                </div>
+              </div> 
+              <br>
+              <div class="row justify-content-center">
+                <h3 style="color: white; font-weight: bold;"> Giá: {{ formatCurrency(currentComboPrice()) }}</h3>
+              </div>
+              <div class="row justify-content-center">
+                <button @click="addToCart()" type="button" class="btn btn-lg font-weight-bold" 
+                  style="background-color: #FFC0CB; color: black; border-radius: 10px;">
+                  Add Combo
+                </button>
+              </div>
+              <br>
+            </div>
+
           </div>
         </div>
       </div>

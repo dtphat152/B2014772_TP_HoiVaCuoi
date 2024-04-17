@@ -1,6 +1,6 @@
 <template>
-    <div class="container_order" style="width: 100%; padding-left: 260px; padding-right: 10px;">
-        <div class="mt-5">
+    <div class="container_order" >
+        <div class="p-5" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1;">
             <h1>Orders</h1>
             <h3 style="padding: 10px; background-color:#ffe6ea; border-radius: 15px;">
                 <span :class="{ 'text-danger pr-5': orderCounts[1] }">
@@ -18,73 +18,75 @@
                 
             </h3>
         </div>
-
-        <div class="m-5">
+        <br>
+        <div class="p-5" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1; height: 740px;">
             <!-- PROJECT TABLE -->
-            
-            <div v-for="(b) in filterBills.slice().reverse()" :key="b.bill_id" >
-                <div class="row" :style="{ 'background-color': b.bill_status === 4 ? '#FFFAFA' : b.bill_status === 1 ? '#FFC0CB' : '#FFF0F5', 
-                    'height': 'auto', 'margin-top': '5px', 'border-radius' : '15px' }">
-                    <div class="col-1 d-flex align-items-center justify-content-center"
-                        :style="{ 'color': b.bill_status === 4 ? '#00FF00' : b.bill_status === 1 ? '#FF0000' : ''}">
-                        <h5 style="font-weight: bold;">{{ avaiableStatus[b.bill_status] }}</h5>
-                    </div>
-                    <div class="col-10 pt-3">
-                        <div class="row">
-                            <div class="col-1 text-right">
-                                <button class="btn">
-                                    <h5>#{{ b.bill_id }}</h5>
+            <div style="overflow-y: auto; height: 700px;">
+                <div style="width: 95%; margin-left: 2%;">
+                    <div v-for="(b) in filterBills.slice().reverse()" :key="b.bill_id" >
+                        <div class="row" :style="{ 'background-color': b.bill_status === 4 ? '#990099' : b.bill_status === 1 ? '#ff00ff' : '#cc00cc', 
+                            'height': 'auto', 'margin-top': '5px', 'border-radius' : '15px' }">
+                            <div class="col-1 d-flex align-items-center justify-content-center"
+                                :style="{ 'color': b.bill_status === 4 ? '#00FF00' : b.bill_status === 1 ? '#FF0000' : ''}">
+                                <h5 style="font-weight: bold;">{{ avaiableStatus[b.bill_status] }}</h5>
+                            </div>
+                            <div class="col-10 pt-3">
+                                <div class="row">
+                                    <div class="col-1 text-right">
+                                        <button class="btn">
+                                            <h5 style="font-weight: bold;">#{{ b.bill_id }}</h5>
+                                        </button>
+                                    </div>
+                                    <div class="col-3">
+                                        <button class="btn pl-0">
+                                            <h5 style="font-weight: bold;">{{ b.userName }}</h5>
+                                        </button>
+                                    </div>
+                                    <div class="col-8 text-right">
+                                        <h6 style="font-weight: bold;">{{ b.bill_when }}</h6>
+                                    </div>
+                                </div>
+                                <div class="row py-1">
+                                    <div class="col-1 offset-1">
+                                        <h6 style="font-weight: bold;">{{ b.bill_phone }}</h6>
+                                    </div>
+                                    <div class="col-2">
+                                        <h6 style="font-weight: bold;"> {{ b.userDate }}</h6>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6 style="font-weight: bold;">{{ b.bill_address }}</h6>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <button @click="sendBillId(b.bill_id,b.user_id,b.date_id)" class="btn px-0 mx-0" style="color: darkcyan;">xem chi tiết...</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1 px-0">
+                                <button v-if="b.bill_status < 4 " class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id)" 
+                                    style="height: 50%;width: 70%; background-color: #40bf77; border-radius: 15px; margin-top: 15%; color: white;">
+                                    {{ avaiableStatus[b.bill_status + 1] }}
+                                </button>
+
+                                <button v-if="b.bill_status >= 1 && b.bill_status <=3" class="p-2 " 
+                                    @click="cancelBtn(b.bill_id,b.user_id)" 
+                                    style="height: 50%;width: 30%;  border-radius: 15px; background-color: #DC143C; color: white;">
+                                    Hủy
+                                </button>
+
+                                <button v-if="b.bill_status == 4 " class="btn p-2 ml-1" style="height: 100%; width: 100%; background-color: none; border-start-end-radius: 15px; border-end-end-radius: 15px; color: white;">
+                                    Ẩn
                                 </button>
                             </div>
-                            <div class="col-3">
-                                <button class="btn pl-0">
-                                    <h5>{{ b.userName }}</h5>
-                                </button>
-                            </div>
-                            <div class="col-8 text-right">
-                                <h6>{{ b.bill_when }}</h6>
-                            </div>
-                        </div>
-                        <div class="row py-1">
-                            <div class="col-1 offset-1">
-                                <h6>{{ b.bill_phone }}</h6>
-                            </div>
-                            <div class="col-2">
-                                <h6> {{ b.userDate }}</h6>
-                            </div>
-                            <div class="col-4">
-                                <h6>{{ b.bill_address }}</h6>
-                            </div>
-                            <div class="col-4 text-right">
-                                <button @click="sendBillId(b.bill_id,b.user_id,b.date_id)" class="btn px-0 mx-0" style="color: darkcyan;">xem chi tiết...</button>
-                            </div>
-                        </div>
+                        </div>       
+                    
                     </div>
-                    <div class="col-1 px-0">
-                        <button v-if="b.bill_status < 4 " class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id)" 
-                            style="height: 100%;width: 70%; background-color: #ff99aa;">
-                            {{ avaiableStatus[b.bill_status + 1] }}
-                        </button>
-
-                        <button v-if="b.bill_status >= 1 && b.bill_status <=3" class="p-2 " 
-                            @click="cancelBtn(b.bill_id,b.user_id)" 
-                            style="height: 100%;width: 30%;  border-start-end-radius: 15px; border-end-end-radius: 15px; background-color: #ff6680;">
-                            Hủy
-                        </button>
-
-                        <button v-if="b.bill_status == 4 " class="btn p-2 ml-1" style="height: 100%; width: 100%; background-color: none; border-start-end-radius: 15px; border-end-end-radius: 15px;">
-                            Ẩn
-                        </button>
-                    </div>
-                </div>       
-            
+                </div>
             </div>
-             
         </div>
     </div>
 
     <OrderDetail v-if="showOrderDetails" :bill=[sendId1,sendId2,sendId3]>
-        <button class="btn" style="background-color: #c0c0c0; border-radius: 10px;" @click="closeView">X</button>
+        <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">X</button>
     </OrderDetail>
 
 </template>
@@ -301,6 +303,19 @@ export default {
 
 <style scoped>
 
- 
+h1 {
+    font-weight: bold;
+    color: #d35ea4;
+}
+
+.container_order{
+    margin-left: 220px; 
+    margin-right: 20px; 
+    margin-top: 10px;
+    top: 0;
+    height: 98vh;  
+    opacity: 0.8;
+    border-radius: 20px;
+ }
 
 </style>

@@ -13,7 +13,8 @@ import {
 import {
     showAUser,
     createAccount,
-    showUserbyID
+    showUserbyID,
+    updatePassController
 } from "../controllers/user.js";
 
 import {
@@ -64,6 +65,8 @@ import {
     updateBillStatus,
     updateStatusCancelController,
     updateBillNotes,
+    updateBillAddress,
+    updateBillPhone,
     cancelBillStatus,
     updateBillTotal
 } from "../controllers/billstatus.js";
@@ -100,13 +103,26 @@ import {
 import {
     sendEmailStatusController,
     sendEmailUpdateController,
-    sendEmailRequestController
+    sendEmailRequestController,
+    sendForgotPasswordController
 } from "../controllers/sendemail.js";
+
+import { 
+    MomoController 
+} from "../controllers/momo.js";
+
+import { 
+    VnpayController,
+    getVNPayController,
+    insertVNPayController
+} from "../controllers/vnpay.js";
 
 // init express router
 const router = express.Router();
 
 ////////////////////////// POST ////////////////////////////////
+// newest post id
+router.get("/api/post/new", showNewestPostId);
 
 // get all post
 router.get("/api/post", showPosts);
@@ -123,8 +139,6 @@ router.put("/api/post/:id", updatePost);
 // delete post
 router.delete("/api/post/:id", deletePost);
 
-// newest post id
-router.delete("/api/post/new", showNewestPostId);
 // show Images By Post_Id
 router.get("/api/postimage/:id", showImagesByPostId);
 
@@ -157,13 +171,12 @@ router.delete("/api/products/:id", deleteProduct);
 
 // get user by id
 router.get("/api/users/byid/:id", showUserbyID);
-
 // get all user
 router.get("/api/users/:email", showAUser);
-
 // create account
 router.post("/api/users/", createAccount);
 
+router.put("/api/users/", updatePassController);
 
 ///////////////////////// GUEST ////////////////////////////////
 // get a number
@@ -240,6 +253,8 @@ router.get("/api/billstatus/user/:id", getAllBillsByUser);
 router.get("/api/billstatus/bill/:id", getAllBillsByBill);
 router.get("/api/billstatus", getAllBills);
 router.put("/api/billstatus/notes/", updateBillNotes);
+router.put("/api/billstatus/address/", updateBillAddress);
+router.put("/api/billstatus/phone/", updateBillPhone);
 router.put("/api/billstatus/statuscancel/:id", updateStatusCancelController);
 router.put("/api/billstatus/:id", updateBillStatus);
 router.put("/api/billstatus/cancel/:id", cancelBillStatus);
@@ -264,6 +279,16 @@ router.delete("/api/combodetails/:combo_id/:product_id", deleteProductInCombo);
 router.post("/api/sendemail/status", sendEmailStatusController);
 router.post("/api/sendemail/update", sendEmailUpdateController);
 router.post("/api/sendemail/request", sendEmailRequestController);
+router.post("/api/sendemail/reset-password", sendForgotPasswordController);
+
+////////////////////////// MoMo ////////////////////////////////
+router.post("/api/payment-online", MomoController);
+
+////////////////////////// VN Pay ////////////////////////////////
+router.post("/api/create_payment_vnpay", VnpayController);
+router.get("/api/payment_vnpay", getVNPayController);
+router.post("/api/payment_vnpay", insertVNPayController);
+
 
 // export default router
 export default router;

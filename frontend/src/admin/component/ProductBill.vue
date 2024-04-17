@@ -5,37 +5,37 @@
                 <h3 class="mb-2 mb-2" style="color: #d35ea4;">{{ category }}</h3>
                 <div v-for="(f, index) in filterProducts" :key="index">
                     <div v-if="f.product_category === category" 
-                    class="row mb-1 d-flex justify-content-between align-items-center" style="background-color: #ffe6ea; margin-left: 10px; border-radius: 10px;">
+                    class="row mb-1 d-flex justify-content-between align-items-center" style="background-color: #f08faf; margin-left: 10px; border-radius: 10px;">
                         
                         <div class="col-md-2 col-lg-2 col-xl-2" style="padding-left: 0px;">
                             <img :src="require(`../../assets/images/${f.product_src}`)" alt="" class="cart-product-img" 
                             style="width: 100px; border-radius: 10px; ">
                         </div>
                         <div class="col-md-3 col-lg-3 col-xl-4">
-                            <h4 class="text-black mb-0" style="color: #d35ea4;">{{ f.product_name }}</h4>
+                            <h4 class="text-black mb-0" style="color: #660066;">{{ f.product_name }}</h4>
                             <h6 class="mb-0">Đơn giá: {{ formatCurrency(f.product_price) }}</h6>
                         </div>
                         <div class="col-md-3 col-lg-2 col-xl-2">
                             <input type="number" id="number" v-model="item_qty[index]" @change="onQtyChange(index,f.product_name)"
                             class="form-control " min="0" max="1000" 
-                            style="border: none; text-align: center; background: #FFF0F5; border-radius: 10px;">
+                            style="border: none; text-align: center; background: #660066; border-radius: 10px; color: white;">
                         </div>
                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                            <button class="btn" @click="removeBtn(index,f.product_name)" style="background-color: #FFF0F5; color: #808080; border-radius: 10px;">
+                            <button class="btn" @click="removeBtn(index,f.product_name)" style="background-color: #660066; color: white; border-radius: 10px;">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
                         <hr class="my-4">
                     </div>
                     
-                    <div v-if="f.product_category === category" class="row mb-5" style="background-color: #FFFAFA; margin-left: 10px; border-radius: 10px;">
+                    <div v-if="f.product_category === category" class="row mb-5" style="background-color: #f08faf; margin-left: 10px; border-radius: 10px;">
                         <div class="form-group col-10">
                             <input type="text" placeholder="Ghi chú..." class="form-control" 
-                            style="border: none; font-weight: bold; background-color: #FFFAFA;" v-model="itemNotes[index]">
+                            style="border: none; font-weight: bold; background-color: #f08faf;" v-model="itemNotes[index]">
                         </div>
                         <div class="col-2 text-right">
-                            <button @click="updateItemNotes(index,f.product_name)" style="background-color: #FFFAFA; padding: 5px;">Cập Nhật</button>
-                            <button @click="deleteNotes(index,f.product_name)" style="background-color: #FFFAFA; padding: 5px;">Xóa</button>
+                            <button @click="updateItemNotes(index,f.product_name)" style="background-color: #f08faf; padding: 5px;">Cập Nhật</button>
+                            <button @click="deleteNotes(index,f.product_name)" style="background-color: #f08faf; padding: 5px;">Xóa</button>
                         </div>
                         <br>
                     </div>

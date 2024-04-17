@@ -2,16 +2,25 @@
     <div class="">
         <div class="">
             <div class=" row d-flex justify-content-between">
-                <div class="col-2"> <i style="color: #c0c0c0;" class="fa fa-arrow-left"></i> <slot></slot> </div>
+                <div class="col-2"> <slot></slot> </div>
                 <div class="col-6 input-group mb-3">
                     <input style="border-radius: 10px; background-color: #ffe6ea;" type="text" class="form-control" v-model="productObj.name" placeholder="Search . . .">
                     <div class="input-group-append">
                         <button class="btn ml-3" type="submit" style="background-color: #FFF0F5; border-radius: 15px;"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
-                <div class="col-2 text-right">
+                <div class="col-2 text-right" v-if="$route.path === '/admin/order'">
                     <router-link to='AddTempProduct'>
-                        <button class="btn" style="background-color: #ffe6ea; border-radius: 10px; color: #40bf77;">
+                        <button  class="btn" 
+                            style="background-color: #ffe6ea; border-radius: 10px; color: #40bf77;">
+                           <i class="fa fa-plus-circle" style="color: #40bf77;"></i> Thêm Mới
+                        </button>
+                    </router-link>
+                </div>
+                <div class="col-2 text-right" v-else>
+                    <router-link :to="{ path: '/admin/AddTempProduct' }">
+                        <button  class="btn" 
+                            style="background-color: #ffe6ea; border-radius: 10px; color: #40bf77;">
                            <i class="fa fa-plus-circle" style="color: #40bf77;"></i> Thêm Mới
                         </button>
                     </router-link>
@@ -22,32 +31,33 @@
             <div class="" style="overflow-y: auto; height: 570px;">
                 <div style="width: 95%;">
                     <div  v-for="(f, index) in filterProducts" :key="index">
-                        <div class="row pt-5">
-                            <div class="col-2 image mr-4">
+                        <div class="row" style="background-color: #f08faf; margin-left: 10px; border-radius: 10px;">
+                            <div class="col-2 image pl-0 mr-4">
                                 <img :src="require(`../../assets/images/${f.product_src}`)" alt="" 
                                 style="height: 100px; width: 150px; border-radius: 10px;"/>
                             </div>
-                            <div class="col-5 pl-5">
+                            <div class="col-5 pl-5" style="padding-top: 20px;">
                                 <h5>{{ f.product_category }}</h5>
-                                <div class="d-flex justify-content-between">
+                                <div class="">
                                     <h3>{{ f.product_name }} </h3>
                                 </div>
                                 <div class="">
-                                    {{ formatCurrency(f.product_price) }}
+                                    <h5>{{ formatCurrency(f.product_price) }}</h5>
                                 </div>
                             </div>
                             <div class="col-md-2 col-lg-2 col-xl-2 d-flex justify-content-center mt-5">
-                                <input style="border-radius: 10px;" type="number" id="iQuantity" class="form-control item-quantity"
+                                <input type="number" id="iQuantity" class="form-control item-quantity"
                                     v-model="itemQuantity[index]" min="1" max="1000"
                                     @change="onQtyChange($event, index)"
+                                    style="border: none; text-align: center; background: #660066; border-radius: 10px; color: white;"
                                 >
                             </div>
                             <div class="col-2 d-flex justify-content-center mt-5 ">
                                 <button v-if="$route.path === '/admin/order'" 
-                                class="btn p-2 " style="height: fit-content; border-radius: 10px; background-color: #FFF0F5;" 
+                                class="btn p-2 " style="height: fit-content; border-radius: 10px; background-color: #40bf77;" 
                                 @click="addToBill(index,f.product_name)">Add to Bill</button>
                                 <button v-else
-                                class="btn p-2 " style="height: fit-content; border-radius: 10px; background-color: #FFF0F5;" 
+                                class="btn p-2 " style="height: fit-content; border-radius: 10px; background-color: #660066; color: white;" 
                                 @click="addToCombo(index)">Add to Combo</button>
                             </div>
                         </div>

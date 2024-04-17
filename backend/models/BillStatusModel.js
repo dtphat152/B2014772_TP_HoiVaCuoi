@@ -113,6 +113,28 @@ export const updateNotes = (data,result) => {
     });
 };
 
+export const updateAddress = (data,result) => {
+    db.query("UPDATE billstatus SET bill_address = ? WHERE bill_id = ?",[data.bill_address, data.bill_id], (err,results)=> {
+        if (err){
+            console.log(err);
+            result(err,null);
+        }else{
+            result(null,results);
+        }
+    });
+};
+
+export const updatePhone = (data,result) => {
+    db.query("UPDATE billstatus SET bill_phone = ? WHERE bill_id = ?",[data.bill_phone, data.bill_id], (err,results)=> {
+        if (err){
+            console.log(err);
+            result(err,null);
+        }else{
+            result(null,results);
+        }
+    });
+};
+
 export const cancelStatus = (id,result) => {
     db.query("UPDATE billstatus SET bill_status = 0  WHERE bill_id = ?",id, (err,results)=> {
         if (err){

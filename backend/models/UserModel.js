@@ -49,6 +49,20 @@ export const insertUser = (data,result) => {
     });
 };
 
+export const updatePassModel = (data,result) => {
+    try {
+    db.query("UPDATE user SET user_password=? WHERE user_id = ?",[data.user_password,data.user_id], (err,results)=> {
+        if (err){
+            console.log(err);
+            result(err,null);
+        }else{
+            result(null,results[0]);
+        }
+    });
+    } catch (error) { console.error('Error sending email:', error); }
+};
+
+
 
 
 

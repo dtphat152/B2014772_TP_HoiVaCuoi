@@ -1,6 +1,6 @@
 
 import nodemailer from 'nodemailer';
-
+import crypto from 'crypto';
 
 export const sendEmailStatusModel = async (data) => {
     const transporter = nodemailer.createTransport({
@@ -9,7 +9,7 @@ export const sendEmailStatusModel = async (data) => {
         secure: false, // Use `true` for port 465, `false` for all other ports
         auth: {
           user: 'tphoivacuoi@gmail.com',
-          pass: 'jogb saws jegz gftb',
+          pass: 'cpnw qlgs nusd nldp ',
         },
       });
 
@@ -31,7 +31,7 @@ export const sendEmailUpdateModel = async (data) => {
         secure: false, // Use `true` for port 465, `false` for all other ports
         auth: {
           user: 'tphoivacuoi@gmail.com',
-          pass: 'jogb saws jegz gftb',
+          pass: 'cpnw qlgs nusd nldp ',
         },
       });
 
@@ -53,7 +53,7 @@ export const sendEmailRequestModel = async (data) => {
       secure: false, // Use `true` for port 465, `false` for all other ports
       auth: {
         user: 'tphoivacuoi@gmail.com',
-        pass: 'jogb saws jegz gftb',
+        pass: 'cpnw qlgs nusd nldp ',
       },
     });
 
@@ -68,3 +68,41 @@ export const sendEmailRequestModel = async (data) => {
   return info;
 };
 
+
+export const sendForgotPasswordModel = async (data) => {
+  try {
+      // Khởi tạo transporter với các thông tin cần thiết
+      const transporter = nodemailer.createTransport({
+          host: "smtp.gmail.com",
+          port: 587,
+          secure: false, // false for other ports
+          auth: {
+            user: 'tphoivacuoi@gmail.com',
+            pass: 'cpnw qlgs nusd nldp ',
+          }
+      });
+
+      // Tạo một hash từ email và token
+      const hash = crypto.createHash('sha256').update(`${data.email}${data.resetToken}`).digest('hex');
+
+      // Tạo URL reset password với hash
+      const resetLink = `http://localhost:8080/resetpassword/${data.id}${hash}`;
+
+      // Chuẩn bị nội dung email
+      const mailOptions = {
+          from: '"TP - Hỏi và Cưới" <tphoivacuoi@gmail.com>', // sender address
+          to: data.email, // list of receivers
+          subject: 'Reset Password',
+          html: `<p>Vui lòng nhấn vào link sau để thay đổi mật khẩu của bạn:</p>
+                 <a href="${resetLink}">${resetLink}</a>`
+      };
+
+      // Gửi email
+      const info = await transporter.sendMail(mailOptions);
+      // console.log('Email sent: ' + info.response);
+      return { success: true, message: 'Reset password email sent successfully' };
+  } catch (error) {
+      console.error('Error sending email:', error);
+      return { success: false, message: 'Failed to send reset password email' };
+  }
+};

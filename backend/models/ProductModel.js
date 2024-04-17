@@ -39,8 +39,8 @@ export const insertProduct = (data,result) => {
 
 // update Product
 export const updateProductById = (data,id,result) => {
-    db.query("UPDATE product SET product_name = ?, product_price = ? ,product_desc = ?, product_category = ?, product_src = ?, product_discount = ?, product_style = ? WHERE product_id = ?",
-    [data.product_name, data.product_price, data.product_desc, data.product_category, data.product_src, data.product_discount, data.product_style, id], (err,results)=> {
+    db.query("UPDATE product SET product_name = ?, product_price = ? ,product_desc = ?, product_category = ?, product_src = ?, product_style = ? WHERE product_id = ?",
+    [data.product_name, data.product_price, data.product_desc, data.product_category, data.product_src, data.product_style, id], (err,results)=> {
         if (err){
             console.log(err);
             result(err,null);

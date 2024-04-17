@@ -1,7 +1,7 @@
 <template>
       <div class="" style="padding-left: 250px; padding-right: 250px;">
         <div class="heading">
-            <h3 style="color:  #ff69b4; font-weight: bold;">TP Hỏi và Cưới</h3>
+            <h3 style="color:  #ff69b4; font-weight: bold;"></h3>
         </div>
 
         <div class="row">

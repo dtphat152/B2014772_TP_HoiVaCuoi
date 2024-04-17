@@ -12,7 +12,7 @@
                     <router-view></router-view>
                 </div>
             </div>
-            <FooterComponent />
+            <FooterComponent v-if=" $route.path !== '/' " />
         </div>
     </div>
 </template>

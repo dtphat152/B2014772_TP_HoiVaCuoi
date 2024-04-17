@@ -28,6 +28,7 @@
 
 .content {
     padding-left: 250px; /* Đảm bảo nội dung không bị chồng lên phần Sidebar */
-    padding-top: 20px; /* Để giữ khoảng cách từ trên xuống */
+    padding-top: 0px;
+    margin-top: 0px;
 }
 </style>

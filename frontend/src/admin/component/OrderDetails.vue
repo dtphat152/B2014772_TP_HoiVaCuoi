@@ -1,7 +1,7 @@
 <template>
     <div class="order-details">
         <div class="order-details-inner">
-            <h2 class="d-flex justify-content-between">Order Details 
+            <h2 class="d-flex justify-content-between font-weight-bold">Chi Tiết Đơn #{{ this.bill[0] }} 
                 
                 <div>
                     <button @click="sendBillId(this.bill[0])" class="btn mr-2" style="background-color: #40bf77; border-radius: 10px;">Add to bill</button>
@@ -17,29 +17,36 @@
                     <ProductBill v-if="!showProductOrder" :Bill=[this.bill[0],this.email] ></ProductBill>
 
                     <ProductOrder v-if="showProductOrder" :ID="sendId" >
-                        <button style="color: #c0c0c0; background-color: white;" @click="closeView()"><h5>Trở Về</h5></button>
+                        <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
                     </ProductOrder>                    
                 </div>
-                <div class="col-4">
-                    <div class="row">
-                        <div class="col-10 form-group" style="padding-right: 0; margin: 0;">
-                        <textarea name="txtMsg" class="form-control" placeholder="Ghi chú của khách hàng..." 
-                            style="width: 100%; border: none;  background-color: #FFF0F5; border-radius: 15px;" v-model="notes" ></textarea>
-                        </div>
-                        <div class="col-1">
-                            <button class="btn" style="height: 100%; background-color: #FFF0F5; border-radius: 10px;" @click="updateBillNotes()">Lưu</button>
+                <div class="col-4 pt-3" style="background-color: #f08faf; border-radius: 20px;">
+                    <div class="container-info" style="background-color: #660066; border-radius: 20px; padding: 10px;">
+                        <div class="row">
+                            <div class="col-10 form-group" style="padding-right: 0; margin: 0;">
+                            <textarea name="txtMsg" class="form-control" placeholder="Ghi chú của khách hàng..." 
+                                style="width: 100%; border: none;  background-color: #ffccdd; border-radius: 15px;" v-model="notes" ></textarea>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn" style="height: 100%; background-color: #f08faf; border-radius: 10px;" @click="updateBillNotes()">Lưu</button>
+                            </div>
                         </div>
                     </div>
-                    
 
                     <hr style="background-color: #FFF0F5;">
-                    <div>
+                    <div class="container-info" style="background-color: #660066; border-radius: 20px; padding: 10px;">
                         <div class="row mt-2 m-1">
-                            <div class="col-8" style="background-color: #ffccdd; border-radius: 15px;">
-                                Ngày tổ chức: {{ this.date }}
+                            <div class="col-8" style="background-color: #f08faf; border-radius: 15px;">
+                                <div class="row d-flex justify-content-around p-2">
+                                    <h5 class="font-weight-bold mt-1">Ngày tổ chức:</h5>
+                                    <input type="text" v-model="this.date" class="my-1"
+                                        style="background-color: #FFF0F5; font-weight: bold; text-align: center; border-radius: 15px;" >
+                                    <button @click="sendDate(b.bill_id,b.bill_status)" 
+                                        style="background-color: #FFF0F5; border-radius: 15px;" class="px-2 my-1">Lưu</button>
+                                </div>
                             </div>
-                            <div class="col-4 text-center" style="background-color: #ffb3cc; border-radius: 15px;">
-                                <button @click="showAddMealSetFunction()" style="background-color: #ffb3cc;">Thêm</button>
+                            <div class="col-4 text-center" style="background-color: #f08faf; border-radius: 15px;">
+                                <button @click="showAddMealSetFunction()" style="background-color: #f08faf; padding-top: 5px;">Thêm Suất</button>
                             </div>
                         </div>
                         
@@ -76,20 +83,45 @@
                                     <input type="time" :id="'time-' + index" v-model="this.selectedTime[index]" style=" background: #FFF0F5;">
                                 </div>
                                 <div class="col-1 ">
-                                    <button class="btn" @click="removeDateBtn(index)">
-                                        Xóa
+                                    <button class="btn p-1" style="border-radius: 10px; background-color: #f08faf;" 
+                                        @click="updateDateBtn(index)">
+                                        Lưu
                                     </button>
                                 </div>
                                 <div class="col-1 ">
-                                    <button class="btn" @click="updateDateBtn(index)">
-                                        Lưu
+                                    <button class="btn p-1" style="border-radius: 10px; background-color: #f08faf;" 
+                                        @click="removeDateBtn(index)">
+                                        Xóa
                                     </button>
                                 </div>
                             </div>   
                         </div>
                 
                     </div>
-                    <hr>
+                    <hr style="background-color: #FFF0F5;">
+                    <div class="container-info" style="background-color: #660066; border-radius: 20px; padding: 10px;">
+                        <div class="row">
+                            <div class="col-10 pr-0">
+                                <textarea name="txtMsg" class="form-control text-center" placeholder="Những điều bạn yêu cầu hoặc lưu ý" 
+                                    style="width: 100%; height: 25px; border: none;  background: #FFF0F5; border-radius: 15px;" 
+                                    v-model="address" >   
+                                </textarea>
+                            </div>
+                            <div class="col-2 pl-1">
+                                <button @click="saveAddress(address)" style="height: 100%; width: 100%; border-radius: 15px; background-color: #f08faf;">Lưu</button>
+                            </div>
+                        </div>
+                        
+                        <div class="row pt-3">
+                            <div class="col-10 pr-0">
+                                <input type="text" style="border-radius: 15px; background-color: #FFF0F5; text-align: center; height: 25px; width: 100%;" 
+                                    v-model="phone" >
+                            </div>
+                            <div class="col-2 pl-1">
+                                <button @click="savePhone(phone)" style="height: 100%; width: 100%; border-radius: 15px; background-color: #f08faf;">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
                     
                 </div>
             </div>
@@ -112,7 +144,8 @@ export default {
             email: '',
 
             notes:"",
-
+            address:"",
+            phone:"",
             date:'',
             selectedTime: [],
             selectedGuest: [],
@@ -130,7 +163,6 @@ export default {
 
     created() {
         this.getEmail();
-        this.getNotes();
         this.getBillStatus();
         this.getMeatSet();
     },
@@ -152,7 +184,12 @@ export default {
 
         async getBillStatus() {
             if (this.bill[0]) {
-                this.billMatch = (await axios.get('/billstatus/bill/' + this.bill[0])).data[0];
+                let rsp = await axios.get(`/billstatus/bill/${this.bill[0]}`)
+                let data = rsp.data;
+                this.billMatch = rsp.data[0];
+                this.notes = data[0].bill_notes;
+                this.address = data[0].bill_address;
+                this.phone = data[0].bill_phone;
             }
         },
 
@@ -341,7 +378,60 @@ export default {
                 console.error('Lỗi khi submit dữ liệu:', error);
             }
         },
+        
+        async saveAddress() {
+            let data = {
+                bill_id: this.bill[0],
+                bill_address: this.address,
+            };
+            let confirmResult = window.confirm("Bạn có chắc chắn muốn thay đổi Địa Chỉ của đơn hàng?");
+            if (confirmResult) {
+                try {
+                    await axios.put("billstatus/address/", data);
+                    console.log("Đã cập nhật Địa Chỉ thành công.");
+                    let data1 = {
+                        email: this.email,
+                        title: `Đơn hàng #${this.bill[0]} của bạn đã được cập nhật!`,
+                        content: `Nội dung: Cập Nhật Địa Chỉ thành "${this.notes}".`,
+                    }
+                    try {
+                        axios.post(`/sendemail/address`,data1);
+                    } catch (error) {
+                        console.error("Error Send email address:", error);
+                    }
+                } catch (error) {
+                    console.error("Đã xảy ra lỗi khi cập nhật Địa Chỉ:", error);
+                }
+                
+            }
+        },
 
+        async savePhone() {
+            let data = {
+                bill_id: this.bill[0],
+                bill_phone: this.phone,
+            };
+            let confirmResult = window.confirm("Bạn có chắc chắn muốn thay đổi Số Điện Thoại của đơn hàng?");
+            if (confirmResult) {
+                try {
+                    await axios.put("billstatus/phone/", data);
+                    console.log("Đã cập nhật Số Điện Thoại thành công.");
+                    let data1 = {
+                        email: this.email,
+                        title: `Đơn hàng #${this.bill[0]} của bạn đã được cập nhật!`,
+                        content: `Nội dung: Cập Nhật Số Điện Thoại thành "${this.notes}".`,
+                    }
+                    try {
+                        axios.post(`/sendemail/phone`,data1);
+                    } catch (error) {
+                        console.error("Error Send email phone:", error);
+                    }
+                } catch (error) {
+                    console.error("Đã xảy ra lỗi khi cập nhật Số Điện Thoại:", error);
+                }
+                
+            }
+        },
     },
 
     components: { ProductOrder, ProductBill }
@@ -356,7 +446,7 @@ export default {
     right: 0;
     bottom: 0;
     z-index: 99;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -366,7 +456,7 @@ export default {
 .order-details .order-details-inner {
     width: 80%;
     height: 80%;
-    background-color: #fff;
+    background-color: #660066;
     padding: 32px;
     border: none; /* Clear border */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow for better visibility */

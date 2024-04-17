@@ -2,7 +2,8 @@
 import {
     sendEmailStatusModel,
     sendEmailUpdateModel,
-    sendEmailRequestModel
+    sendEmailRequestModel,
+    sendForgotPasswordModel
 } from "../models/SendEmailModel.js";
 
 export const sendEmailStatusController = (req, res) => {
@@ -38,4 +39,13 @@ export const sendEmailRequestController = (req, res) => {
     });
 };
 
-
+export const sendForgotPasswordController = (req, res) => {
+    const data = req.body;
+    sendForgotPasswordModel(data, (err, results) => {
+        if (err) {
+            res.send(err);
+        } else {
+            res.json(results);
+        }
+    });
+};

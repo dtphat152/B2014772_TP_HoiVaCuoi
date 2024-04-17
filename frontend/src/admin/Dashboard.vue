@@ -1,13 +1,13 @@
 <template>
-    <div class="container_dashboard" style="width: 100%; padding-left: 260px; padding-right: 10px;">
-        <div class="mt-5">
+    <div class="container_dashboard">
+        <div class="p-5" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1;">
             <h1>Dashboard</h1>
-            <br>
-            <hr style="background-color: #FFF0F5; height: 3px;">
-            <br>
+        </div>
+        <br>
+        <div class="p-5" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1;">
+            <canvas id="revenueChart" style="height: 300px;"></canvas>
         </div>
         
-        <canvas id="revenueChart" style="height: 300px;"></canvas>
         
     </div>
 </template>
@@ -145,13 +145,19 @@ export default {
 
 <style scoped>
 
-.project-list>tbody>tr>td {
-    padding: 12px 8px;
+h1 {
+    font-weight: bold;
+    color: #d35ea4;
 }
 
-.project-list>tbody>tr>td .avatar {
-    width: 22px;
-    border: 1px solid #CCC;
-}
+.container_dashboard{
+    margin-left: 220px; 
+    margin-right: 20px; 
+    margin-top: 10px;
+    top: 0;
+    height: 98vh;  
+    opacity: 0.8;
+    border-radius: 20px;
+ }
 
 </style>

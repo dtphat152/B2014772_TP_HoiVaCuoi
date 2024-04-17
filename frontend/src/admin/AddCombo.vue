@@ -1,67 +1,75 @@
 <template>
-    <div class="text-center" style="margin-top: 90px; padding-left: 260px">
+    <div class="container_combo">
 
-        <div class="row d-flex justify-content-between px-5" style="background-color: #FFF0F5;">
-            <router-link to="combomanager">
-                <h4 class="text-black-50 pt-2" style="background-color: none; color: red; font-weight: bold;">Back</h4>
-            </router-link>
-            <button @click="sendComboId(this.newstID)" title="Open ProductOrder" class="btn text-success" 
-                style="background-color: none; font-weight: bold;"><h4>Add product to Combo</h4>
-                <br>
-            </button>
+        <div class="p-5 mx-1 row" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1;">
+            <h1>Combo Manager</h1>
         </div>
+        <br>
 
-        <div class="container" style="width: 100%;">    
-            <hr style="background-color: #FFF0F5; height: 5px;"> <br>
-            <div class="checkout-form-container">
-                <form @submit.prevent="handleSubmit" autocomplete="off" class="myform" style="background-color: #FFF0F5;">
+        <div class="p-5" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1; height: 785px; ">
+            <div  v-if="!showProductOrder" >
+                <div class="row d-flex justify-content-between">
+                    <div class="col"></div>
+                    <div class="col text-center">
+                        <h2 style="color: #d35ea4; font-weight: bold;">Edit Combo</h2>
+                    </div>
+                    <div class="col text-right">
+                        <button @click="sendComboId(this.newstID)" title="Open ProductOrder" class="btn pt-1 mr-2" 
+                            style="background-color: #40bf77;border-radius: 15px; font-weight: bold;"><h4>Thêm Món</h4>
+                        </button>
+                        <router-link to="/admin/combomanager">
+                            <button class="btn pt-1" style="background-color: #DC143C; border-radius: 15px;">
+                                <h4>Trở Về</h4>
+                            </button>  
+                        </router-link>
+                    </div>
+                </div>
+                <br>
+                <form  @submit.prevent="handleSubmit" autocomplete="off" class="myform" style="background-color: #f08faf; border-radius: 20px;">
                     <div class="form-group details-group">
-                        <h2 style="color: #d35ea4; font-weight: bold;">Add Combo</h2>
                         <br>
                         <div class="form-group">
                             <input type="text"  placeholder="Name" class="form-control " autocapitalize="off"
-                                v-model="comboObj.name" style="background-color: aliceblue;"/>
+                                v-model="comboObj.name"/>
                             <p class="error-mess" v-if="errorObj.nameErr.length > 0">{{ errorObj.nameErr[0] }}</p>
                         </div>
-                        <!-- <div class="form-group">
-                            <input type="text"  placeholder="Price" class="form-control"
-                                v-model="comboObj.price" style="background-color: aliceblue;" />
-                            <p class="error-mess" v-if="errorObj.priceErr.length > 0">{{ errorObj.priceErr[0] }}</p>
-                        </div> -->
                         <div class="form-group">
                             <textarea name="txtMsg" class="form-control" placeholder="Description" 
-                                style="width: 100%; height: 150px; background-color: aliceblue;"  v-model="comboObj.desc" ></textarea>
+                                v-model="comboObj.desc" ></textarea>
                             <p class="error-mess" v-if="errorObj.descErr.length > 0">{{ errorObj.descErr[0] }}</p>
                         </div>
                     </div>
                     <br> 
-                    <h6 class="mt-2 text-left">Danh sách sản phẩm:</h6>
+                    <h3 class="mt-2 text-center">Danh sách sản phẩm:</h3>
+                    <hr>
                     <div v-for="(f, index) in allProductsInCombo" :key="index" class="mt-2 text-left">
-                        <div class="row">
-                            <div class="col-2 offset-1 px-0">{{ f.product_category }} <hr></div>
-                                <div class="col-7 px-0">{{ f.product_name }}<hr></div>
-                                <div class="col-2 px-0 pt-2">
+                        <div class="productconbo row d-flex justify-content-between">
+                            <div class="col text-center">{{ f.product_category }}</div>
+                                <div class="col text-center">{{ f.product_name }}<hr></div>
+                                <div class="col text-center">
                                     <button class="btn" style="color: crimson;" @click="removeBtn(index)">
                                         <i class="fa fa-trash"></i>
                                     </button>
-                                    
                                 </div>
                         </div>
                     </div>
+                    <br><hr>
+                    <h3 class="text-center">Giá Combo: {{ formatCurrency(priceCombo()) }}</h3>
                     <br>
-                    <h4 style="color: #d35ea4; font-weight: bold;">{{priceCombo()}} vnd</h4>
-                    <div class="form-group">
-                        <hr>
-                        <input type="submit" value="Submit" class="btn p-2" style="width: 100%; background-color: #FFF0F5;"/>
+                    <div class="form-group">       
+                        <input type="submit" value="Submit" class="btn p-2" style="width: 100%; background-color: #d35ea4; color: white; font-weight: bold;"/>
                     </div>
                 </form>
-                    
             </div>
+            <div v-else>
+                <ProductOrder :ID="sendId" @productAdded="handleProductAddedToCombo">
+                    <button class="btn pt-1 pb-0" @click="closeView" style="background-color: #DC143C; border-radius: 15px;"><h4>Trở Về</h4></button>
+                </ProductOrder>
+            </div> 
         </div>
     </div>
-    <ProductOrder v-if="showProductOrder" :ID="sendId" @productAdded="handleProductAddedToCombo">
-        <button class="btn" @click="closeView">back</button>
-    </ProductOrder>
+
+    
 </template>
 
 <script>
@@ -95,24 +103,13 @@ export default {
     computed: {
         ...mapState(["allProducts"]),
 
-        // filterProducts: function () {
-        //     return this.allProducts.filter(
-        //         (f) => this.matchID(f, this.allProductsInCombo)
-        //     );
-        // },
     },
 
     methods: {
-        
-        // matchID: function (product, comboArray) {
-        //     let temp = "";
-        //     comboArray.forEach(element => {
-        //         if (parseInt(product.product_id) == element) {
-        //             temp = product
-        //         }
-        //     });
-        //     return temp
-        // },
+        formatCurrency(amount) {
+          if (!amount) return '';
+          return parseFloat(amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        },
 
         resetCheckErr: function () {
             this.errorObj.nameErr = [];
@@ -146,14 +143,6 @@ export default {
         closeView: function () {
             this.showProductOrder = !this.showProductOrder;
         },
-
-        // async getAllProducts() {
-        //         await this.getNewestComboID();
-        //         let data = (await axios.get('/combodetails/' + this.newstID)).data;
-        //         data.forEach(element => {
-        //             this.allProductsInCombo.push(element.product_id);
-        //         }); 
-        // },
 
         async getAllProducts() {
             try {
@@ -267,20 +256,42 @@ export default {
 };
 </script>
 
-<style>
-input {
-    text-transform: none !important;
+<style scoped>
+
+h1 {
+    font-weight: bold;
+    color: #d35ea4;
 }
 
-.container {
-  width: 500px;
-  margin-top: 10px;
+.container_combo{
+    margin-left: 220px; 
+    margin-right: 20px; 
+    margin-top: 10px;
+    top: 0;
+    height: 98vh;  
+    opacity: 0.8;
+    border-radius: 20px;
+ }
+
+input, textarea {
+    text-transform: none !important;
+    background-color: rgba(117, 0, 164, 0.38);
+    border-radius: 15px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
 }
 
 .myform {
-  border: 1px solid #ccc; /* Tạo viền xung quanh form */
-  border-radius: 5px; /* Bo viền để làm mềm hơn */
-  padding: 20px; /* Tạo khoảng cách giữa viền và nội dung form */
+    border: none;
+    padding: 20px;
 }
+
+.productconbo {
+    font-size: 15px;
+    font-weight: bold;
+}
+
 
 </style>

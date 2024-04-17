@@ -1,71 +1,118 @@
 <template>
-    <div class="container" style="width: 600px; margin-top: 100px;">
-        <div>
-            <router-link to="/admin/productmanager">
-                <p class="text-black-50">Back</p>
-            </router-link>
+    <div class="container-add">
+        <div class="row p-5 mx-1  d-flex justify-content-between" 
+            style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1;">
+            <div class="col">
+                <h1 style="font-weight: bold; color: #d35ea4;">Edit Product</h1>
+            </div>
+            <div class="col text-right">
+                <router-link :to="{ path: '/admin/productmanager' }">
+                    <button class="btn" style="background-color: rgba(117, 0, 164, 0.58); border-radius: 20px; color: rgba(139, 131, 143, 0.8);">
+                        <h3>Trở Về</h3>
+                    </button>
+                </router-link>
+            </div>
         </div>
-        <hr> <br>
-        <div class="checkout-form-container">
-            <form @submit="handleSubmit" autocomplete="off" class="myform">
-                <div class="form-group details-group">
-                    <h4>Edit Product</h4>
-                    <div class="form-group">
-                        <label for="sel1">Caterogy:</label>
-                        <select class="form-control" id="sel1" v-model="productObj.cat">
-                            <option>Khai Vị</option>
-                            <option>Món Chính</option>
-                            <option>Tráng Miệng</option>
-                            <option>Rạp Che</option>
-                            <option>Sảnh Tiệc</option>
-                            <option>Ban Nhạc</option>
-                            <option>MC</option>
-                            <option>Gia Tiên</option>
-                            <option>Sân Khấu</option>
-                            <option>Mâm Quả</option>
-                            <option>Xe Hoa</option>
-                            <option>Áo Cưới</option>
-                            <option>Trang Điểm</option>
-                            <option>Ghi Hình</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <input type="text"  placeholder="Product Name" class="form-control " autocapitalize="off"
-                            v-model="productObj.name" />
-                        <p class="error-mess" v-if="errorObj.nameErr.length > 0">{{ errorObj.nameErr[0] }}</p>
-                    </div>
-                    <div class="form-group">
-                        <input type="text"  placeholder="Product Price" class="form-control"
-                            v-model="productObj.price" />
-                        <p class="error-mess" v-if="errorObj.priceErr.length > 0">{{ errorObj.priceErr[0] }}</p>
-                    </div>
-                    <div class="form-group">
-                        <textarea name="txtMsg" class="form-control" placeholder="Product Description" 
-                            style="width: 100%; height: 150px;"  v-model="productObj.desc" ></textarea>
-                        <p class="error-mess" v-if="errorObj.descErr.length > 0">{{ errorObj.descErr[0] }}</p>
-                    </div>
-                    <div class="form-group">
-                        <input type="text"  placeholder="Product Src Image" class="form-control"
-                            v-model="productObj.src" />
-                        <p class="error-mess" v-if="errorObj.srcErr.length > 0">{{ errorObj.srcErr[0] }}</p>
-                    </div>
-                    <div class="form-group">
-                        <input type="text"  placeholder="Product Discount" class="form-control"
-                            v-model="productObj.dis" />
-                    </div>
-                    <div class="form-group">
-                        <label for="sel1">Style:</label>
-                        <select class="form-control" id="sel1" v-model="productObj.sty">
-                            <option>Món Tùy Chọn</option>
-                            <option>Món Chính Thức</option>
-                        </select>
+        <br>
+        <div class="row">
+            <div class="col-10">
+                <div class="row mx-1">
+                    <div class="col-12 checkout-form-container" 
+                        style="background-color: rgba(117, 0, 164, 0.38); border: none; border-radius: 20px;">
+                        <form @submit="handleSubmit" autocomplete="off" class="myform" style="border: none;">
+                            <div class="form-group details-group">
+                                <div class="row"></div>
+                                <div class="form-group row">
+                                    <div class="col-1">
+                                        <label for="sel1">
+                                            <h3 style="font-weight: bold; color: rgba(139, 131, 143, 0.8); padding-left: 10px;">Caterogy:</h3>
+                                        </label>
+                                    </div>
+                                    <div class="col-11">
+                                        <select class="form-control" id="sel1" v-model="productObj.cat" 
+                                            style="background-color: rgba(117, 0, 164, 0.58); border: none; border-radius: 20px; color: white;
+                                            font-weight: bold; font-size: 16px;">
+                                            <option>Khai Vị</option>
+                                            <option>Món Chính</option>
+                                            <option>Tráng Miệng</option>
+                                            <option>Rạp Che</option>
+                                            <option>Sảnh Tiệc</option>
+                                            <option>Gia Tiên</option>
+                                            <option>Sân Khấu</option>
+                                            <option>Mâm Quả</option>
+                                            <option>Xe Hoa</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text"  placeholder="Name" class="form-control " autocapitalize="off"
+                                        v-model="productObj.name" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text"  placeholder="Price" class="form-control"
+                                        v-model="productObj.price" />
+                                </div>
+                                <div class="form-group">
+                                    <textarea name="txtMsg" class="form-control" placeholder="Description" 
+                                        style="width: 100%; height: 150px;"  v-model="productObj.desc" ></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text"  placeholder="Src Image" class="form-control"
+                                        v-model="productObj.src" />
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-group row">
+                                        <div class="col-1">
+                                            <label for="sel1">
+                                                <h3 style="font-weight: bold; color: rgba(139, 131, 143, 0.8); padding-left: 10px;">
+                                                    Style:
+                                                </h3> 
+                                            </label>
+                                        </div>
+                                        <div class="col-11">
+                                            <select class="form-control" id="sel1" v-model="productObj.sty"
+                                            style="background-color: rgba(117, 0, 164, 0.58); border: none; border-radius: 20px; color: white;
+                                                    font-weight: bold; font-size: 16px;">
+                                                <option>Món Tùy Chọn</option>
+                                                <option>Món Chính Thức</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <input type="submit" value="Submit" class="p-2"/>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <br>
-                <div class="form-group">
-                    <input type="submit" value="Submit" class="btn-info p-2"/>
+                <div class="row p-5 mx-1" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); height: 250px;">
+                    
                 </div>
-            </form>
+            </div>
+            <div class="col-2">
+                <div class="row p-5 mr-1" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); height: 785px;">
+                    <div class="col-12">
+                        <h5 style="color: Crimson; font-weight: bold; margin-bottom: 15px;" v-if="errorObj.catErr.length > 0">
+                            {{ errorObj.catErr[0] }}
+                        </h5>
+                        <h5 style="color: Crimson; font-weight: bold; margin-bottom: 15px;" v-if="errorObj.nameErr.length > 0">
+                            {{ errorObj.nameErr[0] }}
+                        </h5>
+                        <h5 style="color: Crimson; font-weight: bold; margin-bottom: 15px;" v-if="errorObj.priceErr.length > 0">
+                            {{ errorObj.priceErr[0] }}
+                        </h5>
+                        <h5 style="color: Crimson; font-weight: bold; margin-bottom: 15px;" v-if="errorObj.descErr.length > 0">
+                            {{ errorObj.descErr[0] }}
+                        </h5>
+                        <h5 style="color: Crimson; font-weight: bold; margin-bottom: 15px;" v-if="errorObj.srcErr.length > 0">
+                            {{ errorObj.srcErr[0] }}
+                        </h5>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -79,7 +126,7 @@ export default {
     
     data() {
         return {
-            productObj: { name: "", price: "", desc: "", cat: "", src: "" , dis:"" , sty:""},
+            productObj: { name: "", price: "", desc: "", cat: "", src: "" , sty:""},
             errorObj: { nameErr: [], priceErr: [], descErr: [], catErr: [], srcErr: [] },
             
         }
@@ -110,7 +157,6 @@ export default {
                 desc: selectedProduct.product_desc,
                 cat: selectedProduct.product_category,
                 src: selectedProduct.product_src,
-                dis: selectedProduct.product_discount,
                 sty: selectedProduct.product_style,
             };
             } catch (error) {
@@ -141,25 +187,25 @@ export default {
 
             // Name validate
             if (!this.productObj.name) {
-                this.errorObj.nameErr.push('Entering name is required');
+                this.errorObj.nameErr.push('Tên Sản Phẩm Không Được Để Trống');
             }
 
             // Price validate
             if (!this.productObj.price) {
-                this.errorObj.priceErr.push('Entering price is required');
+                this.errorObj.priceErr.push('Giá Sản Phẩm Không Được Để Trống');
             }
 
             // Desc validate
             if (!this.productObj.desc) {
-                this.errorObj.descErr.push('Selecting desc method is required');
+                this.errorObj.descErr.push('Mô Tả Sản Phẩm Không Được Để Trống');
             }
             // Cat validate
             if (!this.productObj.cat) {
-                this.errorObj.catErr.push('Selecting cat method is required');
+                this.errorObj.catErr.push('Phải Chọn Phân Loại Cho Sản Phẩm');
             }
             // Src validate
             if (!this.productObj.src) {
-                this.errorObj.srcErr.push('Selecting src image method is required');
+                this.errorObj.srcErr.push('Đường Dẫn Hình Ảnh Không Được Để Trống');
             }
         },
 
@@ -176,7 +222,6 @@ export default {
                     product_desc: this.productObj.desc,
                     product_category: this.productObj.cat,
                     product_src: this.productObj.src,
-                    product_discount: this.productObj.dis,
                     product_style: this.productObj.sty,
                 }
 
@@ -190,14 +235,16 @@ export default {
 };
 </script>
 
-<style>
-input {
+<style scoped>
+input, textarea {
     text-transform: none !important;
-}
-
-.container {
-  width: 500px;
-  margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: rgba(117, 0, 164, 0.58);
+    border: none;
+    border-radius: 20px;
+    margin-bottom: 15px;
 }
 
 .myform {
@@ -205,5 +252,15 @@ input {
   border-radius: 5px; /* Bo viền để làm mềm hơn */
   padding: 20px; /* Tạo khoảng cách giữa viền và nội dung form */
 }
+
+.container-add{
+    margin-left: 220px; 
+    margin-right: 20px; 
+    margin-top: 10px;
+    top: 0;
+    height: 98vh;  
+    opacity: 0.8;
+    border-radius: 20px;
+ }
 
 </style>

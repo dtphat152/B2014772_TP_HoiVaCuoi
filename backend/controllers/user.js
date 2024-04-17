@@ -4,7 +4,8 @@ import {
     getAllUser,
     getUserByEmail,
     getUserByID,
-    insertUser
+    insertUser,
+    updatePassModel
 } from "../models/UserModel.js";
 
 // get all Users
@@ -54,6 +55,16 @@ export const createAccount=(req,res)=>{
     });
 };
 
+export const updatePassController=(req,res)=>{
+    const data = req.body;
+    updatePassModel(data,(err,results)=> {
+        if (err) {
+            res.send(err);
+        }else {
+            res.json(results);
+        }
+    });
+};
 
 
 

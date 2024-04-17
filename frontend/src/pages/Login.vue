@@ -1,7 +1,6 @@
 <template>
     <div class="login-container text-center"> 
-            <h1 style="color: #990099;">Chào Mừng Bạn Đến Với TP Hỏi Và Cưới</h1>
-        <div class="login-form-container">
+        <div v-if="showLogin" class="login-form-container">
             <form id="loginForm" @submit="handleSubmit" novalidate autocomplete="off">
                 <h3>Đăng Nhập</h3>
 
@@ -10,6 +9,7 @@
                         <li v-for="error in errors" :key="error">{{ error }}</li>
                     </ul>
                 </div>
+
 
                 <div class="form-group">
                     <input type="email" id="uEmail" name="uEmail" class="form-control" placeholder="Email của bạn..."
@@ -26,8 +26,39 @@
                     style="background-color: #ef87aa; border-radius: 15px; font-weight: bold;">
                     <p>Bạn chưa có tài khoản? <router-link @click="scrollToTop()" to="/register" style="color: #ef87aa;">Tạo Mới
                         </router-link>
-                    </p>
+                    </p>         
+                </div>  
+                <div class="text-center" style="background-color: #990099;">
+                        <button style="background-color: #990099; font-weight: bold; color: #ef87aa;"
+                        @click="openResetPass()"><h4>Quên Mật Khẩu</h4></button>
                 </div>
+            </form>
+        </div>
+
+        <div v-if="!showLogin" class="login-form-container">
+            <form id="loginForm" @submit="sendForgotPass" novalidate autocomplete="off">
+                <h3>Quên Mật Khẩu</h3>
+                <h4 class="px-3">Chúng tôi sẽ gửi Mail cho bạn để thực hiện đặt lại mật khẩu.</h4>
+                <div v-if="errors.length" class="error-box">
+                    <ul>
+                        <li v-for="error in errors" :key="error">{{ error }}</li>
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" id="uEmail" name="uEmail" class="form-control" placeholder="Email của bạn..."
+                        v-model="loginObj.email" />
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Gửi Yêu Cầu" class="ounded-lg p-3 mt-2" 
+                    style="background-color: #ef87aa; border-radius: 15px; font-weight: bold;">        
+                </div>  
+                <div class="text-center" style="background-color: #990099;">
+                        <button style="background-color: #990099; font-weight: bold; color: #ef87aa;"
+                        @click="openResetPass()"><h4>Trở Về</h4></button>
+                </div>
+                <h3 v-if="sendSuccess">Vui lòng kiểm tra Mail!</h3>
             </form>
         </div>
     </div>
@@ -37,6 +68,8 @@
 <script>
 import axios from "axios";
 import { mapMutations } from "vuex";
+import CryptoJS from 'crypto-js';
+
 export default {
     name: 'Login',
 
@@ -45,6 +78,8 @@ export default {
             loginObj: { email: "", pass: "" },
             matchUser: undefined,
             errors: [],
+            showLogin: true,
+            sendSuccess: false,
         }
     },
 
@@ -55,6 +90,54 @@ export default {
             window.scrollTo(0, 0);
         },
 
+        openResetPass(){
+            this.showLogin = !this.showLogin;
+        },
+
+        async sendForgotPass(e) {
+            this.errors = [];
+
+            if (!this.loginObj.email) {
+                this.errors.push("Bạn phải nhập Email");
+            }
+            else {
+                if (!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(this.loginObj.email)) {
+                    this.errors.push('Email không hợp lệ');
+                }
+            }
+
+            if (!this.errors.length == 0) {
+                e.preventDefault();
+            }
+            else {
+                e.preventDefault();
+                try {
+                    let rsp = await axios.get('/users/' + this.loginObj.email);
+                    let user_id = rsp.data.user_id;
+                    console.log("user_id: " + user_id);
+
+                    const hashedData = CryptoJS.SHA256(this.loginObj.email).toString();
+                    console.log("Hash: " + hashedData);
+
+                    let data = {
+                        id: user_id,
+                        email: this.loginObj.email,
+                        resetToken: hashedData,
+                    };
+                    console.log("Data: ", JSON.stringify(data));
+                    this.sendSuccess = true;
+                    try {
+                        await axios.post(`/sendemail/reset-password`, data);
+                    } catch (error) {
+                        console.error("Error in send email reset password", error);
+                    }
+                } catch (error) {
+                    console.error("Error in sendForgotPass function:", error);
+                }
+            }
+        },
+
+
         async getMatchUser(email) {
             let data = await axios.get('/users/' + email);
             this.matchUser = data.data;
@@ -64,17 +147,16 @@ export default {
             this.errors = [];
 
             if (!this.loginObj.email) {
-                this.errors.push("Entering a email is required");
+                this.errors.push("Bạn phải nhập Email");
             }
             else {
                 if (!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(this.loginObj.email)) {
-                    this.errors.push('Email must be valid');
+                    this.errors.push('Email không hợp lệ');
                 }
             }
 
-
             if (!this.loginObj.pass) {
-                this.errors.push('Password is required');
+                this.errors.push('Mật Khẩu không được bỏ trống');
             }
 
             if (!this.errors.length == 0) {
@@ -84,7 +166,7 @@ export default {
                 e.preventDefault();
                 await this.getMatchUser(this.loginObj.email);
                 if (!this.matchUser) {
-                    this.errors.push("Incorrect email or password!")
+                    this.errors.push("Mật khẩu không đúng!")
                 }
                 else {
                     if (this.matchUser.user_password === this.loginObj.pass) {
@@ -93,7 +175,7 @@ export default {
                         this.$router.push("/");
                     }
                     else {
-                        this.errors.push("Incorrect email or password!")
+                        this.errors.push("Mật khẩu không đúng!")
                     }
                 }
             }

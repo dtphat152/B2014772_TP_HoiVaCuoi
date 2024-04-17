@@ -7,6 +7,8 @@ import {
     updateStatus,
     updateStatusCancelModel,
     updateNotes,
+    updateAddress,
+    updatePhone,
     cancelStatus,
     updateTotal
 } from "../models/BillStatusModel.js";
@@ -93,6 +95,28 @@ export const updateStatusCancelController=(req,res)=>{
 export const updateBillNotes=(req,res)=>{
     const data = req.body;
     updateNotes(data,(err,results)=> {
+        if (err) {
+            res.send(err);
+        }else {
+            res.json(results);
+        }
+    });
+};
+
+export const updateBillAddress=(req,res)=>{
+    const data = req.body;
+    updateAddress(data,(err,results)=> {
+        if (err) {
+            res.send(err);
+        }else {
+            res.json(results);
+        }
+    });
+};
+
+export const updateBillPhone=(req,res)=>{
+    const data = req.body;
+    updatePhone(data,(err,results)=> {
         if (err) {
             res.send(err);
         }else {
