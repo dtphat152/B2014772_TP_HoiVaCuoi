@@ -5,34 +5,34 @@
                 <h3 class="mb-2 mb-2 font-weight-bold" style="color: #d35ea4;">{{ category }}</h3> 
                 <div v-for="(f, index) in filterProducts" :key="index">
                     <div v-if="f.product_category === category" 
-                    class="row mb-1 d-flex justify-content-between align-items-center" style="background-color: #990099; margin-left: 10px; border-radius: 10px;">
+                    class="row mb-1 d-flex justify-content-between align-items-center" style="background-color: #d9d9d9; margin-left: 10px; border-radius: 10px;">
                         
                         <div class="col-md-2 col-lg-2 col-xl-2" style="padding-left: 0px;">
                             <img :src="require(`../assets/images/${f.product_src}`)" alt="" class="cart-product-img" 
                             style="width: 100px; border-radius: 10px; ">
                         </div>
                         <div class="col-md-3 col-lg-3 col-xl-4">
-                            <h4 class="font-weight-bold mb-0" style="color: white;">{{ f.product_name }}</h4>
-                            <h6 class="mb-0" style="color: white;">Đơn giá: {{ formatCurrency(f.product_price) }}</h6>
+                            <h4 class="font-weight-bold mb-0" style="color: #d35ea4;">{{ f.product_name }}</h4>
+                            <h6 class="mb-0" style="color: black; font-size: 15px;">Đơn giá: {{ formatCurrency(f.product_price) }}</h6>
                         </div>
                         <div class="col-md-3 col-lg-2 col-xl-2">
                             <input type="number" id="number" v-model="item_qty[index]" @change="onQtyChange(index,f.product_name)"
                             class="form-control " min="0" max="1000" 
-                            style="border: none; text-align: center; background:rgba(0, 0, 0, 0.3); border-radius: 10px; color: white;">
+                            style="border: none; text-align: center; background:white; border-radius: 10px; color: black; font-weight: 900;">
                         </div>
                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                             <button class="btn font-weight-bold" @click="removeBtn(f.product_name)" 
-                             style="background-color: rgba(0, 0, 0, 0.3); color: aliceblue; border-radius: 10px;">
+                             style="background-color: white; color: black; border-radius: 10px;">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
                         <hr class="my-4">
                     </div>
                     
-                    <div v-if="f.product_category === category" class="row mb-5" style="background-color: #990099; margin-left: 10px; border-radius: 10px;">
+                    <div v-if="f.product_category === category" class="row mb-5" style="background-color: #d9d9d9; margin-left: 10px; border-radius: 10px;">
                         <div class="form-group col-10">
                             <input type="text" placeholder="Ghi chú..." class="form-control" 
-                            style="color: white; border: none; font-weight: bold; background-color: #990099;" v-model="itemNotes[index]">
+                            style="color: black; border: none; font-weight: bold; background-color: #d9d9d9;" v-model="itemNotes[index]">
                         </div>
                         <div class="col-2 text-right">
                         </div>

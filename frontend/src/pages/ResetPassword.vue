@@ -1,5 +1,21 @@
 <template>
-    <div class="reset-pass-container">
+    <div v-if="!checkOTP" class="reset-pass-container">
+        <div class="reset-pass-form-container">
+            <form id="resetOTPForm" @submit="handleSubmitOTP" novalidate autocomplete="off">
+                <h3>Đổi Mật Khẩu</h3>
+                <div class="form-group">
+                    <label for="OTP">OTP:</label> 
+                    <input type="text" name="OTP" placeholder="Mã OTP đính kèm trong Mail của bạn" id="OTP"
+                        class="form-control" v-model="this.otpInput" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Kiểm Tra" class="p-3 mt-2" 
+                        style="background-color: #ef87aa; border-radius: 15px; font-weight: bold;" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div v-if="checkOTP" class="reset-pass-container">
         <div class="reset-pass-form-container">
             <form id="resetPassForm" @submit="handleSubmit" novalidate autocomplete="off">
                 <h3>Đổi Mật Khẩu</h3>
@@ -35,19 +51,36 @@ export default {
 
     data() {
         return {
+            otpInput: '',
             pass: '',
             confirm: '',
+            checkOTP: false,
             errorObj: { passErr: [], confirmErr: [], },
             user_id: '',
         }
     },
 
     created() {
-        const hash = this.$route.params.hash;
+        const hash = this.$route.params.token;
         this.user_id = hash.substring(0,1);
     },
 
     methods: {
+
+        async handleSubmitOTP(e) {
+            e.preventDefault();
+            console.log('otp: ',this.user_id);
+            let rsp = await axios.get(`/resetpass/${this.user_id}`);
+            if (rsp.data.length > 0) {
+                let otp = rsp.data[0].OTP;
+                console.log('otp: ',otp);
+                console.log('otpInput',this.otpInput);
+                if ( this.otpInput === otp ) {
+                    this.checkOTP = true;
+                } else window.confirm('OTP Không Chính Xác');
+            } else window.confirm('OTP Không Chính Xác');
+        },
+
 
         async handleSubmit(e) {
             e.preventDefault();
@@ -83,7 +116,7 @@ export default {
     transform: translate(-50%, 0%);
     max-width: 70rem;
     width: 100%;
-    background: #990099; 
+    background: #ffb6c1; 
     opacity: 0.8;
     box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.05);
     border: 0.1rem solid rgba(0, 0, 0, 0.2);

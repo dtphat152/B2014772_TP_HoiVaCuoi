@@ -1,26 +1,13 @@
 // import functions from User model
 
 import {
-    getDateNoBill,
+    getDate,
     updateDate,
     insertDate,
     deleteDate,
-    deleteTimeAndQuantityModel
-} from "../models/DateModel.js";
+} from "../models/DateBillModel.js";
 
-export const getDateNoBillController=(req,res)=>{
-    const id = req.params.id;
-    getDateNoBill(id,(err,results)=> {
-        if (err) {
-            res.send(err);
-        }else {
-            res.json(results);
-        }
-    });
-};
-
-// get all Items
-export const getDateByID=(req,res)=>{
+export const getDateBillController=(req,res)=>{
     const id = req.params.id;
     getDate(id,(err,results)=> {
         if (err) {
@@ -31,8 +18,10 @@ export const getDateByID=(req,res)=>{
     });
 };
 
-// create Date
-export const insertDateByID=(req,res)=>{
+
+
+
+export const insertDateBillController=(req,res)=>{
     const data = req.body;
     insertDate(data,(err,results)=> {
         if (err) {
@@ -44,8 +33,8 @@ export const insertDateByID=(req,res)=>{
 };
 
 
-// update Item
-export const updateDateByID=(req,res)=>{
+
+export const updateDateBillController=(req,res)=>{
     const data = req.body;
     updateDate(data,(err,results)=> {
         if (err) {
@@ -56,19 +45,9 @@ export const updateDateByID=(req,res)=>{
     });
 };
 
-// delete all items in cart
-export const deleteDateByID=(req,res)=>{
-    deleteDate(req.params.id,(err,results)=> {
-        if (err) {
-            res.send(err);
-        }else {
-            res.json(results);
-        }
-    });
-};
 
-export const deleteTimeAndQuantityController=(req,res)=>{
-    deleteTimeAndQuantityModel(req.params.id,(err,results)=> {
+export const deleteDateBillController=(req,res)=>{
+    deleteDate(req.params.id,(err,results)=> {
         if (err) {
             res.send(err);
         }else {

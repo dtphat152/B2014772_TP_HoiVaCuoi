@@ -1,25 +1,25 @@
 <template>
     <div class="container_combo">
 
-        <div class="p-5 mx-1 row" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1;">
+        <div class="p-5 mx-1 row" style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999;">
             <h1>Combo Manager</h1>
         </div>
         <br>
 
-        <div class="p-5" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1; height: 785px; ">
+        <div class="p-5" style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999; height: 785px; ">
             <div  v-if="!showProductOrder" >
                 <div class="row d-flex justify-content-between">
                     <div class="col"></div>
                     <div class="col text-center">
-                        <h2 style="color: #d35ea4; font-weight: bold;">Edit Combo</h2>
+                        <h2 style="color: #d35ea4; font-weight: 900;">Edit Combo</h2>
                     </div>
                     <div class="col text-right">
                         <button @click="showornot()" title="Open ProductOrder" class="btn pt-1 mr-2" 
-                            style="background-color: #40bf77;border-radius: 15px; font-weight: bold;"><h4>Thêm Món</h4>
+                            style="background-color: #40bf77;border-radius: 15px; font-weight: bold;"><h4 style="font-weight: 900;">Thêm Món</h4>
                         </button>
                         <router-link to="/admin/combomanager">
                             <button class="btn pt-1" style="background-color: #DC143C; border-radius: 15px;">
-                                <h4>Trở Về</h4>
+                                <h4 style="font-weight: 900;">Trở Về</h4>
                             </button>
                             
                         </router-link>

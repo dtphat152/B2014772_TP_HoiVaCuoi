@@ -4,8 +4,11 @@ import {
     getAllUser,
     getUserByEmail,
     getUserByID,
+    getAllfromUserModel,
     insertUser,
-    updatePassModel
+    updatePassModel,
+    updateStatusModel,
+    updateUserModel
 } from "../models/UserModel.js";
 
 // get all Users
@@ -43,6 +46,17 @@ export const showUserbyID=(req,res)=>{
     });
 };
 
+export const getAllfromUserController=(req,res)=>{
+    const id = req.params.id;
+    getAllfromUserModel(id,(err,results)=> {
+        if (err) {
+            res.send(err);
+        }else {
+            res.json(results);
+        }
+    });
+};
+
 // create user
 export const createAccount=(req,res)=>{
     const data = req.body;
@@ -66,5 +80,26 @@ export const updatePassController=(req,res)=>{
     });
 };
 
+export const updateStatusController=(req,res)=>{
+    const data = req.body;
+    updateStatusModel(data,(err,results)=> {
+        if (err) {
+            res.send(err);
+        }else {
+            res.json(results);
+        }
+    });
+};
+
+export const updateUserController=(req,res)=>{
+    const data = req.body;
+    updateUserModel(data,(err,results)=> {
+        if (err) {
+            res.send(err);
+        }else {
+            res.json(results);
+        }
+    });
+};
 
 

@@ -9,7 +9,10 @@
                         <li v-for="error in errors" :key="error">{{ error }}</li>
                     </ul>
                 </div>
-
+                <div class="form-group">
+                    <input type="text" id="adminKey" name="adminKey" class="form-control"
+                        placeholder="enter admin user name" v-model="adminObj.name" />
+                </div>
                 <div class="form-group">
                     <input type="password" id="uPass" name="uPass" class="form-control"
                         placeholder="enter admin password" v-model="adminObj.pass" />
@@ -31,8 +34,9 @@ export default {
 
     data() {
         return {
-            adminObj: { pass: "" },
-            key: "9",
+            adminObj: { name:"", pass: "" },
+            keyname: "p",
+            keypass: "p",
             errors: [],
         }
     },
@@ -51,7 +55,7 @@ export default {
             }
             else {
                 e.preventDefault();
-                if (this.key === this.adminObj.pass) {
+                if (this.adminObj.pass === this.keypass && this.adminObj.name === this.keyname) {
                     this.setAdmin("admin");
                     this.$router.push("/admin/adminHome");
                 }
@@ -75,10 +79,10 @@ export default {
 }
 
 .admin-container .admin-form-container form {
-    background: #990099; 
+    background: #ffb6c1; 
     opacity: 0.8;
     position: absolute;
-    top: 50%;
+    top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 40rem;

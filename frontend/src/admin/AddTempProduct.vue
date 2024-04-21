@@ -1,14 +1,14 @@
 <template>
     <div class="container-add">
         <div class="row p-5 mx-1  d-flex justify-content-between" 
-            style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1;">
+            style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999;">
             <div class="col">
                 <h1 style="font-weight: bold; color: #d35ea4;">Add Temp Product</h1>
             </div>
             <div class="col text-right">
                 <router-link to="productmanager">
-                    <button class="btn" style="background-color: rgba(117, 0, 164, 0.58); border-radius: 20px; color: rgba(139, 131, 143, 0.8);">
-                        <h3>Trở Về</h3>
+                    <button class="btn" style="background-color: #999999; border-radius: 20px; color: black;">
+                        <h3 style="font-weight: 900;">Trở Về</h3>
                     </button>
                 </router-link>
             </div>
@@ -18,7 +18,7 @@
             <div class="col-10">
                 <div class="row mx-1">
                     <div class="col-12 checkout-form-container" 
-                        style="background-color: rgba(117, 0, 164, 0.38); border: none; border-radius: 20px;">
+                        style="background-color: #ffe6ee;box-shadow: 0 1px 1px #ffb3cc; border: none; border-radius: 20px;">
                         <form @submit="handleSubmit" autocomplete="off" class="myform" style="border: none;">
                             <div class="form-group details-group">
                                 <div class="row"></div>
@@ -30,7 +30,7 @@
                                     </div>
                                     <div class="col-11">
                                         <select class="form-control" id="sel1" v-model="productObj.cat" 
-                                            style="background-color: rgba(117, 0, 164, 0.58); border: none; border-radius: 20px; color: white;
+                                            style="background-color: #f2f2f2;box-shadow: 0 1px 1px #999999; border: none; border-radius: 20px; color: black;
                                             font-weight: bold; font-size: 16px;">
                                             <option>Khai Vị</option>
                                             <option>Món Chính</option>
@@ -73,12 +73,12 @@
                     </div>
                 </div>
                 <br>
-                <div class="row p-5 mx-1" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); height: 295px;">
+                <div class="row p-5 mx-1" style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999; height: 295px;">
                     
                 </div>
             </div>
             <div class="col-2">
-                <div class="row p-5 mr-1" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); height: 785px;">
+                <div class="row p-5 mr-1" style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999; height: 785px;">
                     <div class="col-12">
                         <h5 style="color: Crimson; font-weight: bold; margin-bottom: 15px;" v-if="errorObj.catErr.length > 0">
                             {{ errorObj.catErr[0] }}
@@ -200,8 +200,8 @@ input, textarea {
     text-transform: none !important;
     font-size: 16px;
     font-weight: bold;
-    color: white;
-    background-color: rgba(117, 0, 164, 0.58);
+    color: black;
+    background-color: #f2f2f2;box-shadow: 0 1px 1px #999999;
     border: none;
     border-radius: 20px;
     margin-bottom: 15px;

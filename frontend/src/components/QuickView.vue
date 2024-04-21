@@ -77,18 +77,9 @@ export default {
         
         async addToCart(name) {
             if (this.user) {
-            
                 let existItem = await axios.get('/cartItem/' + parseInt(this.user.user_id) + '/' + parseInt(this.product));
                 if (existItem.data.length > 0) {
-                    let data = {
-                        user_id: parseInt(this.user.user_id),
-                        product_id: parseInt(this.product),
-                        item_qty: parseInt(this.qty) + parseInt(existItem.data[0].item_qty),
-                        item_notes: '',
-                    };
-                    await axios.put("/cartItem/", data)
-                    this.$refs.alert.showAlert('success', 'Cám Ơn!', 'Đã thêm '+name+' vào Giỏ!');
-
+                    this.$refs.alert.showAlert('warning', 'Xin Lỗi!', 'Bạn Đã thêm '+name+' vào giỏ trước đó!');
                 } else {
                     let data = {
                         user_id: parseInt(this.user.user_id),
@@ -97,10 +88,19 @@ export default {
                         item_notes: '',
                     };
                     await axios.post("/cartItem/", data)
-                    this.$refs.alert.showAlert('success', 'Cám Ơn!', 'Sản Phẩm được thêm thành công!')
+                    let data1 = {
+                        product_buy: 1,
+                    }
+                    await axios.post("/cartItem/", data)
+                    try {
+                        await axios.put(`/productsbuy/${this.product}`, data1)
+                    } catch (error) {
+                        console.error('Error in put product buy ',error);
+                    }
+                    this.$refs.alert.showAlert('success', 'Cám Ơn!', 'Đã thêm '+name+' vào Giỏ!')
                 }
             } else  this.$refs.alert.showAlert('error', 'Xin Lỗi!', 'Bạn chưa đăng nhập!');
-        }
+        },
     },
 
     components: {
@@ -138,7 +138,7 @@ export default {
 .quick-view .quick-view-inner {
     width: 80%;
     height: 80%;
-    background-color: #ffccff;
+    background-color: #d9d9d9;
     padding: 32px;
     border: none; /* Clear border */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow for better visibility */

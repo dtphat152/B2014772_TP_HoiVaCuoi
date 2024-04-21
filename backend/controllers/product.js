@@ -6,6 +6,9 @@ import {
     insertProduct,
     updateProductById,
     deleteProductById,
+    updateProductBuyModel,
+    getProductsTop5,
+    getProductsBot5
 } from "../models/ProductModel.js";
 
 // get all Products
@@ -56,6 +59,39 @@ export const updateProduct=(req,res)=>{
     });
 };
 
+export const updateProductBuyController=(req,res)=>{
+    const data = req.body;
+    const id = req.params.id;
+    console.log('data', data.product_buy);
+    console.log('id', id);
+    updateProductBuyModel(data,id,(err,results)=> {
+        if (err) {
+            res.send(err);
+        }else {
+            res.json(results);
+        }
+    });
+};
+
+export const getProductsTop5Controller=(req,res)=>{
+    getProductsTop5((err,results)=> {
+        if (err) {
+            res.status(500).json({ error: "Lỗi Nội Server" });
+        }else {
+            res.json(results);
+        }
+    });
+};
+
+export const getProductsBot5Controller=(req,res)=>{
+    getProductsBot5((err,results)=> {
+        if (err) {
+            res.status(500).json({ error: "Lỗi Nội Server" });
+        }else {
+            res.json(results);
+        }
+    });
+};
 
 // delete Product
 export const deleteProduct=(req,res)=>{

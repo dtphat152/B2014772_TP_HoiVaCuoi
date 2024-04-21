@@ -2,7 +2,7 @@
     <div class="login-container text-center"> 
         <div v-if="showLogin" class="login-form-container">
             <form id="loginForm" @submit="handleSubmit" novalidate autocomplete="off">
-                <h3>Đăng Nhập</h3>
+                <h1 style="font-weight: 900;color: #d35ea4;">Đăng Nhập</h1>
 
                 <div v-if="errors.length" class="error-box">
                     <ul>
@@ -23,14 +23,14 @@
 
                 <div class="form-group">
                     <input type="submit" value="Đăng Nhập" class="ounded-lg p-3 mt-2" 
-                    style="background-color: #ef87aa; border-radius: 15px; font-weight: bold;">
-                    <p>Bạn chưa có tài khoản? <router-link @click="scrollToTop()" to="/register" style="color: #ef87aa;">Tạo Mới
+                    style="background-color: #ef87aa; border-radius: 15px; font-weight: 900; font-size: 15px;">
+                    <p style="color: #ef87aa;">Bạn chưa có tài khoản? <router-link @click="scrollToTop()" to="/register" style="color: white;">Tạo Mới
                         </router-link>
                     </p>         
                 </div>  
-                <div class="text-center" style="background-color: #990099;">
-                        <button style="background-color: #990099; font-weight: bold; color: #ef87aa;"
-                        @click="openResetPass()"><h4>Quên Mật Khẩu</h4></button>
+                <div class="text-center" style="background-color: #ffb3cc;">
+                        <button style="background-color: #ffb3cc; font-weight: bold; color: black; font-size: 1.5rem;"
+                        @click="openResetPass()"><h4 style="font-weight: 900;">Quên Mật Khẩu</h4></button>
                 </div>
             </form>
         </div>
@@ -52,11 +52,11 @@
 
                 <div class="form-group">
                     <input type="submit" value="Gửi Yêu Cầu" class="ounded-lg p-3 mt-2" 
-                    style="background-color: #ef87aa; border-radius: 15px; font-weight: bold;">        
+                    style="background-color: #ef87aa; border-radius: 15px; font-weight: 900; font-size: 15px;">        
                 </div>  
-                <div class="text-center" style="background-color: #990099;">
-                        <button style="background-color: #990099; font-weight: bold; color: #ef87aa;"
-                        @click="openResetPass()"><h4>Trở Về</h4></button>
+                <div class="text-center" style="background-color: #ffb3cc;">
+                        <button style="background-color: #ffb3cc; font-weight: bold; color: black;"
+                        @click="openResetPass()"><h4 style="font-weight: 900;">Trở Về</h4></button>
                 </div>
                 <h3 v-if="sendSuccess">Vui lòng kiểm tra Mail!</h3>
             </form>
@@ -69,6 +69,7 @@
 import axios from "axios";
 import { mapMutations } from "vuex";
 import CryptoJS from 'crypto-js';
+import dayjs from 'dayjs';
 
 export default {
     name: 'Login',
@@ -114,19 +115,48 @@ export default {
                 try {
                     let rsp = await axios.get('/users/' + this.loginObj.email);
                     let user_id = rsp.data.user_id;
-                    console.log("user_id: " + user_id);
+                    
+                    const currentDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
+                    const hashedData = CryptoJS.SHA256(currentDate).toString();
+                    
+                    let currentTimeVN  = new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' });
+                    let currentTime = new Date(currentTimeVN);
+                    currentTime.setMinutes(currentTime.getMinutes() + 2);
+                    // Định dạng thời gian theo định dạng mong muốn (ví dụ: 'yyyy-MM-dd HH:mm:ss')
+                    let formattedTime = currentTime.toISOString().slice(0, 19).replace('T', ' ');
 
-                    const hashedData = CryptoJS.SHA256(this.loginObj.email).toString();
-                    console.log("Hash: " + hashedData);
+                    const OTP = Math.floor(100000 + Math.random() * 900000);
 
                     let data = {
                         id: user_id,
                         email: this.loginObj.email,
                         resetToken: hashedData,
+                        OTP: OTP
                     };
-                    console.log("Data: ", JSON.stringify(data));
-                    this.sendSuccess = true;
+
+                    let data1 = {
+                        user_id: user_id,
+                        resetToken: hashedData,
+                        OTP: OTP,
+                        timeLimit: formattedTime
+                    };
+                    
                     try {
+                        
+                        console.log('ID ',data1.user_id);
+                        console.log('resetToken ',data1.resetToken);
+                        console.log('OTP ',data1.OTP);
+                        console.log('timeLimit ',data1.timeLimit);
+                        try {
+                            let rsp = await axios.get(`/resetpass/${user_id}`);
+                            if (rsp.data.length > 0) {
+                                await axios.put(`/resetpass/`,data1);
+                            } else await axios.post(`/resetpass/`,data1);
+                            console.log('check ');
+                        } catch (error) {
+                            console.error("Error in submit reset data", error);
+                        }
+                        this.sendSuccess = true;
                         await axios.post(`/sendemail/reset-password`, data);
                     } catch (error) {
                         console.error("Error in send email reset password", error);
@@ -196,7 +226,7 @@ export default {
 }
 
 .login-container .login-form-container form {
-    background: #990099; 
+    background: #ffb3cc; 
     opacity: 0.8;
     position: absolute;
     top: 40%;
@@ -223,11 +253,11 @@ export default {
 .login-container .login-form-container form .form-control {
     margin: .7rem 0;
     border-radius: 15px;
-    background: rgba(0, 0, 0, 0.3);
+    background: #f2f2f2;
     padding: 2rem 1.2rem;
     font-size: 1.6rem;
-    color: white;
-    /* font-weight: bold; */
+    color: black;
+    font-weight: 900;
     text-transform: none;
     width: 100%;
     border: none;

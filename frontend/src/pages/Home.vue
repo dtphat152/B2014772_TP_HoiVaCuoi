@@ -12,7 +12,7 @@
                 <div class="col-4">
                     <h1>TP Hỏi và Cưới</h1>
                     <hr class="my-4" style="background-color: #ff69b4;">
-                    <h5>Chúng tôi hiểu rằng mỗi cặp đôi mang trong mình những mong muốn và mong đợi riêng biệt về ngày cưới của mình. Đó là lý do tại sao chúng tôi cam kết cung cấp dịch vụ tùy chỉnh và chuyên nghiệp, đảm bảo rằng mỗi chi tiết trong ngày cưới của bạn được tổ chức một cách hoàn hảo và đặc biệt. </h5>
+                    <h5 style="font-weight: 900; color: #808080;">Chúng tôi hiểu rằng mỗi cặp đôi mang trong mình những mong muốn và mong đợi riêng biệt về ngày cưới của mình. Đó là lý do tại sao chúng tôi cam kết cung cấp dịch vụ tùy chỉnh và chuyên nghiệp, đảm bảo rằng mỗi chi tiết trong ngày cưới của bạn được tổ chức một cách hoàn hảo và đặc biệt. </h5>
                     <div class="row" style="padding-top: 50px !important;">
                         <div class="col-2 text-center">
                             <router-link @click="scrollToTop()" to="/booking">
@@ -74,7 +74,7 @@
             <div class="row">
                 <div class="col2 offset-10">
                     <button @click="inc()" style="background: none; border: none;" class="zoom-light">
-                        <span class="carousel-control-next-icon" style="background-color: #b300b3;padding: 30px; border-radius: 20px; opacity: 0.6;"></span>
+                        <span class="carousel-control-next-icon" style="background-color: #ff99a8;padding: 30px; border-radius: 20px; opacity: 0.6;"></span>
                     </button>
                 </div>
             </div>
@@ -183,24 +183,24 @@ h1 {
     font-weight: bold;
     font-size: 50px;
     text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7); /* Tạo hiệu ứng chữ nổi */
-    -webkit-text-stroke: 3px rgb(234, 216, 216); /* Viền chữ màu trắng */
+    
 }
 
 
 h5 {
     padding-top: 40px;
-    color: white;
+    color: black;
     font-weight: bold;
 }
 
 .fa1 {
-    background-color: #660066;
+    background-color: #ff99a8;
     text-align: center;
     padding: 5px;
     border-radius: 25px;
     padding: 10px;
     font-size: 50px;
-    color: white;
+    color: #e6e6e6;
     opacity: 0.4;
 }
 
@@ -210,12 +210,12 @@ h5 {
 }
 
 rounded-circle text-center p-2 {
-    background-color: #660066;
+    background-color: #ff99a8;
     padding: 5px;
 }
 
 .fa2 {
-    background-color: #660066;
+    background-color: #ff99a8;
     text-align: center;
     padding: 5px;
     border-radius: 25px;
@@ -223,7 +223,7 @@ rounded-circle text-center p-2 {
     font-size: 20px;
     width: 40px;
     height: 40px;
-    color: white;
+    color: #e6e6e6;
     opacity: 0.4;
 }
 

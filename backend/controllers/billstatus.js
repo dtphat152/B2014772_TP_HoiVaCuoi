@@ -10,7 +10,8 @@ import {
     updateAddress,
     updatePhone,
     cancelStatus,
-    updateTotal
+    updateTotal,
+    getBillFromDateToDateModel
 } from "../models/BillStatusModel.js";
 
 // get newest Bill Status
@@ -146,6 +147,21 @@ export const updateBillTotal = (req, res) => {
         } else {
             console.log('Bill total updated successfully');
             res.status(200).json({ message: 'Bill total updated successfully' });
+        }
+    });
+};
+
+export const getBillFromDateToDateController=(req,res)=>{
+    const data = req.body;
+    console.log('controller');
+    console.log('start ',req.body.start);
+    console.log('end ',req.body.end);
+    
+    getBillFromDateToDateModel(data,(err,results)=> {
+        if (err) {
+            res.send(err);
+        }else {
+            res.json(results);
         }
     });
 };

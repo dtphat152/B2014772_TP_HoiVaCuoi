@@ -145,3 +145,19 @@ export const cancelStatus = (id,result) => {
         }
     });
 };
+
+export const getBillFromDateToDateModel = (data,result) => {
+    db.query(`SELECT * 
+            FROM billstatus 
+            WHERE STR_TO_DATE(SUBSTRING_INDEX(bill_when, ' - ', 1), '%d/%m/%Y') >= ? 
+            AND STR_TO_DATE(SUBSTRING_INDEX(bill_when, ' - ', 1), '%d/%m/%Y') <= ?;`,[data.start, data.end], (err,results)=> {
+        if (err){
+            console.log(err);
+            result(err,null);
+        }else{
+            console.log('Date: ',data.start);
+            console.log(data.end);
+            result(null,results);
+        }
+    });
+};

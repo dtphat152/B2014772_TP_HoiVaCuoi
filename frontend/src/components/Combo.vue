@@ -4,14 +4,14 @@
     <div class="row" >
       <div class="col-1 d-flex align-items-center justify-content-center">
         <button @click="prevCombo" style="background: none; border: none; ">
-          <span class="carousel-control-prev-icon" style="background-color: #b300b3; padding: 25px; border-radius: 15px;"></span>
+          <span class="carousel-control-prev-icon" style="background-color: #d9d9d9; box-shadow: 0 1px 1px #999999; padding: 25px; border-radius: 15px;"></span>
         </button> 
       </div>
-      <div class="col-10" style="background-color: #990099; border-radius: 100px; opacity: 0.8; width: 80%;">
+      <div class="col-10" style="background-color: #d9d9d9; box-shadow: 0 1px 1px #999999; border-radius: 100px; opacity: 0.8; width: 80%;">
         <br>
         <div class="row align-content-center">
           <div class="col-12">
-            <div class="container zoom-light" style="border-radius: 100px; background-color: #b300b3; width: 60%;">
+            <div class="container zoom-light" style="border-radius: 100px; background-color: #ffccd4; width: 60%; box-shadow: 0 1px 1px #ffb3be">
               <!-- Phần tử đầu tiên -->
               <br>
               <div class="row justify-content-center mb-5">
@@ -48,13 +48,13 @@
             
             <div class="row d-flex justify-content-center" v-for="(f, index) in sortedComboDetails" :key="index" >
               <div class="col text-right">
-                <h4 style="color: white; font-weight: bold;"> {{ f.product_category }} : </h4>
+                <h4 style="color: black; font-weight: bold;"> {{ f.product_category }} : </h4>
               </div>
               <div class="col text-center ">
-                <h4 style="color: white; font-weight: bold;">: {{ f.product_name }} : </h4>
+                <h4 style="color: black; font-weight: bold;">: {{ f.product_name }} : </h4>
               </div>
               <div class="col text-left">
-                <h4 style="color: white; font-weight: bold;">: {{ formatCurrency(f.product_price) }}</h4>
+                <h4 style="color: black; font-weight: bold;">: {{ formatCurrency(f.product_price) }}</h4>
               </div>
             </div>
             <br>
@@ -62,17 +62,17 @@
             <div>
               <div class="row d-flex justify-content-center"> 
                 <div class="col-8 text-center ">
-                  <h4 style="color: white; font-weight: bold;">{{ currentComboDesc() }}</h4>
+                  <h4 style="color: #595959; font-weight: bold;">{{ currentComboDesc() }}</h4>
                 </div>
               </div> 
               <br>
               <div class="row justify-content-center">
-                <h3 style="color: white; font-weight: bold;"> Giá: {{ formatCurrency(currentComboPrice()) }}</h3>
+                <h3 style="color: #FF0099; font-weight: bold;"> Giá: {{ formatCurrency(currentComboPrice()) }}</h3>
               </div>
               <div class="row justify-content-center">
                 <button @click="addToCart()" type="button" class="btn btn-lg font-weight-bold" 
                   style="background-color: #FFC0CB; color: black; border-radius: 10px;">
-                  Add Combo
+                  Thêm Vào Giỏ
                 </button>
               </div>
               <br>
@@ -83,7 +83,7 @@
       </div>
       <div class="col-1 d-flex align-items-center justify-content-center">
         <button @click="nextCombo" style="background: none; border: none;" class="zoom-light">
-          <span class="carousel-control-next-icon" style="background-color: #b300b3;padding: 25px; border-radius: 15px;"></span>
+          <span class="carousel-control-next-icon" style="background-color: #d9d9d9; box-shadow: 0 1px 1px #999999; padding: 25px; border-radius: 15px;"></span>
         </button>
       </div>
     </div>

@@ -1,80 +1,93 @@
 <template>
     <div class="container_order" >
-        <div class="p-5" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1;">
-            <h1>Orders</h1>
-            <h3 style="padding: 10px; background-color:#ffe6ea; border-radius: 15px;">
-                <span :class="{ 'text-danger pr-5': orderCounts[1] }">
-                    {{ orderCounts[1] ? 'Đơn Mới: ' + orderCounts[1] + '  ' : '' }}
-                </span>
-                <span :class="{ 'pr-5': orderCounts[2] }">
-                    {{ orderCounts[2] ? 'Đang Chờ Cọc: ' + orderCounts[2] + '  ' : '' }}
-                </span>
-                <span :class="{ 'pr-5': orderCounts[3] }">
-                    {{ orderCounts[3] ? 'Đang Thực Hiện: ' + orderCounts[3] + '  ' : '' }}
-                </span>
-                <span :class="{ 'text-success pr-5': orderCounts[4] }">
-                    {{ orderCounts[4] ? 'Đã Hoàn Thành: ' + orderCounts[4] + '  ' : '' }}
-                </span>
-                
-            </h3>
+        <div class="row p-5" style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999; margin: 0 1px;">
+            <div class="col-4">
+                <h1>Orders</h1>
+            </div>
+            <div class="col-6">
+                <div class="row" style="padding: 10px; background-color:#ffe6ea; border-radius: 15px;">
+                    <div class="col" :style="{ 'text-danger pr-5': orderCounts[1] }">
+                        <h5 style="font-weight: 900; text-align: center;">{{ 'Đơn Mới: ' + orderCounts[1] }}</h5>
+                    </div>
+                    <div class="col" :style="{ 'pr-5': orderCounts[2] }">
+                        <h5 style="font-weight: 900; text-align: center;">{{'Đang Chờ Cọc: ' + orderCounts[2] }}</h5>
+                    </div>
+                    <div class="col" :style="{ 'pr-5': orderCounts[3] }">
+                        <h5 style="font-weight: 900; text-align: center;">{{'Đang Thực Hiện: ' + orderCounts[3] }}</h5>
+                    </div>
+                    <div class="col" :style="{ 'text-success pr-5': orderCounts[4] }">
+                        <h5 style="font-weight: 900; text-align: center;">{{ 'Đã Hoàn Thành: ' + orderCounts[4] }}</h5>
+                    </div>
+                </div>
+            </div>
         </div>
         <br>
-        <div class="p-5" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1; height: 740px;">
+        <div class="p-5" style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999; height: 785px;">
             <!-- PROJECT TABLE -->
-            <div style="overflow-y: auto; height: 700px;">
+            <div style="overflow-y: auto; height: 720px;">
                 <div style="width: 95%; margin-left: 2%;">
                     <div v-for="(b) in filterBills.slice().reverse()" :key="b.bill_id" >
-                        <div class="row" :style="{ 'background-color': b.bill_status === 4 ? '#990099' : b.bill_status === 1 ? '#ff00ff' : '#cc00cc', 
-                            'height': 'auto', 'margin-top': '5px', 'border-radius' : '15px' }">
+                        <div class="row" :style="{ 'background-color': b.bill_status === 4 ? '#ffe6ee' : b.bill_status === 1 ? '#ff6699' : b.bill_status === 2 ? '#ff99bb':'#ffb3cc', 
+                            'height': 'auto', 'margin-top': '10px', 'border-radius' : '15px', 'box-shadow' : '0 1px 1px #999999' }">
                             <div class="col-1 d-flex align-items-center justify-content-center"
                                 :style="{ 'color': b.bill_status === 4 ? '#00FF00' : b.bill_status === 1 ? '#FF0000' : ''}">
-                                <h5 style="font-weight: bold;">{{ avaiableStatus[b.bill_status] }}</h5>
+                                <h5 style="font-weight: 900;">{{ avaiableStatus[b.bill_status] }}</h5>
                             </div>
                             <div class="col-10 pt-3">
                                 <div class="row">
                                     <div class="col-1 text-right">
                                         <button class="btn">
-                                            <h5 style="font-weight: bold;">#{{ b.bill_id }}</h5>
+                                            <h5 style="font-weight: 900;">#{{ b.bill_id }}</h5>
                                         </button>
                                     </div>
                                     <div class="col-3">
                                         <button class="btn pl-0">
-                                            <h5 style="font-weight: bold;">{{ b.userName }}</h5>
+                                            <h4 style="font-weight: 900;">{{ b.userName }}</h4>
                                         </button>
                                     </div>
                                     <div class="col-8 text-right">
-                                        <h6 style="font-weight: bold;">{{ b.bill_when }}</h6>
+                                        <h5 style="font-weight: 900;">{{ b.bill_when }}</h5>
                                     </div>
                                 </div>
                                 <div class="row py-1">
                                     <div class="col-1 offset-1">
-                                        <h6 style="font-weight: bold;">{{ b.bill_phone }}</h6>
+                                        <h5 style="font-weight: 900;">{{ b.bill_phone }}</h5>
                                     </div>
                                     <div class="col-2">
-                                        <h6 style="font-weight: bold;"> {{ b.userDate }}</h6>
+                                        <h5 style="font-weight: 900; text-align: center;"> {{ b.userDate }}</h5>
                                     </div>
                                     <div class="col-4">
-                                        <h6 style="font-weight: bold;">{{ b.bill_address }}</h6>
+                                        <h5 style="font-weight: 900;">{{ b.bill_address }}</h5>
                                     </div>
                                     <div class="col-4 text-right">
-                                        <button @click="sendBillId(b.bill_id,b.user_id,b.date_id)" class="btn px-0 mx-0" style="color: darkcyan;">xem chi tiết...</button>
+                                        <button @click="sendBillId(b.bill_id,b.user_id,b.date_id)" class="btn px-0 mx-0" style="color: darkcyan;">
+                                            <h5 style="font-weight: 900;">xem chi tiết...</h5>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-1 px-0">
-                                <button v-if="b.bill_status < 4 " class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id)" 
-                                    style="height: 50%;width: 70%; background-color: #40bf77; border-radius: 15px; margin-top: 15%; color: white;">
-                                    {{ avaiableStatus[b.bill_status + 1] }}
+                                <button v-if="b.bill_status==1" class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id)" 
+                                    style="height: 50%;width: 70%; background-color: #40bf77; border-radius: 15px; margin-top: 15%; color: black;">
+                                    Chấp Nhận
+                                </button>
+                                <button v-if="b.bill_status==2" class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id)" 
+                                    style="height: 50%;width: 70%; background-color: #999999; border-radius: 15px; margin-top: 15%; color: black;">
+                                    Xác Nhận
+                                </button>
+                                <button v-if="b.bill_status==3" class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id)" 
+                                    style="height: 50%;width: 70%; background-color: #bfbfbf; border-radius: 15px; margin-top: 15%; color: black;">
+                                    Hoàn Thành
                                 </button>
 
                                 <button v-if="b.bill_status >= 1 && b.bill_status <=3" class="p-2 " 
                                     @click="cancelBtn(b.bill_id,b.user_id)" 
-                                    style="height: 50%;width: 30%;  border-radius: 15px; background-color: #DC143C; color: white;">
+                                    style="height: 50%;width: 30%;  border-radius: 15px; background-color: #DAA520; color: black;">
                                     Hủy
                                 </button>
 
-                                <button v-if="b.bill_status == 4 " class="btn p-2 ml-1" style="height: 100%; width: 100%; background-color: none; border-start-end-radius: 15px; border-end-end-radius: 15px; color: white;">
-                                    Ẩn
+                                <button v-if="b.bill_status == 4 " class="btn p-2 ml-1" style="height: 100%; width: 100%; background-color: none; border-start-end-radius: 15px; border-end-end-radius: 15px; color: black;">
+                                   <h5 style="font-weight: 900;">Ẩn Đơn</h5> 
                                 </button>
                             </div>
                         </div>       
@@ -86,7 +99,7 @@
     </div>
 
     <OrderDetail v-if="showOrderDetails" :bill=[sendId1,sendId2,sendId3]>
-        <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">X</button>
+        <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView"><h5 style="font-weight: 900;">X</h5></button>
     </OrderDetail>
 
 </template>
@@ -101,7 +114,7 @@ export default {
 
     data() {
         return {
-            avaiableStatus: ["Hủy", "Chờ", "Chấp Nhận", "Xác Nhận Cọc", "Hoành Thành"],
+            avaiableStatus: ["Hủy", "Chờ Đồng Ý", "Chờ Cọc", "Đang Diễn Ra", "Hoành Thành"],
             allBills: [],
             showOrderDetails: false,
             sendId1: undefined,
@@ -117,6 +130,9 @@ export default {
         }
     },
 
+    mounted(){
+        this.autoUpdate();
+    },
 
     computed: {
         ...mapState(["allProducts", "admin"]),
@@ -143,7 +159,7 @@ export default {
                 const bills = response.data;
                 for (const bill of bills) {
                     bill.userName = await this.showUserName(bill.user_id);
-                    bill.userDate = await this.showUserDate(bill.user_id)
+                    bill.userDate = await this.showBillDate(bill.bill_id)
                 }
                 this.allBills = bills;
             } catch (error) {
@@ -167,6 +183,12 @@ export default {
             this.setAdmin("");
         },
 
+        autoUpdate: function () {
+            this.interval = setInterval(function () {
+                this.getAllBills();
+            }.bind(this), 2000);
+        },
+
         async showUserName(id){
             let userName = '';
             try {
@@ -179,50 +201,20 @@ export default {
             return userName;
         },
 
-        async showUserDate(id) {
+        async showBillDate(id) {
             let date = '';
             try {
-                let existDate = await axios.get('/date/' + id);
-                console.log('Selected Date 0:', existDate.data[0]);
+                let existDate = await axios.get('/datebill/' + id);
                 if (existDate.data.length > 0) {
                     date = existDate.data[0].date_date;  
-                    console.log('Selected Date 1:', date);
                 }
             } catch (error) {
                 console.error('Lỗi khi lấy ngày tháng:', error);
             }
             if (!date) {
-                console.log('Không có dữ liệu ngày được tìm thấy.');
                 date = '';
             }
-            console.log('Selected Date 2:', date);
             return date;
-        },
-
-
-        async getDate(id) {
-            try {
-                let existDate = await axios.get('/date/' + id);
-                console.log('Dữ liệu được trả về từ axios.get:', existDate.data[0].date_start);
-                if (existDate.data.length > 0) {
-                return {
-                    start: new Date(existDate.data[0].date_start),
-                    end: new Date(existDate.data[0].date_end)
-                };
-                
-                } else {
-                return {
-                    start: new Date(''),
-                    end: new Date('')
-                };
-                }   
-            } catch (error) {
-                console.error('Đã xảy ra lỗi khi lấy dữ liệu ngày tháng:', error);
-                return {
-                start: new Date(''),
-                end: new Date('')
-                };
-            }
         },
 
         formatDate(date) {
@@ -240,8 +232,6 @@ export default {
 
         return null;
         },
-
-
 
         async nextStatusBtn(id,bill_status,user_id) {
             if (bill_status==1) {
@@ -304,7 +294,7 @@ export default {
 <style scoped>
 
 h1 {
-    font-weight: bold;
+    font-weight: 900;
     color: #d35ea4;
 }
 

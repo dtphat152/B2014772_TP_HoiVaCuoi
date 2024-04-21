@@ -5,7 +5,7 @@ import db from "../config/database.js";
 // get a items by user id, date id
 export const getAllDateDetails = (id,result) => {
     db.query(`SELECT *
-            FROM datedetails dd JOIN date d ON dd.date_id = d.date_id 
+            FROM datedetails dd JOIN datebill d ON dd.date_id = d.date_id 
             WHERE dd.date_id = ?;`, [id] , (err,results)=> {
         if (err){
             console.log(err);

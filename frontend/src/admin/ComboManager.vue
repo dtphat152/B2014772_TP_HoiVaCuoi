@@ -1,42 +1,42 @@
 <template>
     <div class="container_combo">
-      <div class="p-5 mx-1 row d-flex justify-content-between" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1;">
+      <div class="p-5 mx-1 row d-flex justify-content-between" style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999;">
         <h1>Combo Manager</h1>
         <router-link to="AddCombo">
-          <button style="padding-left: 20px; padding-right: 20px;font-weight: bold; border-radius: 15px;" class="btn btn-success">Thêm Combo Mới</button>
+          <button style="padding-left: 20px; padding-right: 20px;font-weight: 900; border-radius: 15px;" class="btn btn-success">Thêm Combo Mới</button>
         </router-link>
       </div>
       <br>
-      <div class="p-5" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1; height: 785px;">  
+      <div class="p-5" style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999; height: 785px;">  
 
         <div style="overflow-y: auto; height: 750px;">
           <div style="width: 95%; margin-left: 2%;">
 
-            <div v-for="(c, index) in allCombo" :key="index" style="background-color: #f08faf; border-radius: 20px;">
-              <div class="row pt-4">
+            <div v-for="(c, index) in allCombo" :key="index" style="background-color: #ffb3cc; border-radius: 20px;">
+              <div class="row pt-4 mb-5">
                 <div class="col-2 pl-5">
-                  <h3>{{ c.combo_name }} </h3>
+                  <h3 style="font-weight: 900;">{{ c.combo_name }} </h3>
                 </div>
                 <div class="col-2">
-                  <h5>{{ formatCurrency(c.combo_price) }}</h5>
+                  <h5 style="font-weight: 900;">{{ formatCurrency(c.combo_price) }}</h5>
                 </div>
                 <div class="col-6">
                   <p style="padding-right: 30px;">{{ c.combo_desc }}</p>
                 </div>
                 <div class="col-2 text-right px-5">
-                  <button @click="showdetails(c.combo_id)" class="btn p-2 mr-2" style="background-color: rgba(117, 0, 164, 0.38); border-radius: 15px;">Details</button>
+                  <button @click="showdetails(c.combo_id)" class="btn p-2 mr-2" style="background-color:#e6e6e6; border-radius: 15px;">Details</button>
                   <router-link :to="{ name: 'EditCombo', params: { id: c.combo_id } }">
                     <button class="btn p-2" style="background-color: Orange; border-radius: 15px;">Edit</button>
                   </router-link>
                 </div>
               </div>
         
-              <div v-if="comboDetailStates[c.combo_id]" class="mx-5 mt-1 pt-2" style="background-color: rgba(117, 0, 164, 0.38); border-radius: 20px;">
+              <div v-if="comboDetailStates[c.combo_id]" class="mx-5 mt-1 pt-2" style="background-color:#e6e6e6; border-radius: 20px;">
                 <div v-if="comboDetails.length > 0" class="mt-2 text-left">
                   <div v-for="(f, index) in sortedComboDetails" :key="index" class="row">
-                    <div class="col-2 offset-2 px-0">{{ f.product_category }} <hr></div>
-                    <div class="col-5 px-0">{{ f.product_name }}<hr></div>
-                    <div class="col-2 text-right px-0">{{ formatCurrency(f.product_price)}} <hr></div>
+                    <div class="col-2 offset-2 px-0" style="font-weight: 900;">{{ f.product_category }} <hr></div>
+                    <div class="col-5 px-0" style="font-weight: 900;">{{ f.product_name }}<hr></div>
+                    <div class="col-2 text-right px-0" style="font-weight: 900;">{{ formatCurrency(f.product_price)}} <hr></div>
                   </div>
                 </div>
                 <div v-else>
@@ -116,7 +116,7 @@
 <style scoped>
 
 h1 {
-    font-weight: bold;
+    font-weight: 900;
     color: #d35ea4;
 }
 .container_combo{

@@ -50,6 +50,40 @@ export const updateProductById = (data,id,result) => {
     });
 };
 
+export const updateProductBuyModel = (data,id,result) => {
+    db.query("UPDATE product SET product_buy = product_buy + ? WHERE product_id = ?",
+    [data.product_buy, id], (err,results)=> {
+        if (err){
+            console.log(err);
+            result(err,null);
+        }else{
+            result(null,results);
+        }
+    });
+};
+
+export const getProductsTop5 = (result) => {
+    db.query("SELECT * FROM product ORDER BY product_buy DESC LIMIT 5; ", (err,results)=> {
+        if (err){
+            console.log(err);
+            result(err,null);
+        }else{
+            result(null,results);
+        }
+    });
+};
+
+export const getProductsBot5 = (result) => {
+    db.query("SELECT * FROM product ORDER BY product_buy ASC LIMIT 5; ", (err,results)=> {
+        if (err){
+            console.log(err);
+            result(err,null);
+        }else{
+            result(null,results);
+        }
+    });
+};
+
 
 // delete Product
 export const deleteProductById = (id,result) => {

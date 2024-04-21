@@ -1,5 +1,6 @@
+
 <template>
-  <vue-basic-alert :duration="300" :closeIn="4000" ref="alert" />
+
   <br>
   <div class="row d-flex justify-content-center" style="margin-top: 0px;">
     <br>
@@ -8,9 +9,9 @@
       <div class="row d-flex justify-content-center">
         <div class="col-7 form-group py-0">
             <label style="width: 100%; padding: 0;" for="startDateInput"><h3 class="text-center font-weight-bold" 
-              style="color: white;">Ngày Tổ Chức Tiệc Cưới</h3></label>
-            <input type="date" class="form-control" id="startDateInput" v-model="formattedStartDate" 
-              style="border: none; text-align: center; background: #ffe6ea; border-radius: 10px;" @input="validateDateStart">
+              style="color: #FF0099;">Ngày Tổ Chức Tiệc Cưới</h3></label>
+            <input type="date" class="form-control" id="startDateInput" v-model="formattedStartDate"
+              style="border: none; text-align: center; background: #ffb3cc; border-radius: 10px; font-weight: 900; font-size: 15px;" >
             <br>
         </div>
       </div>
@@ -25,7 +26,7 @@
 </template>
 
 <script>
-import VueBasicAlert from 'vue-basic-alert';
+
 import axios from "axios";
 import { mapState } from "vuex";
 export default {
@@ -57,25 +58,7 @@ export default {
   },
 
   methods: {
-    validateDateStart() {
-      if (this.selectedDate.date) {
-        const selectedDate = new Date(this.selectedDate.date);
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
 
-        console.log('Ngày bắt đầu:', selectedDate);
-        console.log('Ngày ngày mai:', tomorrow);
-
-        if (selectedDate < tomorrow) {
-          this.checkDate = false;
-          this.$refs.alert.showAlert('warning', 'Sorry!', 'Ngày bắt đầu không hợp lệ!');
-        } else {
-          this.checkDate = true;
-        }
-      } else {
-        this.checkDate = false;
-      }
-    },
 
     async getDate() {
       if (this.user) {
@@ -83,8 +66,6 @@ export default {
           let existDate = await axios.get('/date/' + this.user.user_id);
           if (existDate.data.length > 0) {
             this.selectedDate.date = new Date(existDate.data[0].date_date);  
-            this.validateDateStart();
-            console.log('Selected Date:', this.selectedDate);
           } else {
             // Gán giá trị mặc định nếu không có dữ liệu
             this.selectedDate.date = new Date('');
@@ -122,7 +103,7 @@ export default {
         day = day < 10 ? `0${day}` : day;
 
         // Trả về chuỗi có định dạng "yyyy-MM-dd"
-        return `${day}-${month}-${year}`;
+        return `${month}-${day}-${year}`;
       }
 
       return null;
@@ -140,23 +121,27 @@ export default {
 
           if (existDate.data.length > 0) {
             await axios.put("/date", dateSelect);
-            this.$refs.alert.showAlert('success', 'Success!', 'The date is changed!');
+            // this.$refs.alert.showAlert('success', 'Success!', 'The date is changed!');
+            window.confirm(`Ngày Tổ Chức đã được thay đổi!`)
           } else {
             await axios.post("/date", dateSelect);
-            this.$refs.alert.showAlert('success', 'Success!', 'The date is selected!');
+            // this.$refs.alert.showAlert('success', 'Success!', 'The date is selected!');
+            window.confirm(`Ngày Tổ Chức đã được lưu lại!`)
           }
         } catch (error) {
           console.error('Error submitting date:', error);
-          this.$refs.alert.showAlert('error', 'Error!', 'An error occurred while submitting the date.');
+          // this.$refs.alert.showAlert('error', 'Error!', 'An error occurred while submitting the date.');
+          window.confirm(`Lỗi khi xác nhận ngày Tổ chức!`)
         }
       } else {
-        this.$refs.alert.showAlert('warning', 'Sorry!', 'Login now to use this method!');
+        // this.$refs.alert.showAlert('warning', 'Sorry!', 'Login now to use this method!');
+        window.confirm(`Bạn chưa đăng nhập!`)
       }
     },
 
   },
   components: {
-    VueBasicAlert
+   
   }
 };
 </script>

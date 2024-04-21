@@ -80,13 +80,10 @@ export const sendForgotPasswordModel = async (data) => {
             user: 'tphoivacuoi@gmail.com',
             pass: 'cpnw qlgs nusd nldp ',
           }
-      });
+      });   
 
-      // Tạo một hash từ email và token
-      const hash = crypto.createHash('sha256').update(`${data.email}${data.resetToken}`).digest('hex');
-
-      // Tạo URL reset password với hash
-      const resetLink = `http://localhost:8080/resetpassword/${data.id}${hash}`;
+      // Tạo URL reset password 
+      const resetLink = `http://localhost:8080/resetpassword/${data.id}${data.resetToken}`;
 
       // Chuẩn bị nội dung email
       const mailOptions = {
@@ -94,7 +91,8 @@ export const sendForgotPasswordModel = async (data) => {
           to: data.email, // list of receivers
           subject: 'Reset Password',
           html: `<p>Vui lòng nhấn vào link sau để thay đổi mật khẩu của bạn:</p>
-                 <a href="${resetLink}">${resetLink}</a>`
+                 <a href="${resetLink}">${resetLink}</a><br> 
+                 <p>OTP: ${data.OTP}</p>`
       };
 
       // Gửi email

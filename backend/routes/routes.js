@@ -8,13 +8,20 @@ import {
     createProduct,
     updateProduct,
     deleteProduct,
+    updateProductBuyController,
+    getProductsTop5Controller,
+    getProductsBot5Controller
 } from "../controllers/product.js";
 
 import {
+    allUsers,
     showAUser,
     createAccount,
     showUserbyID,
-    updatePassController
+    updatePassController,
+    updateStatusController,
+    updateUserController,
+    getAllfromUserController
 } from "../controllers/user.js";
 
 import {
@@ -25,12 +32,19 @@ import {
 } from "../controllers/guest.js";
 
 import {
-    getDateByID,
+    getDateNoBillController,
     updateDateByID,
     insertDateByID,
-    deleteDateByID  
+    deleteDateByID,
+    deleteTimeAndQuantityController
 } from "../controllers/date.js";
 
+import {
+    getDateBillController,
+    updateDateBillController,
+    insertDateBillController,
+    deleteDateBillController,
+} from "../controllers/datebill.js";
 
 import {
     getDateDetails,
@@ -68,7 +82,8 @@ import {
     updateBillAddress,
     updateBillPhone,
     cancelBillStatus,
-    updateBillTotal
+    updateBillTotal,
+    getBillFromDateToDateController
 } from "../controllers/billstatus.js";
 
 import {
@@ -117,6 +132,13 @@ import {
     insertVNPayController
 } from "../controllers/vnpay.js";
 
+import {
+    getResetController,
+    insertResetController,
+    updateResetController,
+    deleteResetController
+} from "../controllers/reset.js";
+
 // init express router
 const router = express.Router();
 
@@ -150,6 +172,12 @@ router.delete("/api/postimage/:id", deleteImage);
 
 
 ////////////////////////// Product ////////////////////////////////
+
+
+router.get("/api/productstop5", getProductsTop5Controller);
+
+router.get("/api/productsbot5", getProductsBot5Controller);
+
 // get all Product
 router.get("/api/products", showProducts);
 
@@ -160,6 +188,8 @@ router.get("/api/products/:id", showProductById);
 router.post("/api/products", createProduct);
 
 // update Product 
+router.put("/api/productsbuy/:id", updateProductBuyController);
+
 router.put("/api/products/:id", updateProduct);
 
 // delete Product
@@ -169,15 +199,21 @@ router.delete("/api/products/:id", deleteProduct);
 
 ////////////////////////// USER ////////////////////////////////
 
-// get user by id
+router.get("/api/users/all", allUsers);
+
 router.get("/api/users/byid/:id", showUserbyID);
-// get all user
+
 router.get("/api/users/:email", showAUser);
-// create account
+
+router.get("/api/users/allbill/:id", getAllfromUserController);
+
 router.post("/api/users/", createAccount);
 
-router.put("/api/users/", updatePassController);
+router.put("/api/users/pass", updatePassController);
 
+router.put("/api/users/status", updateStatusController);
+
+router.put("/api/users/", updateUserController);
 ///////////////////////// GUEST ////////////////////////////////
 // get a number
 router.get("/api/guestnumber/:id", showNumber);
@@ -192,23 +228,20 @@ router.put("/api/guestnumber/", updateNumberOfGuest);
 router.delete("/api/guestnumber/:id", deleteNumber);
 
 
-
 ////////////////////////// DATE ////////////////////////////////
 
-// get date by user id
-router.get("/api/date/:id", getDateByID);
-
-// update date
+router.get("/api/date/:id", getDateNoBillController);
 router.post("/api/date/", insertDateByID);
-
-// update date
 router.put("/api/date/", updateDateByID);
-
-// delete date in cart
 router.delete("/api/date/:id", deleteDateByID);
+router.delete("/api/dateandquantity/:id", deleteTimeAndQuantityController);
 
+////////////////////////// DATE BILL ////////////////////////////////
 
-
+router.get("/api/datebill/:id", getDateBillController);
+router.post("/api/datebill/", insertDateBillController);
+router.put("/api/datebill/", updateDateBillController);
+router.delete("/api/datebill/:id", deleteDateBillController);
 
 ////////////////////////// DATE DETAILS ////////////////////////////////
 router.get("/api/datedetails/:id", getDateDetails);
@@ -248,6 +281,7 @@ router.delete("/api/billdetails/:bill_id/:product_id", deleteProductInBill);
 
 ////////////////////////// Bill Status ////////////////////////////////
 router.get("/api/billstatus/new", showNewestStatusId);
+router.post("/api/billstatus/datetodate", getBillFromDateToDateController);
 router.post("/api/billstatus", createBillStatus);
 router.get("/api/billstatus/user/:id", getAllBillsByUser);
 router.get("/api/billstatus/bill/:id", getAllBillsByBill);
@@ -288,6 +322,16 @@ router.post("/api/payment-online", MomoController);
 router.post("/api/create_payment_vnpay", VnpayController);
 router.get("/api/payment_vnpay", getVNPayController);
 router.post("/api/payment_vnpay", insertVNPayController);
+
+////////////////////////// Reset Pass ////////////////////////////////
+
+router.post("/api/resetpass", insertResetController);
+
+router.get("/api/resetpass/:id", getResetController);
+
+router.put("/api/resetpass/", updateResetController);
+
+router.delete("/api/resetpass/:id", deleteResetController);
 
 
 // export default router

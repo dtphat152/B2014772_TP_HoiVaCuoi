@@ -4,7 +4,9 @@
             <h2 class="d-flex justify-content-between font-weight-bold">Chi Tiết Đơn #{{ this.bill[0] }} 
                 
                 <div>
-                    <button @click="sendBillId(this.bill[0])" class="btn mr-2" style="background-color: #40bf77; border-radius: 10px;">Add to bill</button>
+                    <button @click="sendBillId(this.bill[0])" class="btn mr-2" style="background-color: #40bf77; border-radius: 10px;">
+                        <h5 style="font-weight: 900;">Add to bill</h5>
+                    </button>
                     <slot></slot>
                 </div>
             </h2>
@@ -16,37 +18,41 @@
                 <div class="col-8">
                     <ProductBill v-if="!showProductOrder" :Bill=[this.bill[0],this.email] ></ProductBill>
 
-                    <ProductOrder v-if="showProductOrder" :ID="sendId" >
+                    <ProductOrder v-if="showProductOrder" :ID="this.sendId" >
                         <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
                     </ProductOrder>                    
                 </div>
                 <div class="col-4 pt-3" style="background-color: #f08faf; border-radius: 20px;">
-                    <div class="container-info" style="background-color: #660066; border-radius: 20px; padding: 10px;">
+                    <div class="container-info" style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
                         <div class="row">
                             <div class="col-10 form-group" style="padding-right: 0; margin: 0;">
                             <textarea name="txtMsg" class="form-control" placeholder="Ghi chú của khách hàng..." 
-                                style="width: 100%; border: none;  background-color: #ffccdd; border-radius: 15px;" v-model="notes" ></textarea>
+                                style="width: 100%; border: none;  background-color: #ffccdd; border-radius: 15px; font-weight: 900;" v-model="notes" ></textarea>
                             </div>
                             <div class="col-1">
-                                <button class="btn" style="height: 100%; background-color: #f08faf; border-radius: 10px;" @click="updateBillNotes()">Lưu</button>
+                                <button class="btn" style="height: 100%; background-color: #f08faf; border-radius: 10px;" @click="updateBillNotes()">
+                                    <h5 style="font-weight: 900;">Lưu</h5>
+                                </button>
                             </div>
                         </div>
                     </div>
 
-                    <hr style="background-color: #FFF0F5;">
-                    <div class="container-info" style="background-color: #660066; border-radius: 20px; padding: 10px;">
+                    <hr style="background-color: #ffccdd;">
+                    <div class="container-info" style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
                         <div class="row mt-2 m-1">
-                            <div class="col-8" style="background-color: #f08faf; border-radius: 15px;">
+                            <div class="col-9" style="background-color: #f08faf; border-radius: 15px;">
                                 <div class="row d-flex justify-content-around p-2">
-                                    <h5 class="font-weight-bold mt-1">Ngày tổ chức:</h5>
-                                    <input type="text" v-model="this.date" class="my-1"
-                                        style="background-color: #FFF0F5; font-weight: bold; text-align: center; border-radius: 15px;" >
-                                    <button @click="sendDate(b.bill_id,b.bill_status)" 
-                                        style="background-color: #FFF0F5; border-radius: 15px;" class="px-2 my-1">Lưu</button>
+                                    <h5 class="mt-1" style="font-weight: 900;">Ngày tổ chức:</h5>
+                                    <input type="date" class="form-control" id="startDateInput" v-model="formattedStartDate"
+                                        style="background-color: #ffccdd; font-weight: 900; text-align: center; border-radius: 15px; width: 150px;" >
+                                    <button @click="updateDate(b.user_id,b.bill_status)" 
+                                        style="background-color: #ffccdd; border-radius: 15px;" class="px-2 my-1"><h6 style="font-weight: 900;">Lưu</h6></button>
                                 </div>
                             </div>
-                            <div class="col-4 text-center" style="background-color: #f08faf; border-radius: 15px;">
-                                <button @click="showAddMealSetFunction()" style="background-color: #f08faf; padding-top: 5px;">Thêm Suất</button>
+                            <div class="col-3 text-center" style="background-color: #f08faf; border-radius: 15px;">
+                                <button @click="showAddMealSetFunction()" style="background-color: #f08faf; padding-top: 5px;">
+                                    <h5 style="font-weight: 900;">Thêm suất</h5>
+                                </button>
                             </div>
                         </div>
                         
@@ -71,25 +77,25 @@
                         </div>   
 
                         <div v-for="(time, index) in this.selectedTime" :key="index">
-                            <div class="row pt-2 align-items-center m-1" style="background-color: #FFF0F5; border-radius: 15px;">
+                            <div class="row pt-2 align-items-center m-1" style="background-color: #ffccdd; border-radius: 15px;">
                                 <div class="col-3 text-left">
-                                    <h6>Suất thứ {{ index+1 }} : </h6>
+                                    <h6 style="font-weight: 900;">Suất thứ {{ index+1 }} : </h6>
                                 </div>
                                 <div class="col-3">
                                     <input title="Số Khách" type="number" :id="'number-' + index" class="form-control " min="0" max="1000" 
-                                    v-model="this.selectedGuest[index]" style="border: none; text-align: center; background: #FFF0F5;">
+                                    v-model="this.selectedGuest[index]" style="border: none; text-align: center; background: #ffccdd; font-weight: 900;">
                                 </div>
                                 <div class="col-3">
-                                    <input type="time" :id="'time-' + index" v-model="this.selectedTime[index]" style=" background: #FFF0F5;">
+                                    <input type="time" :id="'time-' + index" v-model="this.selectedTime[index]" style=" background: #ffccdd; font-weight: 900;">
                                 </div>
                                 <div class="col-1 ">
-                                    <button class="btn p-1" style="border-radius: 10px; background-color: #f08faf;" 
+                                    <button class="btn p-1" style="border-radius: 10px; background-color: #f08faf; font-weight: 900;" 
                                         @click="updateDateBtn(index)">
                                         Lưu
                                     </button>
                                 </div>
                                 <div class="col-1 ">
-                                    <button class="btn p-1" style="border-radius: 10px; background-color: #f08faf;" 
+                                    <button class="btn p-1" style="border-radius: 10px; background-color: #f08faf; font-weight: 900;" 
                                         @click="removeDateBtn(index)">
                                         Xóa
                                     </button>
@@ -98,12 +104,12 @@
                         </div>
                 
                     </div>
-                    <hr style="background-color: #FFF0F5;">
-                    <div class="container-info" style="background-color: #660066; border-radius: 20px; padding: 10px;">
+                    <hr style="background-color: #ffccdd;">
+                    <div class="container-info" style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
                         <div class="row">
                             <div class="col-10 pr-0">
                                 <textarea name="txtMsg" class="form-control text-center" placeholder="Những điều bạn yêu cầu hoặc lưu ý" 
-                                    style="width: 100%; height: 25px; border: none;  background: #FFF0F5; border-radius: 15px;" 
+                                    style="width: 100%; height: 25px; border: none;  background: #ffccdd; border-radius: 15px; font-weight: 900;" 
                                     v-model="address" >   
                                 </textarea>
                             </div>
@@ -114,7 +120,7 @@
                         
                         <div class="row pt-3">
                             <div class="col-10 pr-0">
-                                <input type="text" style="border-radius: 15px; background-color: #FFF0F5; text-align: center; height: 25px; width: 100%;" 
+                                <input type="text" style="border-radius: 15px; background-color: #ffccdd; text-align: center; height: 25px; width: 100%; font-weight: 900;" 
                                     v-model="phone" >
                             </div>
                             <div class="col-2 pl-1">
@@ -125,7 +131,7 @@
                     
                 </div>
             </div>
-            <hr style="background-color: #FFF0F5; height: 3px;">
+            <hr style="background-color: #ffccdd; height: 3px;">
             
         </div>
     </div>
@@ -168,7 +174,16 @@ export default {
     },
 
     computed: {
-       
+        formattedStartDate: {
+          get() {
+            // Chuyển đổi giá trị ngày từ đối tượng Date sang chuỗi có định dạng "yyyy-MM-dd"
+            return this.date ? this.formatDate(this.date) : null;
+          },
+          set(value) {
+            // Chuyển đổi giá trị ngày từ chuỗi có định dạng "yyyy-MM-dd" sang đối tượng Date
+            this.date = value ? new Date(value) : null;
+          },
+        },
     },
 
     methods: {
@@ -241,14 +256,35 @@ export default {
             }
         },
 
+        formatDate(date) {
+            if (date instanceof Date && !isNaN(date)) {
+                let year = date.getFullYear();
+                let month = date.getMonth() + 1;
+                let day = date.getDate();
+
+                month = month < 10 ? `0${month}` : month;
+                day = day < 10 ? `0${day}` : day;
+
+                // Trả về chuỗi có định dạng "yyyy-MM-dd"
+                return `${year}-${month}-${day}`;
+            }
+            return null;
+        },
+
         async getMeatSet() {
-            console.log('Check: ');
             if (this.bill[2]) {
-                console.log('Check: ' + this.bill[2]);
+                const response = await axios.get('/datebill/' + this.bill[0]);
+                if (response.data.length > 0) {
+                    const dateString = response.data[0].date_date;
+                    const parts = dateString.split("-");
+                    const year = parseInt(parts[2]);
+                    const month = parseInt(parts[0]) - 1; // Trừ đi 1 vì tháng trong JavaScript bắt đầu từ 0
+                    const day = parseInt(parts[1]);
+                    this.date = new Date(year, month, day);
+                }
                 try {
                     let response = await axios.get(`/datedetails/${this.bill[2]}`);
                     let data = response.data;
-                    this.date = data[0].date_date;
                     if (Array.isArray(data) && data.length > 0) {
                         // Khởi tạo các mảng để lưu trữ dữ liệu từ mỗi phần tử
                         let selectedTimes = [];
@@ -265,12 +301,38 @@ export default {
                         this.selectedTime = []; 
                         this.selectedGuest = []; 
                     }
-                    console.log('Check2: ' + this.selectedTime);
                 } catch (error) {
                     console.error('Lỗi khi lấy dữ liệu từ API:', error);
                 }
                 
             }
+        },
+
+        formatDateToSubmit(date) {
+            if (date) {
+                const year = date.getFullYear();
+                let month = date.getMonth() + 1;
+                let day = date.getDate();
+
+                month = month < 10 ? `0${month}` : month;
+                day = day < 10 ? `0${day}` : day;
+
+                // Trả về chuỗi có định dạng "yyyy-MM-dd"
+                return `${month}-${day}-${year}`;
+            }
+
+            return null;
+        },
+
+        async updateDate(user_id,status){
+            if (status <=3 ){
+                let dateSelect = {
+                    date_date: this.formatDateToSubmit(this.selectedDate.date),
+                    user_id: parseInt(user_id),
+                };
+                await axios.put("/date", dateSelect);
+                this.$refs.alert.showAlert('success', 'Success!', 'Ngày đã được thay đổi thành công!');
+            } else (window.confirm('Bạn không thể thay đổi Ngày'))
         },
 
         async removeDateBtn(index) {
@@ -456,7 +518,7 @@ export default {
 .order-details .order-details-inner {
     width: 80%;
     height: 80%;
-    background-color: #660066;
+    background-color: #d3d3d3;
     padding: 32px;
     border: none; /* Clear border */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow for better visibility */

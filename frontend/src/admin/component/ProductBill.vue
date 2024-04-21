@@ -2,7 +2,7 @@
     <div style="overflow-y: auto; height: 600px;">
         <div style="width: 95%;">
             <template v-for="(category, catIndex) in ['Khai Vị', 'Món Chính', 'Tráng Miệng']" :key="catIndex">
-                <h3 class="mb-2 mb-2" style="color: #d35ea4;">{{ category }}</h3>
+                <h3 class="mb-2 mb-2" style="color: #d35ea4; font-weight: 900;">{{ category }}</h3>
                 <div v-for="(f, index) in filterProducts" :key="index">
                     <div v-if="f.product_category === category" 
                     class="row mb-1 d-flex justify-content-between align-items-center" style="background-color: #f08faf; margin-left: 10px; border-radius: 10px;">
@@ -12,16 +12,16 @@
                             style="width: 100px; border-radius: 10px; ">
                         </div>
                         <div class="col-md-3 col-lg-3 col-xl-4">
-                            <h4 class="text-black mb-0" style="color: #660066;">{{ f.product_name }}</h4>
-                            <h6 class="mb-0">Đơn giá: {{ formatCurrency(f.product_price) }}</h6>
+                            <h4 class="text-black mb-0" style="color: #660066; font-weight: 900;">{{ f.product_name }}</h4>
+                            <h5 class="mb-0" style="font-weight: 900;">Đơn giá: {{ formatCurrency(f.product_price) }}</h5>
                         </div>
                         <div class="col-md-3 col-lg-2 col-xl-2">
                             <input type="number" id="number" v-model="item_qty[index]" @change="onQtyChange(index,f.product_name)"
                             class="form-control " min="0" max="1000" 
-                            style="border: none; text-align: center; background: #660066; border-radius: 10px; color: white;">
+                            style="border: none; text-align: center; background: #d3d3d3; border-radius: 10px; color: black; font-weight: 900;">
                         </div>
                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                            <button class="btn" @click="removeBtn(index,f.product_name)" style="background-color: #660066; color: white; border-radius: 10px;">
+                            <button class="btn" @click="removeBtn(index,f.product_name)" style="background-color: #d3d3d3; color: black; border-radius: 10px;">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>

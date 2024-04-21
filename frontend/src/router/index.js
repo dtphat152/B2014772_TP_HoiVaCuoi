@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { createWebHistory, createRouter } from "vue-router";
 import Login from '../pages/Login.vue';
 import Register from '../pages/Register.vue';
@@ -21,6 +23,7 @@ import AddTempProduct from '../admin/AddTempProduct.vue';
 import AddCombo from '../admin/AddCombo.vue';
 import EditProduct from '../admin/EditProduct.vue';
 import EditCombo from '../admin/EditCombo.vue';
+import UserManager from "../admin/UserManager.vue";
 const routes = [
   {
     path: "/",
@@ -53,9 +56,12 @@ const routes = [
     component: Login,
   },
   {
-    path: '/resetpassword/:hash',
+    path: '/resetpassword/:token',
     name: 'ResetPassword',
     component: ResetPassword,
+    meta: {
+      requiresToken: true // Metadata để xác định route yêu cầu token
+    }
   },
   {
     path: "/register",
@@ -135,6 +141,11 @@ const routes = [
     props: true
   },
   {
+    path: "/admin/usermanager",
+    name: "UserManager",
+    component: UserManager,
+  },
+  {
     path: '/:pathMatch(.*)*',
     component: Home,
   },
@@ -144,5 +155,48 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+router.beforeEach(async (to, from, next) => {
+  // Kiểm tra nếu route yêu cầu token
+  if (to.meta.requiresToken) {
+    try {
+      // Lấy token từ route params
+      const hash = to.params.token;
+      const user_id = hash.substring(0, 1);
+      const token = hash.substring(1);
+
+      // Gửi request để kiểm tra token
+      const rsp = await axios.get(`/resetpass/${user_id}`);
+
+      // Kiểm tra xem response có dữ liệu không
+      if (rsp.data.length > 0) {
+        const resetToken = rsp.data[0].resetToken;
+
+        // So sánh token từ route params với token trong cơ sở dữ liệu
+        if (token === resetToken) {
+          // Token hợp lệ, cho phép truy cập vào route
+          next();
+        } else {
+          // Token không hợp lệ, hiển thị cảnh báo và chuyển hướng đến trang lỗi
+          window.confirm('Route Không Hợp Lệ');
+          next('/');
+        }
+      } else {
+        // Không tìm thấy dữ liệu, chuyển hướng đến trang lỗi
+        window.confirm('Route Không Hợp Lệ');
+        next('/');
+      }
+    } catch (error) {
+      console.error('Error in beforeEach:', error);
+      // Xử lý lỗi nếu có
+      window.confirm('Route Không Hợp Lệ');
+      next('/');
+    }
+  } else {
+    // Nếu route không yêu cầu token, cho phép truy cập
+    next();
+  }
+});
+
 
 export default router;

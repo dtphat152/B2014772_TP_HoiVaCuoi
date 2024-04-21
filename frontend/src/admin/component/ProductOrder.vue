@@ -13,10 +13,11 @@
                     <router-link to='AddTempProduct'>
                         <button  class="btn" 
                             style="background-color: #ffe6ea; border-radius: 10px; color: #40bf77;">
-                           <i class="fa fa-plus-circle" style="color: #40bf77;"></i> Thêm Mới
+                           <i class="fa fa-plus-circle" style="color: #40bf77;"></i> Thêm Mới 
                         </button>
                     </router-link>
                 </div>
+                
                 <div class="col-2 text-right" v-else>
                     <router-link :to="{ path: '/admin/AddTempProduct' }">
                         <button  class="btn" 
@@ -49,7 +50,7 @@
                                 <input type="number" id="iQuantity" class="form-control item-quantity"
                                     v-model="itemQuantity[index]" min="1" max="1000"
                                     @change="onQtyChange($event, index)"
-                                    style="border: none; text-align: center; background: #660066; border-radius: 10px; color: white;"
+                                    style="border: none; text-align: center; background: #d3d3d3; border-radius: 10px; color: black; font-weight: 900;"
                                 >
                             </div>
                             <div class="col-2 d-flex justify-content-center mt-5 ">
@@ -118,37 +119,44 @@ export default {
 
 
         async addToBill(i,name){
-            if (this.itemQuantity[i]) {
-                let confirmResult = window.confirm("Bạn muốn thêm " + this.filterProducts[i].product_name + " với số lượng " + this.itemQuantity[i] + "?");
-                if (confirmResult) {
-                    let billDetails = {
-                        bill_id: parseInt(this.ID),
-                        product_id: parseInt(this.filterProducts[i].product_id),
-                        item_qty: parseInt(this.itemQuantity[i])
-                    };
-                    try {
-                        await axios.post("/billdetails", billDetails);
-                        console.log("Successfully added to bill:", billDetails);
-                        // Kích hoạt sự kiện và truyền thông tin sản phẩm đã thêm
-                        this.$emit('productAdded');
-
-                        let data1 = {
-                            email: this.email,
-                            title:`Đơn hàng #${this.ID} của bạn đã được cập nhật!`,
-                            content: `Nội dung: Thêm mới ${name} vào đơn hàng của bạn với số lượng ${billDetails.item_qty}.`,
-                        }
+            console.log(this.ID)
+            let rsp = await axios.get(`/billdetails/${this.ID}`);
+            const productIds = rsp.data.map(item => item.product_id);
+            console.log(productIds)
+            if (productIds.includes(parseInt(this.filterProducts[i].product_id))) window.confirm('Sản Phẩm đã có trong đơn trước đó!')
+            else {
+                if (this.itemQuantity[i]) {
+                    let confirmResult = window.confirm("Bạn muốn thêm " + this.filterProducts[i].product_name + " với số lượng " + this.itemQuantity[i] + "?");
+                    if (confirmResult) {
+                        let billDetails = {
+                            bill_id: parseInt(this.ID),
+                            product_id: parseInt(this.filterProducts[i].product_id),
+                            item_qty: parseInt(this.itemQuantity[i])
+                        };
                         try {
-                            axios.post(`/sendemail/update`,data1);
-                        } catch (error) {
-                            console.error("Error Send email update:", error);
-                        }     
+                            await axios.post("/billdetails", billDetails);
+                            console.log("Successfully added to bill:", billDetails);
+                            // Kích hoạt sự kiện và truyền thông tin sản phẩm đã thêm
+                            this.$emit('productAdded');
 
-                    } catch (error) {
-                        console.error("Error updating bill total:", error);
+                            let data1 = {
+                                email: this.email,
+                                title:`Đơn hàng #${this.ID} của bạn đã được cập nhật!`,
+                                content: `Nội dung: Thêm mới ${name} vào đơn hàng của bạn với số lượng ${billDetails.item_qty}.`,
+                            }
+                            try {
+                                axios.post(`/sendemail/update`,data1);
+                            } catch (error) {
+                                console.error("Error Send email update:", error);
+                            }     
+
+                        } catch (error) {
+                            console.error("Error updating bill total:", error);
+                        }  
                     }
+                } else {
+                    window.confirm("Hãy chọn số lượng");
                 }
-            } else {
-                window.confirm("Hãy chọn số lượng");
             }
         },
 

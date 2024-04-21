@@ -1,16 +1,16 @@
 <template>
     <div class="container_manager">
-        <div class="row d-flex justify-content-between p-5 mx-1" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1;">
-            <div class="col-2">
+        <div class="row d-flex justify-content-between p-5 mx-1" style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999; ">
+            <div class="col-3">
                 <h1>Product Manager</h1>
             </div>
-            <div class="col-6 input-group mb-3">
-                <input style="border-radius: 10px; background-color: #ffe6ea;" type="text" class="form-control" v-model="productObj.name" placeholder="Search . . .">
+            <div class="col-6 input-group">
+                <input style="border-radius: 10px; background-color: #ffb3cc;" type="text" class="form-control" v-model="productObj.name" placeholder="Search . . .">
                 <div class="input-group-append">
-                    <button class="btn ml-3" type="submit" style="background-color: #FFF0F5; border-radius: 15px;"><i class="fa fa-search"></i></button>
+                    <button class="btn ml-3 mb-2" type="submit" style="background-color: #ffb3cc; border-radius: 15px;"><i class="fa fa-search"></i></button>
                 </div>
             </div>
-            <div class="col-2">
+            <div class="col-3">
                 <router-link to='AddProduct'>
                     <h4 class="font-weight-bold text-success d-flex justify-content-lg-end">+ Add </h4>
                 </router-link>
@@ -22,7 +22,7 @@
         
         <!-- <hr style="background-color: #FFF0F5; height: 3px;"> -->
 
-        <div class="row d-flex mx-1 p-4" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1;">
+        <div class="row d-flex mx-1 p-4" style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999; ">
             <div class="col-10 offset-1 btn-group btn-group-lg pl-4">
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="all" @click="filterProductBtn($event)">Tất Cả</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Khai Vị" @click="filterProductBtn($event)">Khai Vị</button>
@@ -38,7 +38,7 @@
         </div>   
         <br>
 
-        <div class="p-5" style="border-radius: 20px; background-color: rgba(117, 0, 164, 0.38); opacity: 1; height: 695px;">
+        <div class="p-5" style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999;  height: 695px;">
             <div class="row pt-2 pagebtn">
                 <div class="col-2 text-left">
                     <div v-if="calculatePages > 1"> 
@@ -66,24 +66,24 @@
             <div style="overflow-y: auto; height: 580px;">
                 <div style="width: 95%; margin-left: 2%;">
                     <div v-for="(f, index) in currentPageItems" :key="index">
-                        <div class="row" style="background-color: #cc00cc; border-radius: 20px;">
+                        <div class="row" style="background-color: #ffb3cc; box-shadow: 0 1px 1px #ff99bb; border-radius: 20px;">
                             <div class="col-2 pr-0">
                                 <img :src="require(`../assets/images/${f.product_src}`)" alt="" 
                                  style="height: 100%; width: 150px; border-radius: 20px;"/>
                             </div>
                             <div class="col-8 pl-5">
-                                <h5>{{ f.product_category }}</h5>
+                                <h5 style="font-weight: 900;">{{ f.product_category }}</h5>
                                 <div class="d-flex justify-content-between">
-                                    <h3>{{ f.product_name }} </h3>
+                                    <h3 style="font-weight: 900;">{{ f.product_name }} </h3>
                                     
                                 </div>
                                 
                                     <div class="d-flex justify-content-between" >
-                                        <h6 style="padding-right: 30px;">{{ f.product_desc }}</h6>
+                                        <h6 style="padding-right: 30px; font-weight: 700;">{{ f.product_desc }}</h6>
                                         
                                     </div>
                                 <div class="">
-                                    <h5>{{ formatCurrency(f.product_price) }}</h5>
+                                    <h5 style="font-weight: 900;">{{ formatCurrency(f.product_price) }}</h5>
                                     
                                 </div>
                             </div>
@@ -189,7 +189,7 @@ export default {
     }
 
     h1 {
-        font-weight: bold;
+        font-weight: 900;
         color: #d35ea4;
     }
 
@@ -204,8 +204,9 @@ export default {
     }
 
     .btnheadingmennu{
-        background-color: #FFC0CB;
-        color: #948c8c; /* Màu chữ */
+        background-color: #ffb3cc;
+        color: black; /* Màu chữ */
+        font-weight: 900;
         padding: 15px 32px;
         text-align: center;
         text-decoration: none;

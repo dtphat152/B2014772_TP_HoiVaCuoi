@@ -2,7 +2,7 @@
     <div class="register-container">
         <div class="register-form-container">
             <form id="registerForm" @submit="handleSubmit" novalidate autocomplete="off">
-                <h3>Tạo Tài Khoản</h3>
+                <h1 style="font-weight: 900;color: #d35ea4;">Tạo Tài Khoản</h1>
 
                 <div class="form-group">
                     <label for="uName">Họ và Tên:
@@ -43,11 +43,18 @@
                     <p class="error-mess" v-if="errorObj.phoneErr.length > 0">{{ errorObj.phoneErr[0] }}</p>
                 </div>
 
+                <div class="form-group">
+                    <label for="uAddress">Địa Chỉ:
+                    </label>
+                    <textarea type="text" name="uAddress" placeholder="Địa chỉ của bạn" id="uAddress"
+                        class="form-control" v-model="registerObj.address" ></textarea>
+                </div>
+
                 
 
                 <div class="form-group">
                     <input type="submit" value="Đăng Ký" class="p-3 mt-2" 
-                        style="background-color: #ef87aa; border-radius: 15px; font-weight: bold;" />
+                        style="background-color: #ef87aa; border-radius: 15px; font-weight: 900; font-size: 20px;" />
                     <p>Bạn đã có tài khoản? <router-link @click="scrollToTop()" to="/login">Đăng Nhập</router-link>
                     </p>
                 </div>
@@ -63,7 +70,7 @@ export default {
 
     data() {
         return {
-            registerObj: { name: "", email: "", pass: "", confirm: "", phone: "",  },
+            registerObj: { name: "", email: "", pass: "", confirm: "", phone: "", address: "" },
             errorObj: { nameErr: [], emailErr: [], passErr: [], confirmErr: [], phoneErr: [],  },
             matchUser: undefined,
 
@@ -184,8 +191,9 @@ export default {
                         user_email: this.registerObj.email,
                         user_phone: this.registerObj.phone,
                         user_password: this.registerObj.pass,
-                        user_birth: this.registerObj.birth,
-                        user_gender: this.registerObj.gender
+                        user_address: this.registerObj.address,
+                        user_img: 'user.jpg',
+                        user_status: 'active',
                     }
                     await axios.post("/users/", data);
                     this.$router.push("/login");
@@ -209,7 +217,7 @@ export default {
     transform: translate(-50%, 0%);
     max-width: 70rem;
     width: 100%;
-    background: #990099; 
+    background: #ffb3cc; 
     opacity: 0.8;
     box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.05);
     border: 0.1rem solid rgba(0, 0, 0, 0.2);
@@ -229,10 +237,11 @@ export default {
 .register-container .register-form-container form .form-control {
     margin: 0.7rem 0;
     border-radius: 15px;
-    background: rgba(0, 0, 0, 0.3);
+    background: #f2f2f2;
     padding: 2rem 1.2rem;
     font-size: 1.6rem;
-    color: #130f40;
+    color: black;
+    font-weight: 900;
     text-transform: none;
     width: 100%;
     border: none;

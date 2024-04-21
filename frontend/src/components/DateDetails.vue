@@ -7,10 +7,10 @@
           <div class="col-8 form-group text-center" style="width: 150px;">
             <br>
             
-                <h3  style="color: white; font-weight: bold;">Số lượng Khách và Thời Gian </h3>
+                <h3  style="color: #FF0099; font-weight: bold;">Số lượng Khách và Thời Gian </h3>
                 <div v-if="this.selectedNum!=0" class="row d-flex justify-content-center pt-2">
-                    <div class="col-3 offset-3"><h5  style="color: #ffe6ea;">Thời Gian</h5></div>
-                    <div class="col-3"><h5 style="color: #ffe6ea;">Số Khách</h5></div>
+                    <div class="col-3 offset-3"><h5  style="color: #FF0099;">Thời Gian</h5></div>
+                    <div class="col-3"><h5 style="color: #FF0099;">Số Khách</h5></div>
                     <div class="col-3"></div>
                 </div>
                 <div v-else>
@@ -25,19 +25,20 @@
                 <div v-for="index in selectedNum" :key="index" style="padding-bottom: 2px;">
                     <div class="row d-flex justify-content-center align-items-center pt-2">
                         <div class="col-3 text-right">
-                            <h5 style="color: #ffe6ea;">Suất thứ {{ index }} :</h5>
+                            <h5 style="color: #FF0099;">Suất thứ {{ index }} :</h5>
                         </div>
                         <div class="col-3">
                             <input type="time" :id="'time-' + index" v-model="selectedTime[index]" 
-                            style=" background: #ffe6ea; border-radius: 10px; padding: 4px;">
+                            style=" background: #ffb3cc; border-radius: 10px; padding: 4px; font-size: 15px;">
                         </div>
                         <div class="col-3">
                             <input title="Số Khách" type="number" :id="'number-' + index" class="form-control " min="0" max="1000" 
-                            v-model="selectedGuest[index]" style="border: none; text-align: center; background: #ffe6ea; border-radius: 10px;">
+                            v-model="selectedGuest[index]" style="border: none; text-align: center; background: #ffb3cc; border-radius: 10px; font-size: 15px; font-weight: 900;">
                         </div>
                         
                         <div class="col-3">
-                            <button class="btn" style="background-color: #ffe6ea; border-radius: 10px;" @click="removeBtn(index)">
+                            <button class="btn" @click="removeBtn(index)"
+                            style="background-color: #ffb3cc; border-radius: 10px; color: #404040;" >
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
@@ -46,7 +47,7 @@
                 
                 
                 <div v-if="this.selectedNum!=0" style="text-align: center; padding-bottom: 12px; padding-top: 1px;">
-                    <div>
+                    <div class="pt-5">
                     <button type="button" class="btn font-weight-bold" @click="incNum()"
                     style="background-color: #FFC0CB; border-color: none; color: back; margin-bottom: 10px; border: #808080; border-radius: 10px;" >
                         <i class="fa fa-plus" style="color: black;"></i> Thêm suất
@@ -106,9 +107,13 @@
         },
 
         async getNum(){
-            let response = await axios.get(`/datedetails/${this.dateID}`);
-            let data = response.data;
-            this.selectedNum = data.length;
+            if (this.dateID){
+                let response = await axios.get(`/datedetails/${this.dateID}`);
+                if(response.data.length > 0){
+                    let data = response.data;
+                    this.selectedNum = data.length;
+                }
+            }
         },
 
         async getDate() {
@@ -131,24 +136,26 @@
             if (this.user) {
                 await this.getDate();
                 await this.getNum();
-                
-                for (let index = 1; index <= this.selectedNum; index++) {
-                    
-                    try {
-                        let response = await axios.get(`/datedetails/${this.dateID}`);
-                        let data = response.data;
+                if(this.dateID != '') {
+                    for (let index = 1; index <= this.selectedNum; index++) {
                         
-                        if (data && data.length >= index) {
-                            this.selectedTime[index] = data[index - 1].dd_time;
-                            this.selectedGuest[index] = data[index - 1].dd_guest;
-                        } else {
-                            this.selectedTime[index] = ''; 
-                            this.selectedGuest[index] = ''; 
-        
+                        try {
+                            let response = await axios.get(`/datedetails/${this.dateID}`);
+                            if(response.data.length > 0){
+                                let data = response.data;
+                                if (data && data.length >= index) {
+                                    this.selectedTime[index] = data[index - 1].dd_time;
+                                    this.selectedGuest[index] = data[index - 1].dd_guest;
+                                } else {
+                                    this.selectedTime[index] = ''; 
+                                    this.selectedGuest[index] = ''; 
+                
+                                }
+                            }
+                        } catch (error) {
+                        
+                            console.error('Lỗi khi lấy dữ liệu từ API:', error);
                         }
-                    } catch (error) {
-                    
-                        console.error('Lỗi khi lấy dữ liệu từ API:', error);
                     }
                 }
             }
@@ -181,50 +188,53 @@
 
         async submit() {
             await this.getDate();
-            if(this.checkGetMeatSet == false){
-                let response = await axios.get(`/datedetails/${this.dateID}`);
-                let data = response.data;
-                let templenght = data.length + 1;
-                for (let index = templenght; index <= this.selectedNum; index++) {
-                    let data = {
-                        date_id: this.dateID,
-                        dd_name: index,
-                        dd_time: this.selectedTime[index],
-                        dd_guest: this.selectedGuest[index],
-                    };
-                    
-                        axios.post('/datedetails/', data)
+            if (this.dateID != ''){
+                if(this.checkGetMeatSet == false){
+                    let response = await axios.get(`/datedetails/${this.dateID}`);
+                    let data = response.data;
+                    let templenght = data.length + 1;
+                    for (let index = templenght; index <= this.selectedNum; index++) {
+                        let data = {
+                            date_id: this.dateID,
+                            dd_name: index,
+                            dd_time: this.selectedTime[index],
+                            dd_guest: this.selectedGuest[index],
+                        };
+                        
+                            axios.post('/datedetails/', data)
+                            .then(response => {
+                                console.log('Dữ liệu đã được submit thành công:', response.data);
+                            })
+                            .catch(error => {
+                                console.error('Lỗi khi submit dữ liệu:', error);
+                            });
+                    }
+                    // this.$refs.alert.showAlert('success', 'Thành Công!', 'Suất đãi khách đã được lưu!');
+                    window.confirm(`Suất đãi khách đã được lưu!`)
+                    this.checkGetMeatSet = true;
+                } else {
+
+                    for (let index = 1; index <= this.selectedNum; index++) {
+                        let data = {
+                            date_id: this.dateID,
+                            dd_name: index,
+                            dd_time: this.selectedTime[index],
+                            dd_guest: this.selectedGuest[index],
+                        };
+
+                        axios.put('/datedetails/', data)
                         .then(response => {
-                            console.log('Dữ liệu đã được submit thành công:', response.data);
+                            console.log('Dữ liệu đã được chỉnh sửa thành công:', response.data);
+                            console.log(data);
                         })
                         .catch(error => {
-                            console.error('Lỗi khi submit dữ liệu:', error);
+                            console.error('Lỗi khi chỉnh sửa dữ liệu:', error);
                         });
+                    }
+                    // this.$refs.alert.showAlert('success', 'Thành Công!', 'Suất đãi khách đã được cập nhật!');
+                    window.confirm(`Suất đãi khách đã được cập nhật!`)
                 }
-                this.$refs.alert.showAlert('success', 'Success!', 'Suất đãi khách đã được lưu!');
-                this.checkGetMeatSet = true;
-            } else {
-
-                for (let index = 1; index <= this.selectedNum; index++) {
-                    let data = {
-                        date_id: this.dateID,
-                        dd_name: index,
-                        dd_time: this.selectedTime[index],
-                        dd_guest: this.selectedGuest[index],
-                    };
-
-                    axios.put('/datedetails/', data)
-                    .then(response => {
-                        console.log('Dữ liệu đã được chỉnh sửa thành công:', response.data);
-                        console.log(data);
-                    })
-                    .catch(error => {
-                        console.error('Lỗi khi chỉnh sửa dữ liệu:', error);
-                    });
-                }
-                this.$refs.alert.showAlert('success', 'Success!', 'Suất đãi khách đã được cập nhật!');
-            }
-                
+            } else window.confirm("Xin Lỗi! Bạn hãy chọn Ngày Tổ Chức Trước!")
         }
 
     },

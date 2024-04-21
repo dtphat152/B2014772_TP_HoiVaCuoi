@@ -1,6 +1,6 @@
 <template>
     <vue-basic-alert :duration="300" :closeIn="2000" ref="alert" />
-    <div class="py-4" style="background-color: #660066; opacity: 1; width: 100%; border-radius: 15px; z-index: 90; 
+    <div class="py-4" style="background-color: #cccccc; width: 100%; border-radius: 15px; z-index: 90; box-shadow: 0 2px 2px #999999; 
         position: fixed; top: 77px;"> 
         <div class="row d-flex">
             <div class="col-10 offset-1 btn-group btn-group-lg pl-4">
@@ -24,7 +24,7 @@
     <div  v-if="this.productObj.category == 'time' && filterProducts.length==0  " 
         style="margin-top: 150px;">
 
-        <div style="width: 60%; margin-left: 20%; background-color: #990099; opacity: 0.9; border-radius: 15px;">
+        <div style="width: 60%; margin-left: 20%; background-color: #d9d9d9; opacity: 0.9; border-radius: 15px; box-shadow: 0 1px 1px #999999;">
         
             <div class="row">
                 <div class="col-2 d-flex justify-content-end"></div>
@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        <div style="margin-top: 50px; width: 60%; margin-left: 20%; background-color: #990099; opacity: 0.9; border-radius: 15px;">
+        <div style="margin-top: 50px; width: 60%; margin-left: 20%; background-color: #d9d9d9; opacity: 0.9; border-radius: 15px;">
             <div class="row">
                 <div class="col-2 d-flex justify-content-end"> </div>
                 <div class="col-8">
@@ -63,16 +63,16 @@
                     <div v-if="calculatePages > 1"> 
                         <button v-if="pageNum != 0" @click="previous" style="background: none; border: none; ">
                             <span class="fa fa-chevron-circle-left" 
-                                style="background-color: #ffe6ea; color: #990099; padding: 5px; border-radius: 10px;">
+                                style="background-color: #b3b3b3; color: #d9d9d9; padding: 5px; border-radius: 10px;">
                             </span>
                         </button> 
                     </div>
                 </div>
                 <div class="col-2"></div>
                 <div class="col-4 input-group mt-1">
-                    <input type="text" style="border-radius: 15px; background-color: #660066; border: none; opacity: 0.8; color: white;" 
+                    <input type="text" style="border-radius: 15px; background-color: #b3b3b3; border: none; opacity: 0.8; color: black;" 
                         v-model="productObj.name" id="formControlLg" class="form-control form-control-lg" placeholder="Search . . ."/>
-                    <div class="p-2 px-3 ml-3" type="submit" style="background-color: #660066; border: none; opacity: 0.8; border-radius: 15px;">
+                    <div class="p-2 px-3 ml-3" type="submit" style="background-color: #b3b3b3; border: none; opacity: 0.8; border-radius: 15px;">
                         <i class="fa fa-search"></i>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                     <div v-if="calculatePages > 1"> 
                         <button v-if="pageNum != calculatePages - 1" @click="next" style="background: none; border: none; ">
                             <span class="fa fa-chevron-circle-right" 
-                                style="background-color: #ffe6ea; color: #990099; padding: 5px; border-radius: 10px;">
+                                style="background-color: #b3b3b3; color: #d9d9d9; padding: 5px; border-radius: 10px;">
                             </span>
                         </button> 
                     </div>
@@ -102,7 +102,7 @@
                         >   
                                 <div class="card mb-5" @click="showItem(index)">
                                     <div class="row card__title">
-                                        <div class="col-2 mr-2 btn" style="background-color: #FFC0CB;" >
+                                        <div class="col-2 mr-2 btn" style="background-color: #ffb3cc;" >
                                         </div>
                                         <div class="col-9 text-lg-right pr-0"><h4>{{ f.product_name }}</h4></div>
                                     </div>
@@ -117,9 +117,9 @@
                                         <h4>{{ formatCurrency(f.product_price)}}</h4>
                                         </div>
                                         <div class="">
-                                            <button class="btn" style="background-color: #FFC0CB; border-radius: 15px;" 
+                                            <button class="btn" style="background-color: #ffb3cc; border-radius: 15px;" 
                                                 @click="addToCart(f.product_name,f.product_id)">
-                                                <h4 class="font-weight-bold" style="color: #990099;">Thêm vào Giỏ</h4>
+                                                <h4 class="font-weight-bold" style="color: black;">Thêm vào Giỏ</h4>
                                             </button>
                                         </div>
                                     </div>
@@ -268,6 +268,15 @@ export default {
                         item_notes: '',
                     };
                     await axios.post("/cartItem/", data)
+                    let data1 = {
+                        product_buy: 1,
+                    }
+                    await axios.post("/cartItem/", data)
+                    try {
+                        await axios.put(`/productsbuy/${this.product}`, data1)
+                    } catch (error) {
+                        console.error('Error in put product buy ',error);
+                    }
                     this.$refs.alert.showAlert('success', 'Cám Ơn!', 'Đã thêm '+name+' vào Giỏ!')
                 }
             } else  this.$refs.alert.showAlert('error', 'Xin Lỗi!', 'Bạn chưa đăng nhập!');
@@ -297,8 +306,9 @@ export default {
     }
 
     .btnheadingmennu{
-        background-color: #FFC0CB;
+        background-color: #ffb3cc;
         color: #948c8c; /* Màu chữ */
+        font-weight: 900;
         padding: 15px 32px;
         text-align: center;
         text-decoration: none;
@@ -340,9 +350,9 @@ export default {
     }
 
     .card{
-        box-shadow: 0 6px 6px rgba(#000, 0.3);
+        box-shadow: 0 1px 1px #999999;
         border-radius: 25px;
-        background-color: #990099; 
+        background-color: #d9d9d9; 
         opacity: 0.9;
         
         transition: transform 0.2s ease;
@@ -356,7 +366,7 @@ export default {
             flex: 0 1 200px;
             text-align: right;
             margin: 0;
-            color: white;
+            color: black;
             font-family: sans-serif;
             font-weight: 600;
             text-transform: uppercase;
@@ -392,7 +402,7 @@ export default {
             width: calc(100% - 40px);
             height: 3px;
             background: #115dd8;
-            background: linear-gradient(to right, #FF0099 0%,#FF0099 20%,#FFC0CB 20%,#FFC0CB 100%);
+            background: linear-gradient(to right, #FF0099 0%,#FF0099 20%,#ffb3cc 20%,#ffb3cc 100%);
             }
             
             .recommend{
@@ -404,7 +414,7 @@ export default {
                     text-transform: uppercase;
                     font-weight: 600;
                     font-size: 14px;
-                    color: white;
+                    color: black;
                 }
                 
                 h4{
@@ -422,7 +432,7 @@ export default {
 
     .card:hover {
       transform: scale(1.01); /* Hoặc bất kỳ giá trị zoom nào bạn muốn */
-      background-color: #b300b3;
+      background-color: #bfbfbf;
     }
 
     

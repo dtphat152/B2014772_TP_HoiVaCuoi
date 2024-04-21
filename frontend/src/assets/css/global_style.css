@@ -13,12 +13,13 @@
     text-transform: capitalize;
     /* transition: fade-in;  */
     animation: fadeIn 0.3s ease-in;
+    font-weight: bold;
 }
 
 body {
-    background-image: url('D:\Luan_Van\TP_HoiVaCuoi\frontend\src\assets\images\bg.jpg');
-    background-size: cover; /* Đảm bảo hình ảnh được điều chỉnh kích thước để phù hợp với toàn bộ cửa sổ trình duyệt */
-    background-repeat: no-repeat; /* Ngăn chặn lặp lại hình ảnh nền */
+    /* background-image: url('D:\Luan_Van\TP_HoiVaCuoi\frontend\src\assets\images\bg.jpg'); */
+    background-size: cover; 
+    background-repeat: no-repeat; 
     background-attachment: fixed;
   }
 
