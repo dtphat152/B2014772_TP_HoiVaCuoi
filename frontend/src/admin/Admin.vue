@@ -19,7 +19,8 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" value="admin access" class="btn" style="background-color: #FFC0CB; color: black; border-radius: 10px;">
+                    <input type="submit" value="Admin Access" class="btn p-3" 
+                    style="background-color: #d9d9d9; color: black; border-radius: 15px; font-weight: 900;">
                 </div>
             </form>
         </div>
@@ -79,7 +80,7 @@ export default {
 }
 
 .admin-container .admin-form-container form {
-    background: #ffb6c1; 
+    background: #ffb3cc; 
     opacity: 0.8;
     position: absolute;
     top: 30%;
@@ -97,22 +98,23 @@ export default {
 .admin-container .admin-form-container form h3 {
     padding-bottom: 1rem;
     font-size: 2rem;
-    font-weight: bolder;
+    font-weight: 900;
     text-transform: uppercase;
-    color: #130f40;
+    color: #d35ea4;
     margin: 0;
 }
 
 .admin-container .admin-form-container form .form-control {
     margin: .7rem 0;
     border-radius: .5rem;
-    background: rgba(0, 0, 0, 0.3);
+    background: #f2f2f2;
     padding: 2rem 1.2rem;
     font-size: 1.6rem;
-    color: #130f40;
+    color: black;
     text-transform: none;
     width: 100%;
     border: none;
+    font-weight: 900;
 }
 
 .admin-container .admin-form-container form .btn {

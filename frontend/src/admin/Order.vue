@@ -6,17 +6,17 @@
             </div>
             <div class="col-6">
                 <div class="row" style="padding: 10px; background-color:#ffe6ea; border-radius: 15px;">
-                    <div class="col" :style="{ 'text-danger pr-5': orderCounts[1] }">
-                        <h5 style="font-weight: 900; text-align: center;">{{ 'Đơn Mới: ' + orderCounts[1] }}</h5>
+                    <div class="col">
+                        <h5 style="font-weight: 900; text-align: center;" :class="{'text-danger': orderCounts[1]}">Đơn Mới {{ orderCounts[1] }}</h5>
                     </div>
-                    <div class="col" :style="{ 'pr-5': orderCounts[2] }">
-                        <h5 style="font-weight: 900; text-align: center;">{{'Đang Chờ Cọc: ' + orderCounts[2] }}</h5>
+                    <div class="col" >
+                        <h5 style="font-weight: 900; text-align: center;">Đang Chờ Cọc {{ orderCounts[2] }}</h5>
                     </div>
-                    <div class="col" :style="{ 'pr-5': orderCounts[3] }">
-                        <h5 style="font-weight: 900; text-align: center;">{{'Đang Thực Hiện: ' + orderCounts[3] }}</h5>
+                    <div class="col">
+                        <h5 style="font-weight: 900; text-align: center;">Đang Thực Hiện {{orderCounts[3] }}</h5>
                     </div>
-                    <div class="col" :style="{ 'text-success pr-5': orderCounts[4] }">
-                        <h5 style="font-weight: 900; text-align: center;">{{ 'Đã Hoàn Thành: ' + orderCounts[4] }}</h5>
+                    <div class="col">
+                        <h5 style="font-weight: 900; text-align: center;">Đã Hoàn Thành {{orderCounts[4] }}</h5>
                     </div>
                 </div>
             </div>
@@ -109,6 +109,7 @@
 import OrderDetail from "./component/OrderDetails.vue";
 import axios from "axios";
 import { mapState, mapMutations } from "vuex";
+
 export default {
     name: 'Order',
 
@@ -138,10 +139,11 @@ export default {
         ...mapState(["allProducts", "admin"]),
 
         orderCounts: function() {
-            const counts = {};
+            const counts = [];
             this.allBills.forEach(bill => {
                 counts[bill.bill_status] = (counts[bill.bill_status] || 0) + 1;
             });
+            
             return counts;
         },
 
@@ -255,6 +257,7 @@ export default {
             }
             await axios.put('/billstatus/' + id);
             this.getAllBills();
+    
         },
 
         async paidBtn(id) {

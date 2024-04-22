@@ -9,12 +9,12 @@
                    <slot></slot>
                 </div>
                 <div class="col-8 text-center">
-                    <h1 style="font-weight: bold; color: #ff69b4;">{{ selectedProduct[0].product_name }}</h1>
+                    <h1 style="font-weight: 900; color: #ff69b4;">{{ selectedProduct[0].product_name }}</h1>
                 </div>
                 <div class="col-2 text-right">
                     <button class="btn" style="background-color: #ffe6ea; border-radius: 10px; color: #40bf77;" 
                     @click="addToCart(selectedProduct[0].product_name)">
-                        <h3 style="font-weight: bold;">Thêm Vào Giỏ</h3>
+                        <h3 style="font-weight: 900;">Thêm Vào Giỏ</h3>
                     </button>
                 </div>   
             </div>
@@ -24,15 +24,15 @@
                     <img :src="require(`../assets/images/${selectedProduct[0].product_src}`)" style="width: 100%; border-radius: 15px;"/>
                 </div>
                 <div class="col-4" style="background-color: #ffe6ea; border-radius: 15px;">
-                    
+                     
                     <div class="row m-4 " style="">
                         <div class="col-12 text-center" style="background-color: white; border-radius: 15px;">
-                            <h4 class="font-weight-bold">{{ formatCurrency(selectedProduct[0].product_price) }}</h4> 
+                            <h3 style="font-weight: 900;">{{ formatCurrency(selectedProduct[0].product_price) }}</h3> 
                         </div>
                     </div>
                     <div class="row m-4 " style="">
                         <div class="col-12" style="background-color: white; border-radius: 15px;">
-                            <h4>{{selectedProduct[0].product_desc}}</h4>
+                            <h4 style="font-weight: 800;">{{selectedProduct[0].product_desc}}</h4>
                         </div>
                     </div>
                 </div>

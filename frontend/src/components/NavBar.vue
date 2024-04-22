@@ -4,10 +4,10 @@
         <router-link @click="scrollToTop()" to="/">
             <div class="row">
                 <div class="col-6 text-right pr-1">
-                    <h1 class="pt-2 pl-2" style="color: #d35ea4; font-weight: bold;">TP</h1>
+                    <h1 class="pt-2 pl-2" style="color: #d35ea4; font-weight: 900;">TP</h1>
                 </div>
-                <div class="col-6 text-left pt-3 pl-0">
-                    <h5 class="font-weight-bold pt-2 pl-2" style="color: #d35ea4;">Hỏi và Cưới</h5>
+                <div class="col-6 text-left pt-4 pl-0">
+                    <h5 class=" pt-2 pl-2" style="color: #d35ea4; font-weight: 900;">Hỏi và Cưới</h5>
                 </div>
             </div>
         </router-link>
@@ -16,22 +16,22 @@
         <nav class="navbar row pt-2">
             <div class="col-lg-3 col-md-6 col-6">
                 <router-link @click="scrollToTop()" to="/">
-                    <h2 class="font-weight-bold" style="color: #ff69b4;">Trang Chủ</h2>
+                    <h2 class="" style="color: #ff69b4; font-weight: 900;">Trang Chủ</h2>
                 </router-link>
             </div>
             <div class="col-lg-3 col-md-6 col-6">
                 <router-link @click="scrollToTop()" to="/booking">
-                    <h2 class="font-weight-bold" style="color: #ff69b4;">Đặt Hàng</h2>
+                    <h2 class="" style="color: #ff69b4; font-weight: 900;">Đặt Hàng</h2>
                 </router-link>
             </div>
             <div class="col-lg-3 col-md-6 col-6">
                 <router-link @click="scrollToTop()" to="/contact">
-                    <h2 class="font-weight-bold" style="color: #ff69b4;">Liên Hệ</h2>
+                    <h2 class="" style="color: #ff69b4; font-weight: 900;" >Liên Hệ</h2>
                 </router-link>
             </div>
             <div class="col-lg-3 col-md-6 col-6">
                 <router-link @click="scrollToTop()" to="/about">
-                    <h2 class="font-weight-bold" style="color: #ff69b4;">Chúng Tôi</h2>
+                    <h2 class="" style="color: #ff69b4; font-weight: 900;">Chúng Tôi</h2>
                 </router-link>
             </div>
         </nav>
@@ -57,18 +57,18 @@
             </div>
             <div v-if="!user" class="col-6 text-left pt-2">
                 <router-link @click="scrollToTop()" to="/login">
-                    <button class=" btn font-weight-bold p-2" style="background-color: #d35ea4; color: aliceblue; border-radius: 10px;">Login</button>
+                    <button class=" btn  p-2" style="background-color: #d35ea4; color: black; border-radius: 10px; font-weight: 900;">Login</button>
                 </router-link>
                 <router-link @click="scrollToTop()" to="/register">
-                    <button class=" btn font-weight-bold p-2 ml-1" style="background-color: #d35ea4; color: aliceblue; border-radius: 10px;">Register</button>
+                    <button class=" btn  p-2 ml-1" style="background-color: #d35ea4; color: black; border-radius: 10px; font-weight: 900;">Register</button>
                 </router-link>
             </div>
             <div v-else class="col-6 text-left pt-2">
                 <router-link @click="scrollToTop()" to="/myorder">
-                    <button class=" btn font-weight-bold p-2" style="background-color: #d35ea4; color: aliceblue; border-radius: 10px;">My Orders</button>
+                    <button class=" btn p-2" style="background-color: #d35ea4; color: black; border-radius: 10px; font-weight: 900;">My Orders</button>
                 </router-link>
                 <router-link @click="handleLogout" to="/">
-                    <button class=" btn font-weight-bold p-2 ml-1" style="background-color: #d35ea4; color: aliceblue; border-radius: 10px;">Logout</button>
+                    <button class=" btn p-2 ml-1" style="background-color: #d35ea4; color: black; border-radius: 10px; font-weight: 900;">Logout</button>
                 </router-link>
             </div>
         </div>

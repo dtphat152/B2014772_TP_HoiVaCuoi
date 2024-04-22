@@ -14,11 +14,13 @@
                                 <div v-if="selectedUser.user_status=='active'" class="col-1"><h5 style="text-align: center; font-weight: 900; color: #00FF7F;">{{ selectedUser.user_status }}</h5></div>
                                 <div v-if="selectedUser.user_status=='blocked'" class="col-1"><h5 style="text-align: center; font-weight: 900; color: #DC143C;">{{ selectedUser.user_status }}</h5></div>
                                 <div class="col-2 text-center">
-                                    <img :src="require(`../assets/images/${selectedUser.user_img}`)" 
-                                        :style="{ width: '70%', 'border-radius': '50px'}"/>
+                                    <img :src="selectedUser.user_avt" alt="Mô tả hình ảnh" :style="{ width: '70%', 'border-radius': '50px'}"/>
+
                                 </div>
                                 <div class="col-1 text-right pr-5">
                                     <i class="fa fa-pencil-square" @click="showEdit()" aria-hidden="true" style="font-size: 25px; color: #FF7F50;"></i><br>
+                                    <input type="file" id="fileInputAvt" accept="image/*" @change="handleFileChange" style="display: none;">
+                                    <i class="fa fa-camera pt-3" aria-hidden="true" @click="openFileInput" style="font-size: 23px; color: #FFD700;"></i><br>
                                     <i v-if="selectedUser.user_status=='active'" @click="blockUser(selectedUser.user_id)" class="fa fa-lock pt-3" aria-hidden="true" 
                                         style="font-size: 23px; color: #DC143C;"></i>
                                     <i v-if="selectedUser.user_status=='blocked'" @click="unBlockUser(selectedUser.user_id)" class="fa fa-unlock-alt pt-3" aria-hidden="true" style="font-size: 23px; color: #00FF7F;"></i>
@@ -137,9 +139,9 @@
                                         'padding': '5px'
                                     }">
                                         <div class="col-3">
-                                            <img :src="require(`../assets/images/${u.user_img}`)" 
+                                            <img :src="u.user_avt" 
                                             :style="{ width: '100%', 'border-radius': '30px'}"/> 
-                                            <!-- <h3>{{ u.user_img }}</h3>-->
+                                            
                                         </div>
                                         <div class="col-8 pl-0 pt-2">
                                             <h3 style=" font-weight: 900;">{{ u.user_name }}</h3> 
@@ -172,9 +174,8 @@
                                         'padding': '5px'
                                     }">
                                         <div class="col-1">
-                                            <img :src="require(`../assets/images/${u.user_img}`)" 
+                                            <img :src="u.user_avt" 
                                             :style="{ width: '100%', 'border-radius': '30px'}"/> 
-                                            <!-- <h3>{{ u.user_img }}</h3>-->
                                         </div>
                                         <div class="col-8 pl-0 pt-3">
                                             <h3 style=" font-weight: 900;">{{ u.user_name }}</h3> 
@@ -207,12 +208,19 @@ export default {
            selectedRow: -1,
            edit: false,
            errorObj: { emailErr: [], phoneErr: [],  },
+           selectedFile: null,
            billList: [],
         }
     },
 
     created() {
         this.getUserList(); 
+    },
+
+    watch: {
+        selectedFile :{
+            handler: 'upload'
+        }
     },
 
     methods: {
@@ -231,9 +239,10 @@ export default {
                     user_phone: user.user_phone,
                     user_password: user.user_password,
                     user_address: user.user_address,
-                    user_img : user.user_img,
+                    user_avt : user.user_avt,
                     user_status : user.user_status,
                 }));
+                console.log('user: ',this.userList)
             } catch (error) {
                 console.error('Error while fetching users:', error);
             }
@@ -347,6 +356,51 @@ export default {
             }
         },
 
+        handleFileChange(event) {
+            this.selectedFile = event.target.files[0];
+        },
+        openFileInput() {
+            document.getElementById('fileInputAvt').click();
+        },
+        async delete(pic) {
+      
+            try {
+                let path = pic.substring(pic.indexOf('/uploads'));
+                let basePath = 'D://Luan_Van//TP_HoiVaCuoi//backend';
+                let absolutePath = basePath.concat(path);
+                console.log(absolutePath);
+                let data = { old: absolutePath };
+                await axios.put(`/uploading/useravt`, data);
+                
+            } catch (error) {
+                console.error('Error updating user avatar:', error);
+            }
+        },
+        async upload() {
+            let rsp = await axios.get(`/users/byid/${this.selectedUser.user_id}`);
+            console.log(this.selectedUser.user_id);
+            let pic = rsp.data.user_avt;
+            console.log(pic);
+            if (pic != `http://localhost:8081/uploads/image-1713705036580.jpg`) {
+                this.delete(pic);
+            }
+            const formData = new FormData();
+            formData.append('image', this.selectedFile);
+            console.log('selectedFile: ',  this.selectedFile);
+            console.log('formData: ',  formData);
+            let id = this.selectedUser.user_id;
+            try {
+            const response = await axios.post(`/uploading/useravt/${id}`, formData, {
+                headers: {
+                'Content-Type': 'multipart/form-data'
+                }
+            });
+            console.log('Image uploaded successfully:', response.data);
+            this.selectedUser.user_avt = response.data;
+            } catch (error) {
+            console.error('Error uploading image:', error);
+            }
+        }
 
     }
 }

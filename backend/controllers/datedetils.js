@@ -2,6 +2,7 @@
 
 import {
     getAllDateDetails,
+    getDateDetailsNobill,
     insertToDateDetails,
     updatedatedetails,
     deleteItemIndatedetails,
@@ -13,6 +14,17 @@ import {
 export const getDateDetails=(req,res)=>{
     const id = req.params.id;
     getAllDateDetails(id,(err,results)=> {
+        if (err) {
+            res.send(err);
+        }else {
+            res.json(results);
+        }
+    });
+};
+
+export const getDateDetailsNobillController=(req,res)=>{
+    const id = req.params.id;
+    getDateDetailsNobill(id,(err,results)=> {
         if (err) {
             res.send(err);
         }else {

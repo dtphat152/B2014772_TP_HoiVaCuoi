@@ -5,7 +5,7 @@
                 <h3 class="mb-2 mb-2 font-weight-bold" style="color: #d35ea4;">{{ category }}</h3> 
                 <div v-for="(f, index) in filterProducts" :key="index">
                     <div v-if="f.product_category === category" 
-                    class="row mb-1 d-flex justify-content-between align-items-center" style="background-color: #d9d9d9; margin-left: 10px; border-radius: 10px;">
+                    class="row mb-1 d-flex justify-content-between align-items-center" style="background-color: #f2f2f2; margin-left: 10px; border-radius: 10px;">
                         
                         <div class="col-md-2 col-lg-2 col-xl-2" style="padding-left: 0px;">
                             <img :src="require(`../assets/images/${f.product_src}`)" alt="" class="cart-product-img" 
@@ -18,21 +18,21 @@
                         <div class="col-md-3 col-lg-2 col-xl-2">
                             <input type="number" id="number" v-model="item_qty[index]" @change="onQtyChange(index,f.product_name)"
                             class="form-control " min="0" max="1000" 
-                            style="border: none; text-align: center; background:white; border-radius: 10px; color: black; font-weight: 900;">
+                            style="border: none; text-align: center; background:#ffb3cc; border-radius: 10px; color: black; font-weight: 900;">
                         </div>
                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                             <button class="btn font-weight-bold" @click="removeBtn(f.product_name)" 
-                             style="background-color: white; color: black; border-radius: 10px;">
+                             style="background-color: #ffb3cc; color: black; border-radius: 10px;">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
                         <hr class="my-4">
                     </div>
                     
-                    <div v-if="f.product_category === category" class="row mb-5" style="background-color: #d9d9d9; margin-left: 10px; border-radius: 10px;">
+                    <div v-if="f.product_category === category" class="row mb-5" style="background-color: #f2f2f2; margin-left: 10px; border-radius: 10px;">
                         <div class="form-group col-10">
                             <input type="text" placeholder="Ghi chú..." class="form-control" 
-                            style="color: black; border: none; font-weight: bold; background-color: #d9d9d9;" v-model="itemNotes[index]">
+                            style="color: black; border: none; font-weight: bold; background-color: #f2f2f2;" v-model="itemNotes[index]">
                         </div>
                         <div class="col-2 text-right">
                         </div>

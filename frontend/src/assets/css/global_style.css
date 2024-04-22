@@ -10,10 +10,8 @@
     outline: none;
     border: none;
     text-decoration: none;
-    text-transform: capitalize;
-    /* transition: fade-in;  */
     animation: fadeIn 0.3s ease-in;
-    font-weight: bold;
+    font-weight: 900;
 }
 
 body {

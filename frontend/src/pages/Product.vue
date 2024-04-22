@@ -24,7 +24,7 @@
     <div  v-if="this.productObj.category == 'time' && filterProducts.length==0  " 
         style="margin-top: 150px;">
 
-        <div style="width: 60%; margin-left: 20%; background-color: #d9d9d9; opacity: 0.9; border-radius: 15px; box-shadow: 0 1px 1px #999999;">
+        <div style="width: 60%; margin-left: 20%; background-color: #d9d9d9; opacity: 0.9; border-radius: 25px; box-shadow: 0 1px 1px #999999;">
         
             <div class="row">
                 <div class="col-2 d-flex justify-content-end"></div>
@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        <div style="margin-top: 50px; width: 60%; margin-left: 20%; background-color: #d9d9d9; opacity: 0.9; border-radius: 15px;">
+        <div style="margin-top: 50px; width: 60%; margin-left: 20%; background-color: #d9d9d9; opacity: 0.9; border-radius: 25px;">
             <div class="row">
                 <div class="col-2 d-flex justify-content-end"> </div>
                 <div class="col-8">

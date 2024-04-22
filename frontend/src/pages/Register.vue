@@ -192,7 +192,7 @@ export default {
                         user_phone: this.registerObj.phone,
                         user_password: this.registerObj.pass,
                         user_address: this.registerObj.address,
-                        user_img: 'user.jpg',
+                        user_avt: 'http://localhost:8081/uploads/image-1713705036580.jpg',
                         user_status: 'active',
                     }
                     await axios.post("/users/", data);

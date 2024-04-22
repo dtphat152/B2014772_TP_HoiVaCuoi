@@ -1,6 +1,6 @@
 <template>
     <vue-basic-alert :duration="300" :closeIn="2000" ref="alert" />
-    <div class="shopping-cart-section pt-5">
+    <div class="shopping-cart-section pt-4">
 
         <div class="heading">
         </div>
@@ -16,7 +16,7 @@
                         <div class="col-lg-8">
                             <div class="p-5">
                             <div class="d-flex justify-content-between align-items-center mb-5">
-                                <h1 class="fw-bold mb-0" style="color: #FF0099; ">Dánh sách Dịch Vụ</h1>
+                                <h1 class="mb-0" style="color: #FF0099; font-weight: 900;">Dánh sách Dịch Vụ</h1>
                             </div>
                             <hr class="my-4">
 
@@ -76,7 +76,7 @@
                                 </div>
                             </div>
                         <div class="pt-5">
-                            <router-link to="/booking" class="text-black-50"><i class="fa fa-arrow-left"></i>Tiếp tục Đặt hàng
+                            <router-link to="/booking" class="text-black-50"><h5 style="font-weight: 800;">Tiếp tục Đặt hàng</h5>
                             </router-link>
                         </div>
                     </div>
@@ -84,21 +84,21 @@
 
                 <div class="col-lg-4 bg-grey">
                     <div class="p-5">
-                    <h3 class="fw-bold mb-5 mt-2 pt-1" style="color: #FF0099; ">Thông tin</h3>
+                    <h3 class="mb-5 mt-2 pt-1" style="color: #FF0099; font-weight: 900; ">Thông tin</h3>
                     <hr class="my-4">
                     
                     <div class="row mt-2 m-1">
-                        <div class="col-10" style="background-color: #999999; border-radius: 15px;">
+                        <div class="col-10" style="background-color: #ffb3cc; border-radius: 15px;">
                             <div class="row d-flex justify-content-around p-2">
-                                <h5 class="mt-1" style="color: black;font-weight: 900;">Ngày tổ chức:</h5>
+                                <h4 class="mt-2" style="color: black;font-weight: 900;">Ngày tổ chức</h4>
                                 <input type="date" class="form-control" id="startDateInput" v-model="formattedStartDate"
-                                style="background-color: #d9d9d9; font-weight: bold; text-align: center; border-radius: 15px; font-size: 10px; width: 180px;" >
+                                style="background-color: #d9d9d9; font-weight: 900; text-align: center; border-radius: 15px; font-size: 15px; width: 180px; color: black;" >
                                 <button @click="changeDate()" 
-                                    style="background-color: #999999; border-radius: 15px;" class="px-2 my-1">Lưu</button>
+                                    style="background-color: #ffb3cc; border-radius: 15px;" class="px-2 my-1"><h5 style="font-weight: 900;">Lưu</h5></button>
                             </div>
                         </div>
-                        <div class="col-2 text-center" style="background-color: #999999; border-radius: 15px;">
-                            <button @click="showAddMealSetFunction()" style="background-color: #999999; padding-top: 5px;">Thêm Suất</button>
+                        <div class="col-2 text-center" style="background-color: #ffb3cc; border-radius: 15px;">
+                            <button @click="showAddMealSetFunction()" style="background-color: #ffb3cc; padding-top: 5px;"><h5 style="font-weight: 900;">Thêm Suất</h5></button>
                         </div>
                     </div>
                     <div v-if="this.showAddMealSet==true" class="row pt-2 align-items-center m-1" style="background-color: #ffb3cc; border-radius: 15px;">
@@ -116,32 +116,32 @@
                         </div>
                         <div class="col-1 ">
                             <button class="btn" @click="saveDateBtn()">
-                                Lưu
+                                <h5 style="font-weight: 900;">Lưu</h5>
                             </button>
                         </div>
                     </div>  
                     <div v-for="(time, index) in this.selectedTime" :key="index">
                         <div class="row align-items-center m-1 mt-3" style="background-color: #d9d9d9; border-radius: 15px; padding-top: 5px;">
-                            <div class="col-3 text-left">
-                                <h6 style="color: black;font-weight: 900;">Suất thứ {{ index+1 }} : </h6>
+                            <div class="col-4 text-left">
+                                <h5 style="color: black;font-weight: 900;">Suất thứ {{ index+1 }}</h5>
                             </div>
                             <div class="col-3">
-                                <input title="Số Khách" type="number" :id="'number-' + index" class="form-control " min="0" max="1000" 
-                                v-model="this.selectedGuest[index]" style="border: none; text-align: center; background: #d9d9d9; font-weight: 900;">
+                                <input title="Số Khách" type="number" :id="'number-' + index" class="form-control mb-3" min="0" max="1000" 
+                                v-model="this.selectedGuest[index]" style="border: none; text-align: center; background: #d9d9d9; font-weight: 900; font-size: 14px; color: black;">
                             </div>
-                            <div class="col-3">
-                                <input type="time" :id="'time-' + index" v-model="this.selectedTime[index]" style=" background: #d9d9d9;">
+                            <div class="col-2">
+                                <input type="time" :id="'time-' + index" v-model="this.selectedTime[index]" style=" background: #d9d9d9; font-weight: 900; font-size: 14px; margin-bottom: 5px;">
                             </div>
                             <div class="col-1 ">
                                 <button class="btn" @click="removeDateBtn(index)"
                                     style="border-radius: 10px; background-color: #d9d9d9;">
-                                    Xóa
+                                    <h5 style="font-weight: 900;">Xóa</h5>
                                 </button>
                             </div>
                             <div class="col-1 ">
                                 <button class="btn" @click="updateDateBtn(index)"
                                     style="border-radius: 10px; background-color: #d9d9d9;">
-                                    Lưu
+                                    <h5 style="font-weight: 900;">Lưu</h5>
                                 </button>
                             </div>
                         </div>   
@@ -150,35 +150,35 @@
 
                     <div class="form-group">
                         <textarea name="txtMsg" class="form-control" placeholder="Những điều bạn yêu cầu hoặc lưu ý" 
-                            style="width: 100%; height: 50px; border: none; font-weight: 800; background: rgba(0, 0, 0, 0.3); color: white; border-radius: 10px;" 
+                            style="width: 100%; height: 50px; border: none; font-weight: 800; background: #ffb3cc; color: black; border-radius: 10px; font-size: 14px;" 
                             v-model="checkoutObj.notes" >
                         </textarea>
                     </div>
                     <div class="form-group">
                         <input type="text" name="coPhone" id="coPhone" placeholder="Phone number" class="form-control"
-                        style="width: 100%; border: none; background: rgba(0, 0, 0, 0.3); color: white; border-radius: 10px; font-weight: 900;" v-model="checkoutObj.phone" />
+                        style="width: 100%; border: none; background: #ffb3cc; color: black; border-radius: 10px; font-weight: 900; font-size: 14px;" v-model="checkoutObj.phone" />
                     </div>
                     <div class="form-group">
-                        <input type="text" name="coAddress" id="coAddress" placeholder="Address..."
-                        style="width: 100%; border: none; background: rgba(0, 0, 0, 0.3); color: white; border-radius: 10px; font-weight: 900;" class="form-control" v-model="checkoutObj.address" />
+                        <textarea type="text" name="coAddress" id="coAddress" placeholder="Address..."
+                        style="width: 100%; border: none; background: #ffb3cc; color: black; border-radius: 10px; font-weight: 900; font-size: 14px;" class="form-control" v-model="checkoutObj.address" />
                     </div>
                     
                     <hr class="my-4">
                     <div class="d-flex justify-content-between mb-5">
-                        <h5 class="text-uppercase">Số lượng Bàn tiệc</h5>
-                        <h5>{{ tableNum }} </h5>
+                        <h5 class="text-uppercase" style="font-weight: 800;">Số lượng Bàn tiệc</h5>
+                        <h5 style="font-weight: 800;">{{ tableNum }} </h5>
                     </div>
                     <div class="d-flex justify-content-between mb-5">
-                        <h5 class="text-uppercase">Giá mỗi Bàn (mâm)</h5>
-                        <h5>{{ formatCurrency(PriceOfTable())}} </h5>
+                        <h5 class="text-uppercase" style="font-weight: 800;">Giá mỗi Bàn (mâm)</h5>
+                        <h5 style="font-weight: 800;">{{ formatCurrency(PriceOfTable())}} </h5>
                     </div>
                     <div class="d-flex justify-content-between mb-5">
-                        <h5 class="text-uppercase">Tổng chi phí</h5>
-                        <h5>{{ formatCurrency(calculateSummaryPrice()) }}</h5>
+                        <h5 class="text-uppercase" style="font-weight: 800;">Tổng chi phí</h5>
+                        <h5 style="font-weight: 800;">{{ formatCurrency(calculateSummaryPrice()) }}</h5>
                     </div>
 
-                    <button type="button" @click="checkOutBtn()" class="btn btn-block font-weight-bold"  
-                        style="background-color: #FF0099; color: white; border-radius: 15px;">Gửi Đơn Hàng</button>
+                    <button type="button" @click="checkOutBtn()" class="btn btn-block"  
+                        style="background-color: #FF0099; color: white; border-radius: 15px;"><h5 style="font-weight: 900;">Gửi Đơn Hàng</h5></button>
                     </div>
                 </div>
 
@@ -436,7 +436,7 @@ export default {
             if (this.user) {
                 try {
                     await this.getDate();
-                    let response = await axios.get(`/datedetails/${this.dateID}`);
+                    let response = await axios.get(`/datedetailsnobill/${this.dateID}`);
                     let data = response.data;
                     if (data && data.length > 0) {
                         let selectedTimes = [];

@@ -1,42 +1,57 @@
 <template>
-    <div class="">
     <div class="container contact-form" style="width: 1000px;">
-            <div class="container" style="height: 100px;">
-               
-            </div>
-            <form method="post">
-                <h3 >Drop Us a Message</h3>
-               <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="text" name="txtName" class="form-control" placeholder="Your Name *" value="" />
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="txtEmail" class="form-control" placeholder="Your Email *" value="" />
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="txtPhone" class="form-control" placeholder="Your Phone Number *" value="" />
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" name="btnSubmit" class="btnContact" value="Send Message" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <textarea name="txtMsg" class="form-control" placeholder="Your Message *" style="width: 100%; height: 150px;"></textarea>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
+      <div class="container" style="height: 100px;">
+        <!-- Bind change event to handle file selection -->
+        <input type="file" id="fileInput" accept="image/*" @change="handleFileChange" style="display: none;">
+        <button @click="openFileInput">Upload Image</button>
+      </div>
     </div>
-</template>
+  </template>
+  
+  <script>
+  import axios from 'axios';
+  
+  export default {
+    name: "Contact",
+    data() {
+      return {
+        selectedFile: null,
+      }
+    },
 
-<script>
-    export default {
-        name: "Contact"
+    watch: {
+        selectedFile :{
+            handler: 'uploadImage'
+        }
+    },
+
+    methods: {
+      handleFileChange(event) {
+        this.selectedFile = event.target.files[0];
+      },
+      openFileInput() {
+        document.getElementById('fileInput').click();
+      },
+      async uploadImage() {
+        const formData = new FormData();
+        formData.append('image', this.selectedFile);
+        console.log('selectedFile: ',  this.selectedFile);
+        console.log('formData: ',  formData);
+        let id = 1;
+        try {
+          const response = await axios.post(`/uploading/useravt/${id}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
+          console.log('Image uploaded successfully:', response.data);
+        } catch (error) {
+          console.error('Error uploading image:', error);
+        }
+      }
     }
-</script>
+  }
+  </script>
 
 <style>
 

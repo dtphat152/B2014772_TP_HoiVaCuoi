@@ -1,7 +1,7 @@
-// import express 
+
 import express from "express";
 
-// import functions from controller 
+
 import {
     showProducts,
     showProductById,
@@ -48,6 +48,7 @@ import {
 
 import {
     getDateDetails,
+    getDateDetailsNobillController,
     addDateDetails,
     updateDateDetails,
     deleteDateDetailsbyName,
@@ -139,92 +140,68 @@ import {
     deleteResetController
 } from "../controllers/reset.js";
 
-// init express router
+
+import {
+    getStaffController,
+    getStaffByBillController,
+    insertStaffController
+} from "../controllers/staff.js"
+
+import {
+    getStaffNotInBillController,
+    getStaffInBillController,
+    getAStaffScheduleModelController,
+    insertStaffScheduleController,
+    updateStaffScheduleController,
+    deleteAStaffScheduleController,
+    deleteAllAStaffScheduleController,
+    deleteAllStaffScheduleByBillController
+} from "../controllers/staffschedule.js"
+
+
+
+
 const router = express.Router();
 
 ////////////////////////// POST ////////////////////////////////
-// newest post id
+
 router.get("/api/post/new", showNewestPostId);
-
-// get all post
 router.get("/api/post", showPosts);
-
-// get single post 
 router.get("/api/post/:id", showPostById);
-
-// create post
 router.post("/api/post", createPost);
-
-// update post 
 router.put("/api/post/:id", updatePost);
-
-// delete post
 router.delete("/api/post/:id", deletePost);
-
-// show Images By Post_Id
 router.get("/api/postimage/:id", showImagesByPostId);
-
-// create Image
 router.post("/api/postimage", createImage);
-
-//delete Image
 router.delete("/api/postimage/:id", deleteImage);
-
 
 ////////////////////////// Product ////////////////////////////////
 
-
 router.get("/api/productstop5", getProductsTop5Controller);
-
 router.get("/api/productsbot5", getProductsBot5Controller);
-
-// get all Product
 router.get("/api/products", showProducts);
-
-// get single Product 
 router.get("/api/products/:id", showProductById);
-
-// create Product
 router.post("/api/products", createProduct);
-
-// update Product 
 router.put("/api/productsbuy/:id", updateProductBuyController);
-
 router.put("/api/products/:id", updateProduct);
-
-// delete Product
 router.delete("/api/products/:id", deleteProduct);
-
-
 
 ////////////////////////// USER ////////////////////////////////
 
 router.get("/api/users/all", allUsers);
-
 router.get("/api/users/byid/:id", showUserbyID);
-
 router.get("/api/users/:email", showAUser);
-
 router.get("/api/users/allbill/:id", getAllfromUserController);
-
 router.post("/api/users/", createAccount);
-
 router.put("/api/users/pass", updatePassController);
-
 router.put("/api/users/status", updateStatusController);
-
 router.put("/api/users/", updateUserController);
+
 ///////////////////////// GUEST ////////////////////////////////
-// get a number
+
 router.get("/api/guestnumber/:id", showNumber);
-
-//create number of guest
 router.post("/api/guestnumber/",addNumber);
-
-// update number to guest
 router.put("/api/guestnumber/", updateNumberOfGuest);
-
-// delete guest
 router.delete("/api/guestnumber/:id", deleteNumber);
 
 
@@ -244,29 +221,21 @@ router.put("/api/datebill/", updateDateBillController);
 router.delete("/api/datebill/:id", deleteDateBillController);
 
 ////////////////////////// DATE DETAILS ////////////////////////////////
+
 router.get("/api/datedetails/:id", getDateDetails);
+router.get("/api/datedetailsnobill/:id", getDateDetailsNobillController);
 router.post("/api/datedetails/", addDateDetails);
 router.put("/api/datedetails/", updateDateDetails);
 router.delete("/api/datedetails/detail/", deleteDateDetailsbyName);
 router.delete("/api/datedetails/:id", deleteDateDetails);
 
 ////////////////////////// CART ////////////////////////////////
-// add to cart
+
 router.post("/api/cartItem", addItems);
-
-// get a item in cart
 router.get("/api/cartItem/:user_id/:product_id", getItem);
-
-// get all items by user id
 router.get("/api/cartItem/:id", allItems);
-
-// update item qty
 router.put("/api/cartItem/", updateItem);
-
-// delete a item in cart
 router.delete("/api/cartItem/:user_id/:product_id", deleteItem);
-
-// delete all items in cart
 router.delete("/api/cartItem/:id", deleteItems);
 
 
@@ -326,13 +295,27 @@ router.post("/api/payment_vnpay", insertVNPayController);
 ////////////////////////// Reset Pass ////////////////////////////////
 
 router.post("/api/resetpass", insertResetController);
-
 router.get("/api/resetpass/:id", getResetController);
-
 router.put("/api/resetpass/", updateResetController);
-
 router.delete("/api/resetpass/:id", deleteResetController);
 
+////////////////////////// Staff ////////////////////////////////
+
+router.post("/api/staff", insertStaffController);
+router.get("/api/staff/bybill/:id", getStaffByBillController);
+router.get("/api/staff", getStaffController);
+
+////////////////////////// Staff Schedule ////////////////////////////////
+
+router.get("/api/staffschedule/notinbill/:id", getStaffNotInBillController);
+router.get("/api/staffschedule/inbill/:id", getStaffInBillController);
+router.get("/api/staffschedule/:id", getAStaffScheduleModelController);
+router.post("/api/staffschedule", insertStaffScheduleController);
+router.put("/api/staffschedule", updateStaffScheduleController);
+router.delete("/api/staffschedule/time/:id", deleteAStaffScheduleController);
+router.delete("/api/staffschedule/all/:id", deleteAllAStaffScheduleController);  
+router.delete("/api/staffschedule/allbybill/:id", deleteAllStaffScheduleByBillController);  
+    
 
 // export default router
 export default router;

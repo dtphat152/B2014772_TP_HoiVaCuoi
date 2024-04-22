@@ -7,7 +7,7 @@
           <div class="col-8 form-group text-center" style="width: 150px;">
             <br>
             
-                <h3  style="color: #FF0099; font-weight: bold;">Số lượng Khách và Thời Gian </h3>
+                <h2  style="color: #FF0099; font-weight: 900;">Số lượng Khách và Thời Gian </h2>
                 <div v-if="this.selectedNum!=0" class="row d-flex justify-content-center pt-2">
                     <div class="col-3 offset-3"><h5  style="color: #FF0099;">Thời Gian</h5></div>
                     <div class="col-3"><h5 style="color: #FF0099;">Số Khách</h5></div>
@@ -48,13 +48,13 @@
                 
                 <div v-if="this.selectedNum!=0" style="text-align: center; padding-bottom: 12px; padding-top: 1px;">
                     <div class="pt-5">
-                    <button type="button" class="btn font-weight-bold" @click="incNum()"
-                    style="background-color: #FFC0CB; border-color: none; color: back; margin-bottom: 10px; border: #808080; border-radius: 10px;" >
+                    <button type="button" class="btn" @click="incNum()"
+                    style="background-color: #FFC0CB; border-color: none; color: back; margin-bottom: 10px; border: #808080; border-radius: 10px; font-weight: 900;" >
                         <i class="fa fa-plus" style="color: black;"></i> Thêm suất
                     </button>
                     </div>
-                    <button type="button" class="btn font-weight-bold" 
-                        style="background-color: #FFC0CB; color: black; border-radius: 10px;" @click="submit">Xác Nhận
+                    <button type="button" class="btn" 
+                        style="background-color: #FFC0CB; color: black; border-radius: 10px; font-weight: 900;" @click="submit">Xác Nhận
                     </button>
                 </div>
                 
@@ -108,11 +108,12 @@
 
         async getNum(){
             if (this.dateID){
-                let response = await axios.get(`/datedetails/${this.dateID}`);
+                let response = await axios.get(`/datedetailsnobill/${this.dateID}`);
                 if(response.data.length > 0){
                     let data = response.data;
                     this.selectedNum = data.length;
                 }
+                console.log(this.selectedNum)
             }
         },
 
@@ -140,7 +141,7 @@
                     for (let index = 1; index <= this.selectedNum; index++) {
                         
                         try {
-                            let response = await axios.get(`/datedetails/${this.dateID}`);
+                            let response = await axios.get(`/datedetailsnobill/${this.dateID}`);
                             if(response.data.length > 0){
                                 let data = response.data;
                                 if (data && data.length >= index) {
@@ -190,7 +191,7 @@
             await this.getDate();
             if (this.dateID != ''){
                 if(this.checkGetMeatSet == false){
-                    let response = await axios.get(`/datedetails/${this.dateID}`);
+                    let response = await axios.get(`/datedetailsnobill/${this.dateID}`);
                     let data = response.data;
                     let templenght = data.length + 1;
                     for (let index = templenght; index <= this.selectedNum; index++) {

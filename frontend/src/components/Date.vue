@@ -8,15 +8,16 @@
       <br>
       <div class="row d-flex justify-content-center">
         <div class="col-7 form-group py-0">
-            <label style="width: 100%; padding: 0;" for="startDateInput"><h3 class="text-center font-weight-bold" 
-              style="color: #FF0099;">Ngày Tổ Chức Tiệc Cưới</h3></label>
+            <label style="width: 100%; padding: 0;" for="startDateInput">
+              <h2 class="text-center" style="color: #FF0099; font-weight: 900;">Ngày Tổ Chức Tiệc Cưới</h2>
+            </label>
             <input type="date" class="form-control" id="startDateInput" v-model="formattedStartDate"
               style="border: none; text-align: center; background: #ffb3cc; border-radius: 10px; font-weight: 900; font-size: 15px;" >
             <br>
         </div>
       </div>
       <div class="py-0" style="text-align: center;">
-        <button type="button" class="btn font-weight-bold" style="background-color: #FFC0CB; color: black; border-radius: 10px;" 
+        <button type="button" class="btn" style="background-color: #FFC0CB; color: black; border-radius: 10px; font-weight: 900;" 
           @click="submitDate">Xác Nhận
         </button>
       </div>

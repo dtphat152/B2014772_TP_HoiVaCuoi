@@ -11,9 +11,9 @@
                             Mã đơn #{{ b.bill_id }} 
                         </h4>
                         <button v-if="b.bill_status==0 || b.bill_status==4" @click="hideBill(b.bill_id,b.bill_status)"
-                            class="col-1 btn ml-1" style="background-color:Orange; border-radius: 10px;"> Ẩn </button>
+                            class="col-1 btn ml-1" style="background-color:Orange; border-radius: 10px; font-weight: 900;"> Ẩn </button>
                         <button v-if="b.bill_status==1" @click="cancelBill(b.bill_id)"
-                            class="col-1 btn ml-1" style="background-color:Tomato; border-radius: 10px;"> Hủy </button>
+                            class="col-1 btn ml-1" style="background-color:Tomato; border-radius: 10px;  font-weight: 900;"> Hủy </button>
                         <button v-if="b.bill_status==2"  @click="showPaymentBTN()" 
                             class="col-1 btn ml-1" style="background-color:MediumSeaGreen; border-radius: 10px;"> Thanh Toán Cọc</button>
                             <button v-if="showPayment && b.bill_status==2" @click="sendMomo(b.bill_id,b.bill_total)"
@@ -37,20 +37,20 @@
             <div class="row d-flex justify-content-around" > 
                 <div class="col-10 " style="border-radius: 20px; background-color: white">
                     <div v-if="b.bill_status==0">
-                        <h4 class="pl-3 text-warning text-center">Đơn Hàng của bạn đã Hủy. Rất Xin Lỗi !!!</h4>
+                        <h3 class="pl-3 text-warning text-center">Đơn Hàng của bạn đã Hủy. Rất Xin Lỗi !!!</h3>
                     </div>
                     <div v-else class="row d-flex justify-content-around p-2">
                         <div class="col text-center" :style="b.bill_status >= 1 ? { 'background-color': '#ffb3cc', 'border-start-start-radius': '10px', 'border-end-start-radius': '10px' } : ''">
-                            <h4 class="font-weight-bold">Đang Chờ Chấp Nhận</h4>
+                            <h3 style="font-weight: 900;">Đang Chờ Chấp Nhận</h3>
                         </div>
                         <div class="col text-center" :style="b.bill_status >= 2 ? { 'background-color': '#ffb3cc'} : ''">
-                            <h4 class="font-weight-bold">Đang Chờ Thanh Toán Cọc</h4>
+                            <h3 style="font-weight: 900;">Đang Chờ Thanh Toán Cọc</h3>
                         </div>
                         <div class="col text-center" :style="b.bill_status >= 3 ? { 'background-color': '#ffb3cc'} : ''">
-                            <h4 class="font-weight-bold">Đang Chuẩn Bị Và Tiến Hành</h4>
+                            <h3 style="font-weight: 900;">Đang Chuẩn Bị Và Tiến Hành</h3>
                         </div>
                         <div class="col text-center" :style="b.bill_status >= 4 ? { 'background-color': '#ffb3cc', 'border-end-end-radius': '10px', 'border-start-end-radius': '10px' } : ''">
-                            <h4 class="font-weight-bold">Hoàn Thành Đơn Hàng</h4>
+                            <h3 style="font-weight: 900;">Hoàn Thành Đơn Hàng</h3>
                         </div>  
                     </div>
                 </div>
@@ -59,25 +59,25 @@
             <br>
             
             <div class="row">
-                <div class="col-8" style="border-radius: 20px; background-color: white">
+                <div class="col-8" style="border-radius: 20px; background-color: #ffb3cc">
                     <ProductBill @send-price="handlePriceFromChild" :Bill="b.bill_id" ></ProductBill>
                 </div>
                 <div class="col-4">
                     
-                    <div class="container-datetime" style="background-color: white; border-radius: 20px; padding: 5px;">
+                    <div class="container-datetime" style="background-color: #ffb3cc; border-radius: 20px; padding: 5px;">
                         <div class="date-mealset">
                             <div class="row mt-2 m-1">
-                                <div class="col-10" style="background-color: #d9d9d9; border-radius: 15px;">
+                                <div class="col-10" style="background-color: #f2f2f2; border-radius: 15px;">
                                     <div class="row d-flex justify-content-around p-2">
-                                        <h5 class="mt-1" style="color: black;font-weight: 900;">Ngày tổ chức:</h5>
+                                        <h4 class="mt-2" style="color: black;font-weight: 900;">Ngày tổ chức:</h4>
                                         <input type="date" class="form-control" id="startDateInput" v-model="formattedStartDate"
-                                            style="background-color: white; font-weight: bold; text-align: center; border-radius: 15px; font-size: 10px; width: 180px;" >
+                                            style="background-color: #ffb3cc; font-weight: 900; text-align: center; border-radius: 15px; font-size: 15px; width: 180px;" >
                                         <button @click="sendDate(b.bill_id,b.bill_status)" 
-                                            style="background-color: #d9d9d9; border-radius: 15px;" class="px-2 my-1">Lưu</button>
+                                            style="background-color: #f2f2f2; border-radius: 15px;" class="px-2 my-1"><h5 style="font-weight: 900;">Lưu</h5></button>
                                     </div>
                                 </div>
-                                <div class="col-2 text-center" style="background-color: #d9d9d9; border-radius: 15px;">
-                                    <button @click="showAddMealSetFunction()" style="background-color: #d9d9d9; padding-top: 5px;">Thêm Suất</button>
+                                <div class="col-2 text-center" style="background-color: #f2f2f2; border-radius: 15px;">
+                                    <button @click="showAddMealSetFunction()" style="background-color: #f2f2f2; padding-top: 5px;"><h5 style="font-weight: 900;">Thêm Suất</h5></button>
                                 </div>
                             </div>
                             
@@ -102,27 +102,27 @@
                             </div>  
 
                             <div v-for="(time, index) in this.selectedTime" :key="index">
-                                <div class="row align-items-center m-1 mt-3" style="background-color: #d9d9d9; border-radius: 15px; padding-top: 5px;">
+                                <div class="row align-items-center m-1 mt-3" style="background-color: #f2f2f2; border-radius: 15px; padding-top: 5px;">
                                     <div class="col-3 text-left">
-                                        <h6 style="color: black;font-weight: 900;">Suất thứ {{ index+1 }} : </h6>
+                                        <h5 style="color: black;font-weight: 900;">Suất thứ {{ index+1 }}</h5>
                                     </div>
                                     <div class="col-3">
-                                        <input title="Số Khách" type="number" :id="'number-' + index" class="form-control " min="0" max="1000" 
-                                        v-model="this.selectedGuest[index]" style="border: none; text-align: center; background: #d9d9d9; font-weight: 900;">
+                                        <input title="Số Khách" type="number" :id="'number-' + index" class="form-control mb-2" min="0" max="1000" 
+                                        v-model="this.selectedGuest[index]" style="border: none; text-align: center; background: #f2f2f2; font-weight: 900; font-size: 15px;">
                                     </div>
                                     <div class="col-3">
-                                        <input type="time" :id="'time-' + index" v-model="this.selectedTime[index]" style=" background: #d9d9d9;">
+                                        <input type="time" :id="'time-' + index" v-model="this.selectedTime[index]" style=" background: #f2f2f2; font-weight: 900; font-size: 15px; margin-bottom: 5px;">
                                     </div>
                                     <div class="col-1 ">
                                         <button class="btn" @click="removeDateBtn(index,b.bill_id,b.bill_status)"
-                                            style="border-radius: 10px; background-color: #d9d9d9;">
-                                            Xóa
+                                            style="border-radius: 10px; background-color: #f2f2f2;">
+                                            <h5 style="font-weight: 800;">Xóa</h5>
                                         </button>
                                     </div>
                                     <div class="col-1 ">
                                         <button class="btn" @click="updateDateBtn(index,b.bill_id,b.bill_status)"
-                                            style="border-radius: 10px; background-color: #d9d9d9;">
-                                            Lưu
+                                            style="border-radius: 10px; background-color: #f2f2f2;">
+                                            <h5 style="font-weight: 800;">Lưu</h5>
                                         </button>
                                     </div>
                                 </div>   
@@ -130,68 +130,69 @@
                         </div>
                     </div>
                     <br>
-                    <div class="container-info" style="background-color: white; border-radius: 20px; padding: 10px;">
+                    <div class="container-info" style="background-color: #ffb3cc; border-radius: 20px; padding: 10px;">
                         <div class="row">
                             <div class="col-10 pr-0">
                                 <textarea name="txtMsg" class="form-control text-center" placeholder="Những điều bạn yêu cầu hoặc lưu ý" 
-                                    style="width: 100%; height: 25px; border: none;  background: #d9d9d9; border-radius: 15px; font-weight: 900;" 
+                                    style="width: 100%; height: 25px; border: none;  background: #f2f2f2; border-radius: 15px; font-weight: 900; font-size: 15px;" 
                                     v-model="b.bill_address" >   
                                 </textarea>
                             </div>
                             <div class="col-2 pl-1">
                                 <button @click="saveAdd(b.bill_address,b.bill_id,b.bill_status)" 
-                                style="height: 100%; width: 100%; border-radius: 15px; background-color: #d9d9d9;">Lưu</button>
+                                style="height: 100%; width: 100%; border-radius: 15px; background-color: #f2f2f2;"><h5 style="font-weight: 800;">Lưu</h5></button>
                             </div>
                         </div>
                         
                         <div class="row pt-3">
                             <div class="col-10 pr-0">
                                 <input type="text"  v-model="b.bill_phone"
-                                style="border-radius: 15px; background-color: #d9d9d9; text-align: center; height: 25px; width: 100%; font-weight: 900;" >
+                                style="border-radius: 15px; background-color: #f2f2f2; text-align: center; height: 25px; width: 100%; font-weight: 900; font-size: 15px;" >
                             </div>
                             <div class="col-2 pl-1">
-                                <button @click="savePhone(b.bill_phone,b.bill_id,b.bill_status)" style="height: 100%; width: 100%; border-radius: 15px; background-color: #d9d9d9;">Lưu</button>
+                                <button @click="savePhone(b.bill_phone,b.bill_id,b.bill_status)" 
+                                style="height: 100%; width: 100%; border-radius: 15px; background-color: #f2f2f2; font-weight: 900;"><h5 style="font-weight: 800;">Lưu</h5></button>
                             </div>
                         </div>
                     </div>
                     <br>
-                    <div class="container-info" style="background-color: white; border-radius: 20px; padding: 10px;">
+                    <div class="container-info" style="background-color: #ffb3cc; border-radius: 20px; padding: 10px;">
                         <div class="row mr-1">
                             <div class="col-8 pr-1">
                                 <textarea name="txtMsg" class="form-control text-center" placeholder="Những điều bạn yêu cầu hoặc lưu ý" 
-                                    style="width: 100%; height: 25px; border: none;  background: #d9d9d9; border-radius: 15px; font-weight: 900;" 
+                                    style="width: 100%; height: 25px; border: none;  background: #f2f2f2; border-radius: 15px; font-weight: 900;" 
                                     v-model="b.bill_notes" >   
                                 </textarea>
                             </div>
-                            <div class="col-4 pl-1 pt-1" style="border-radius: 15px; background-color: #d9d9d9; text-align: center; height: 25px; font-weight: 900;">
+                            <div class="col-4 pl-1 pt-1" style="border-radius: 15px; background-color: #f2f2f2; text-align: center; height: 25px; font-weight: 900;">
                                    {{b.bill_when}}
                             </div>
                         </div>
                         
                     </div>
                     <br>
-                    <div class="container-info" style="background-color: white; border-radius: 20px; padding: 10px;">
-                        <div class="mx-1" style="background: #d9d9d9; border-radius: 15px;">
-                            <div class="row mx-1 p-3 d-flex justify-content-between">
-                                <h5 class="">Số lượng Bàn tiệc (Mâm): </h5>
-                                <h5>{{ this.tableNum }} bàn</h5>
+                    <div class="container-info" style="background-color: #ffb3cc; border-radius: 20px; padding: 10px;">
+                        <div class="mx-1" style="background: #f2f2f2; border-radius: 15px;">
+                            <div class="row mx-1 p-1 d-flex justify-content-between">
+                                <h5 style="font-weight: 900;">Số lượng Bàn tiệc (Mâm): </h5>
+                                <h5 style="font-weight: 900;">{{ this.tableNum }} bàn</h5>
                             </div>
-                            <div class="row mx-1 p-3 d-flex justify-content-between">
-                                <h5 class="">Giá cả mỗi Bàn tiệc (Mâm): </h5>
-                                <h5>{{ formatCurrency(this.priceOfTable) }}</h5>
+                            <div class="row mx-1 p-1 d-flex justify-content-between">
+                                <h5 style="font-weight: 900;">Giá cả mỗi Bàn tiệc (Mâm): </h5>
+                                <h5 style="font-weight: 900;">{{ formatCurrency(this.priceOfTable) }}</h5>
                             </div>
                             
                         </div>
                         <div class="row pt-3 mx-1">
-                            <div class="col-12" style="width: 100%; height: 25px; border: none;  background: #d9d9d9; border-radius: 15px;">
+                            <div class="col-12" style="width: 100%; height: 25px; border: none;  background: #f2f2f2; border-radius: 15px;">
                                 <h4 class="text-center font-weight-bold pt-1" style="color: #FF0099;">{{ formatCurrency(b.bill_total) }}</h4>  
                             </div>
                         </div>
                     </div>
                     <br>
-                    <div class="container-info" style="background-color: white; border-radius: 20px; padding: 10px;">
-                        <div class="mx-1" style="background: #d9d9d9; border-radius: 15px;">
-                            <div class="row mx-1 p-3" :style="b.bill_status >= 3 ? { 'color': 'MediumSeaGreen'} : '' ">
+                    <div class="container-info" style="background-color: #ffb3cc; border-radius: 20px; padding: 10px;">
+                        <div class="mx-1" style="background: #f2f2f2; border-radius: 15px;">
+                            <div class="row mx-1 p-2" :style="b.bill_status >= 3 ? { 'color': 'MediumSeaGreen'} : '' ">
                                 <div class="col-4 text-left">
                                     <h5 class="" style="font-weight: 900;">Tiền Cọc: </h5>
                                 </div>
@@ -202,7 +203,7 @@
                                     <h5 style="font-weight: 900;">{{ formatCurrency(b.bill_total/10) }}</h5>
                                 </div>    
                             </div>
-                            <div class="row mx-1 p-3" :style="b.bill_status >= 4 ? { 'color': 'MediumSeaGreen'} : '' ">
+                            <div class="row mx-1 p-2" :style="b.bill_status >= 4 ? { 'color': 'MediumSeaGreen'} : '' ">
                                 <div class="col-4 text-left">
                                     <h5 class="" style="font-weight: 900;">Còn Lại: </h5>
                                 </div>
@@ -228,6 +229,7 @@
 import ProductBill from "../components/ProductBill.vue"
 import axios from "axios";
 import { mapState } from "vuex";
+
 export default {
     name: 'MyOrder',
 
@@ -251,7 +253,7 @@ export default {
     },
 
     created() {
-        
+   
     },
 
     mounted: function () {
@@ -603,14 +605,14 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 3%;
+    padding-top: 1%;
     padding-bottom: 5%;
 }
 
 .my-order .my-order-inner {
     width: 80%;
     height: 80%;
-    background-color: #d9d9d9; 
+    background-color: #f2f2f2; 
     box-shadow: 0 1px 1px #999999;
     opacity: 1;
     padding: 32px;

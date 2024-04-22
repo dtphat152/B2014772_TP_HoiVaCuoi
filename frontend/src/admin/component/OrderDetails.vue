@@ -1,11 +1,15 @@
 <template>
+    <vue-basic-alert :duration="300" :closeIn="2000" ref="alert" />
     <div class="order-details">
         <div class="order-details-inner">
             <h2 class="d-flex justify-content-between font-weight-bold">Chi Tiết Đơn #{{ this.bill[0] }} 
                 
                 <div>
-                    <button @click="sendBillId(this.bill[0])" class="btn mr-2" style="background-color: #40bf77; border-radius: 10px;">
+                    <button @click="sendBillId1(this.bill[0])" class="btn mr-2" style="background-color: #40bf77; border-radius: 10px;">
                         <h5 style="font-weight: 900;">Add to bill</h5>
+                    </button>
+                    <button @click="sendBillId2(this.bill[0])" class="btn mr-2" style="background-color: #FF7F50; border-radius: 10px;">
+                        <h5 style="font-weight: 900;">Staff</h5>
                     </button>
                     <slot></slot>
                 </div>
@@ -16,9 +20,13 @@
             </div>
             <div class="row">
                 <div class="col-8">
-                    <ProductBill v-if="!showProductOrder" :Bill=[this.bill[0],this.email] ></ProductBill>
+                    <Staff v-if="showProductBill==3" :ID="this.sendId" >
+                        <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
+                    </Staff>
+                    
+                    <ProductBill v-if="showProductBill==1" :Bill=[this.bill[0],this.email] ></ProductBill>
 
-                    <ProductOrder v-if="showProductOrder" :ID="this.sendId" >
+                    <ProductOrder v-if="showProductBill==2" :ID="this.sendId" >
                         <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
                     </ProductOrder>                    
                 </div>
@@ -45,7 +53,7 @@
                                     <h5 class="mt-1" style="font-weight: 900;">Ngày tổ chức:</h5>
                                     <input type="date" class="form-control" id="startDateInput" v-model="formattedStartDate"
                                         style="background-color: #ffccdd; font-weight: 900; text-align: center; border-radius: 15px; width: 150px;" >
-                                    <button @click="updateDate(b.user_id,b.bill_status)" 
+                                    <button @click="updateDate()" 
                                         style="background-color: #ffccdd; border-radius: 15px;" class="px-2 my-1"><h6 style="font-weight: 900;">Lưu</h6></button>
                                 </div>
                             </div>
@@ -128,11 +136,50 @@
                             </div>
                         </div>
                     </div>
-                    
+                    <br>
+                    <div style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
+                        <div class="mx-1" style="background: #f2f2f2; border-radius: 15px;">
+                            <div class="row mx-1 p-1 d-flex justify-content-between">
+                                <h5 style="font-weight: 900;">{{ this.number*10 }} khách mời</h5>
+                                <h5 style="font-weight: 900;">{{ this.number }} bàn tiệc</h5>
+                            </div>                    
+                        </div>
+                        <div class="row pt-3 mx-1">
+                            <div class="col-12" style="width: 100%; height: 25px; border: none;  background: #f2f2f2; border-radius: 15px;">
+                                <h4 class="text-center font-weight-bold pt-1" style="color: #FF0099;">{{ formatCurrency(this.total) }}</h4>  
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="container-info" style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
+                        <div class="mx-1" style="background: #f2f2f2; border-radius: 15px;">
+                            <div class="row mx-1 p-2" :style="status >= 3 ? { 'color': 'MediumSeaGreen'} : '' ">
+                                <div class="col-4 text-left">
+                                    <h5 class="" style="font-weight: 900;">Tiền Cọc: </h5>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <h6 v-if="status >= 3" style="font-weight: 900;">(đã thanh toán)</h6>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <h5 style="font-weight: 900;">{{ formatCurrency(total/10) }}</h5>
+                                </div>    
+                            </div>
+                            <div class="row mx-1 p-2" :style="status >= 4 ? { 'color': 'MediumSeaGreen'} : '' ">
+                                <div class="col-4 text-left">
+                                    <h5 class="" style="font-weight: 900;">Còn Lại: </h5>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <h6 v-if="status >= 4" style="font-weight: 900;">(đã thanh toán)</h6>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <h5 style="font-weight: 900;">{{ formatCurrency(total*9/10) }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <hr style="background-color: #ffccdd; height: 3px;">
-            
+                      
         </div>
     </div>
 </template>
@@ -140,7 +187,9 @@
 <script>
 import ProductBill from "./ProductBill.vue";
 import ProductOrder from "./ProductOrder.vue";
+import Staff from "./Staff.vue";
 import axios from "axios";
+import VueBasicAlert from 'vue-basic-alert';
 export default {
     props: ['bill'],
     name: "OrderDetail",
@@ -148,21 +197,22 @@ export default {
     data() {
         return {
             email: '',
-
+            status: '',
             notes:"",
             address:"",
             phone:"",
             date:'',
+            total:'',
             selectedTime: [],
             selectedGuest: [],
-
+            number: 0,
             showAddMealSet : false,
             tempGuest: '',
             tempTime: '',
 
             billMatch: undefined,
 
-            showProductOrder: false,
+            showProductBill: 1,
             sendId: undefined,
         }
     },
@@ -187,14 +237,25 @@ export default {
     },
 
     methods: {
-
-        closeView: function () {
-            this.showProductOrder = !this.showProductOrder;
+        formatCurrency(amount) {
+          if (!amount) return '';
+          return parseFloat(amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         },
 
-        sendBillId: function (id) {
+        closeView: function () {
+            this.showProductBill = 1;
+        },
+
+        sendBillId1: function (id) {
             this.sendId = id
-            this.showProductOrder = !this.showProductOrder;
+            if ( this.showProductBill == 2 ) this.showProductBill = 1
+            else this.showProductBill = this.showProductBill + 1;
+        },
+
+        sendBillId2: function (id) {
+            this.sendId = id
+            if ( this.showProductBill == 3 ) this.showProductBill = 1
+            else this.showProductBill = this.showProductBill + 2;
         },
 
         async getBillStatus() {
@@ -205,11 +266,9 @@ export default {
                 this.notes = data[0].bill_notes;
                 this.address = data[0].bill_address;
                 this.phone = data[0].bill_phone;
+                this.total = data[0].bill_total;
+                this.status = data[0].bill_status;
             }
-        },
-
-        showProductOrderFunction() {
-            this.showProductOrder = !this.showProductOrder;
         },
 
         async getNotes() {
@@ -293,6 +352,7 @@ export default {
                         data.forEach(item => {
                             selectedTimes.push(item.dd_time);
                             selectedGuests.push(item.dd_guest);
+                            this.number += parseInt(item.dd_guest);
                         });
                         // Gán giá trị của các mảng cho selectedTime và selectedGuest
                         this.selectedTime = selectedTimes;
@@ -304,7 +364,7 @@ export default {
                 } catch (error) {
                     console.error('Lỗi khi lấy dữ liệu từ API:', error);
                 }
-                
+                this.number = Math.ceil(this.number / 10);
             }
         },
 
@@ -324,15 +384,38 @@ export default {
             return null;
         },
 
-        async updateDate(user_id,status){
-            if (status <=3 ){
-                let dateSelect = {
-                    date_date: this.formatDateToSubmit(this.selectedDate.date),
-                    user_id: parseInt(user_id),
-                };
-                await axios.put("/date", dateSelect);
-                this.$refs.alert.showAlert('success', 'Success!', 'Ngày đã được thay đổi thành công!');
-            } else (window.confirm('Bạn không thể thay đổi Ngày'))
+        async deleteStaff(){
+            try {
+                await axios.delete(`staffschedule/allbybill/${this.bill[0]}`);
+            } catch (error) {
+                console.error('Error in delete staff schedule',error)
+            }
+        },
+
+        async updateDate(){
+            let dateSelect = {
+                date_date: this.formatDateToSubmit(this.date),
+                bill_id: this.bill[0],
+            };
+            await axios.put("/datebill", dateSelect);
+            this.deleteStaff();
+            this.$refs.alert.showAlert('success', 'Success!', 'Ngày đã được thay đổi thành công!');   
+                const dateString =dateSelect.date_date;
+                const parts = dateString.split("-");
+                const year = parseInt(parts[2]);
+                const month = parseInt(parts[0]); 
+                const day = parseInt(parts[1]);
+                let showdate = `${day}/${month}/${year}`;
+            let data1 = {
+                email: this.email,
+                title:`Đơn hàng #${this.bill[0]} của bạn đã được cập nhật!`,
+                content: `Nội dung: Thay đổi ngày tổ chức thành ${showdate}.`,
+            }
+            try {
+                axios.post(`/sendemail/update`,data1);
+            } catch (error) {
+                console.error("Error Send email update:", error);
+            }
         },
 
         async removeDateBtn(index) {
@@ -347,10 +430,10 @@ export default {
                     let response = await axios.delete(`/datedetails/detail/`, { data });
                     if (response.status >= 200 && response.status < 300) {
                         console.log("Xóa thành công");
-                        this.$refs.alert.showAlert('success', 'Success!', 'The Meat Set is deleted!');
+                        this.$refs.alert.showAlert('success', 'Success!', 'Suất Đãi đã được xóa!');
                         this.selectedTime.splice(index, 1);
                         this.selectedGuest.splice(index, 1);
-                        
+                        this.deleteStaff();
                         let data1 = {
                             email: this.email,
                             title:`Đơn hàng #${this.bill[0]} của bạn đã được cập nhật!`,
@@ -382,11 +465,11 @@ export default {
 
             try {
                 await axios.put('/datedetails/', data);
-                console.log('Dữ liệu đã được chỉnh sửa thành công');
+                this.$refs.alert.showAlert('success', 'Success!', 'Dữ liệu đã được chỉnh sửa thành công!');
                 console.log(data);
                 // Sau khi cập nhật thành công, gọi hàm để lấy lại dữ liệu
                 await this.getMeatSet();
-
+                this.deleteStaff();
                 let data1 = {
                     email: this.email,
                     title:`Đơn hàng #${this.bill[0]} của bạn đã được cập nhật!`,
@@ -418,14 +501,14 @@ export default {
 
             try {
                 await axios.post('/datedetails/', data);
-                console.log('Dữ liệu đã được submit thành công:');
+                this.$refs.alert.showAlert('success', 'Success!', 'Dữ liệu đã được chỉnh sửa thành công!');
                 console.log(data);
                 // Sau khi cập nhật thành công, gọi hàm để lấy lại dữ liệu
                 await this.getMeatSet();
                 this.tempTime = '';
                 this.tempGuest = '';
                 this.showAddMealSet = false;
-        
+                this.deleteStaff();
                 let data1 = {
                     email: this.email,
                     title:`Đơn hàng #${this.bill[0]} của bạn đã được cập nhật!`,
@@ -450,7 +533,7 @@ export default {
             if (confirmResult) {
                 try {
                     await axios.put("billstatus/address/", data);
-                    console.log("Đã cập nhật Địa Chỉ thành công.");
+                    this.$refs.alert.showAlert('success', 'Success!', 'Địa chỉ đã được chỉnh sửa thành công!');
                     let data1 = {
                         email: this.email,
                         title: `Đơn hàng #${this.bill[0]} của bạn đã được cập nhật!`,
@@ -477,7 +560,7 @@ export default {
             if (confirmResult) {
                 try {
                     await axios.put("billstatus/phone/", data);
-                    console.log("Đã cập nhật Số Điện Thoại thành công.");
+                    this.$refs.alert.showAlert('success', 'Success!', 'Dữ liệu đã được chỉnh sửa thành công!');
                     let data1 = {
                         email: this.email,
                         title: `Đơn hàng #${this.bill[0]} của bạn đã được cập nhật!`,
@@ -496,7 +579,7 @@ export default {
         },
     },
 
-    components: { ProductOrder, ProductBill }
+    components: { ProductOrder, ProductBill , Staff, VueBasicAlert}
 }
 </script>
 

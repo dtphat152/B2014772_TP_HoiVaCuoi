@@ -16,6 +16,19 @@ export const getAllDateDetails = (id,result) => {
     });
 };
 
+export const getDateDetailsNobill = (id,result) => {
+    db.query(`SELECT *
+            FROM datedetails dd JOIN date d ON dd.date_id = d.date_id 
+            WHERE dd.date_id = ?;`, [id] , (err,results)=> {
+        if (err){
+            console.log(err);
+            result(err,null);
+        }else{
+            result(null,results);
+        }
+    });
+};
+
 // insert new item to datedetails
 export const insertToDateDetails = (data,result) => {
     db.query("INSERT INTO datedetails SET ?",data, (err,results)=> {
