@@ -1,6 +1,6 @@
 <template>
-   <div class="header row py-3 d-flex justify-content-between" style="padding-bottom: 10px !important;">
-    <div class="col-md-4">
+   <div class="header row py-3 d-flex justify-content-between" style="padding-bottom: 10px !important; padding-top: 0px !important;">
+    <div class="col-md-4 mt-2">
         <router-link @click="scrollToTop()" to="/">
             <div class="row">
                 <div class="col-6 text-right pr-1">
@@ -36,39 +36,45 @@
             </div>
         </nav>
     </div>
-    <div class="col-md-4 text-center">
+    <div class="col-md-4 pt-3">
         <div class="row">
-            <div class="col-6 text-right">
+            <div v-if="user" class="col-5 pr-0 text-right">
+                <router-link @click="scrollToTop()" to="profile">
+                    <img :src="this.user.user_avt" :style="{ width: '44px', 'border-radius': '30px', border: '5px solid #d35ea4'}"/> 
+                </router-link>
+            </div>
+            <div v-else class="col-5"></div>
+            <div class="col-1 text-right pl-3">
                 <router-link @click="scrollToTop()" to="cart">
                     <div style="position: relative;">
                         <button class="btn" style="background-color: #d35ea4; border-radius: 20px;">
                             <i class="fas fa-shopping-bag fa-3x" style="color: #FFF0F5;"></i>
                         </button>
-                        <span v-if="user" class="badge badge-pill badge-danger" style="position: absolute; top: 30px; right: -10px;">
-                            <!-- Số lượng hàng trong giỏ -->
-                            {{ this.cartItem.length.toString() }}
+                        <span v-if="user" class="badge badge-pill" 
+                            style="position: absolute; top:23px; right: -28px; padding: 5px 10px 0px 10px !important; background-color: white; color: red;">
+                           <h5 style="font-weight: 900;"> {{ this.cartItem.length.toString() }} </h5> 
                         </span>
-                        <span v-if="!user" class="badge badge-pill badge-danger" style="position: absolute; top: 30px; right: -10px;">
-                            <!-- Số lượng hàng trong giỏ -->
-                            {{ 0 }}
+                        <span v-if="!user" class="badge badge-pill" 
+                            style="position: absolute; top:23px; right: -28px; padding: 5px 10px 0px 10px !important; background-color: white; color: red;">
+                           <h5 style="font-weight: 900;"> {{ 0 }} </h5> 
                         </span>
                     </div>
                 </router-link>
             </div>
             <div v-if="!user" class="col-6 text-left pt-2">
-                <router-link @click="scrollToTop()" to="/login">
-                    <button class=" btn  p-2" style="background-color: #d35ea4; color: black; border-radius: 10px; font-weight: 900;">Login</button>
+                <router-link @click="scrollToTop()" to="login">
+                    <button class=" btn p-2" style="background-color: #d35ea4; color: white; border-radius: 10px; font-weight: 800; font-size: 12px;">Đăng Nhập</button>
                 </router-link>
                 <router-link @click="scrollToTop()" to="/register">
-                    <button class=" btn  p-2 ml-1" style="background-color: #d35ea4; color: black; border-radius: 10px; font-weight: 900;">Register</button>
+                    <button class=" btn  p-2 ml-2" style="background-color: #d35ea4; color: white; border-radius: 10px; font-weight: 800; font-size: 12px;">Đăng Ký</button>
                 </router-link>
             </div>
             <div v-else class="col-6 text-left pt-2">
                 <router-link @click="scrollToTop()" to="/myorder">
-                    <button class=" btn p-2" style="background-color: #d35ea4; color: black; border-radius: 10px; font-weight: 900;">My Orders</button>
+                    <button class=" btn p-2" style="background-color: #d35ea4; color: white; border-radius: 10px; font-weight: 800; font-size: 12px;">Đơn Hàng</button>
                 </router-link>
                 <router-link @click="handleLogout" to="/">
-                    <button class=" btn p-2 ml-1" style="background-color: #d35ea4; color: black; border-radius: 10px; font-weight: 900;">Logout</button>
+                    <button class=" btn p-2 ml-2" style="background-color: #d35ea4; color: white; border-radius: 10px; font-weight: 800; font-size: 12px;">Đăng Xuất</button>
                 </router-link>
             </div>
         </div>

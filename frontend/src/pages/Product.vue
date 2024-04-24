@@ -1,7 +1,7 @@
 <template>
     <vue-basic-alert :duration="300" :closeIn="2000" ref="alert" />
     <div class="py-4" style="background-color: #cccccc; width: 100%; border-radius: 15px; z-index: 90; box-shadow: 0 2px 2px #999999; 
-        position: fixed; top: 77px;"> 
+        position: fixed; top: 66px;"> 
         <div class="row d-flex">
             <div class="col-10 offset-1 btn-group btn-group-lg pl-4">
                 <button type="button" class="btn btnheadingmennu mx-1 " 
@@ -53,7 +53,7 @@
     </div>
     
     <div v-if="this.productObj.category != 'time' && this.productObj.category != 'combo'" >
-        <div class="sticky-top" style="top: 140px; z-index: 90; background-color: none; padding-top: 10px; padding-bottom: 10px; ">
+        <div class="sticky-top" style="top: 135px; z-index: 90; background-color: none; padding-top: 10px; padding-bottom: 10px; ">
             
             <div class="row d-flex justify-content-center">
                 

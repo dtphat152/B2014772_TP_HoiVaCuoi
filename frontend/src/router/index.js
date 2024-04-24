@@ -12,6 +12,7 @@ import Cart from '../pages/Cart.vue';
 import Checkout from '../pages/Checkout.vue';
 import Thank from '../pages/Thank.vue';
 import MyOrder from '../pages/MyOrder.vue';
+import Profile from "../pages/Profile.vue";
 import Admin from '../admin/Admin.vue';
 import AdminHome from '../admin/AdminHome.vue';
 import Dashboard from '../admin/Dashboard.vue';
@@ -82,6 +83,11 @@ const routes = [
     path: "/myorder",
     name: "MyOrder",
     component: MyOrder,
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
   },
   {
     path: "/admin",

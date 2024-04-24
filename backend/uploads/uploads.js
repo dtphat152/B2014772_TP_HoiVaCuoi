@@ -48,23 +48,33 @@ router.put("/api/uploading/useravt", (req, res) => {
     });
 });
 
+router.post("/api/uploading/post/", upload.single('image'), (req, res) => {
+    if (!req.file) {
+        console.log("No file upload");
+    } else {
+        console.log(req.file.filename)
+        var imgsrc = 'http://localhost:8081/uploads/' + req.file.filename
+        res.send(imgsrc);
+    }
+});
+
 
 // router.post("/api/uploading", upload.array('images', 10), (req, res) => {
 //     if (!req.files || req.files.length === 0) {
-//         console.log("No files uploaded");
+//       console.log("No files uploaded");
 //     } else {
-//         req.files.forEach((file) => {
-//             console.log(file.filename);
-//             var imgsrc = 'http://localhost:8081/uploads/' + file.filename; // Sử dụng file.filename thay vì req.file.filename
-//             var insertData = "INSERT INTO users_file(file_src)VALUES(?)";
-//             db.query(insertData, [imgsrc], (err, result) => {
-//                 if (err) throw err;
-//                 console.log("file uploaded");
-//             });
+//       req.files.forEach((file) => {
+//         console.log(file.filename);
+//         var imgsrc = 'http://localhost:8081/uploads/' + file.filename; // Use file.filename
+//         var insertData = "INSERT INTO users_file(file_src)VALUES(?)";
+//         db.query(insertData, [imgsrc], (err, result) => {
+//           if (err) throw err;
+//           console.log("file uploaded");
 //         });
-//         res.send('Images have been uploaded successfully');
+//       });
+//       res.send('Images have been uploaded successfully');
 //     }
-// });
-
+//   });
+  
 
 export default router;

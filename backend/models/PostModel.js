@@ -3,7 +3,9 @@ import db from "../config/database.js";
 
 // get all Posts
 export const getPosts = (result) => {
-    db.query("SELECT * FROM post", (err, results) => {
+    db.query(`
+    SELECT * FROM post JOIN user ON post.user_id = user.user_id;
+    `, (err, results) => {
         if (err) {
             console.log(err);
             result(err, null);
@@ -15,12 +17,12 @@ export const getPosts = (result) => {
 
 // get single Post
 export const getPostById = (id, result) => {
-    db.query("SELECT * FROM post WHERE post_id = ?", [id], (err, results) => {
+    db.query("SELECT * FROM post JOIN user ON post.user_id = user.user_id WHERE user.user_id = ?", [id], (err, results) => {
         if (err) {
             console.log(err);
             result(err, null);
         } else {
-            result(null, results[0]);
+            result(null, results);
         }
     });
 };
