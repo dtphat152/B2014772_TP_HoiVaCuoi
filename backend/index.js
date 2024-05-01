@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import router from "./routes/routes.js";
 import uploads from "./uploads/uploads.js";
-import recommend from "./recommend/routes.js";
+import recommend from "./recommendation/routes.js";
 
 import path from "path";
 import { fileURLToPath } from 'url';
