@@ -11,9 +11,10 @@
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Khai Vị" @click="filterProductBtn($event)">Khai Vị</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Món Chính" @click="filterProductBtn($event)">Món Chính</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Tráng Miệng" @click="filterProductBtn($event)">Tráng Miệng</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Bàn Ghế" @click="filterProductBtn($event)">Bàn Ghế</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Rạp Che" @click="filterProductBtn($event)">Rạp Che</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Cổng Hoa" @click="filterProductBtn($event)">Cổng Hoa</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Sảnh Tiệc" @click="filterProductBtn($event)">Sảnh Tiệc</button>
-                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Sân Khấu" @click="filterProductBtn($event)">Sân Khấu</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Gia Tiên" @click="filterProductBtn($event)">Gia Tiên</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Mâm Quả" @click="filterProductBtn($event)">Mâm Quả</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Xe Hoa" @click="filterProductBtn($event)">Xe Hoa</button>
@@ -69,11 +70,42 @@
                     </div>
                 </div>
                 <div class="col-2"></div>
-                <div class="col-4 input-group mt-1">
-                    <input type="text" style="border-radius: 15px; background-color: #b3b3b3; border: none; opacity: 0.8; color: black;" 
-                        v-model="productObj.name" id="formControlLg" class="form-control form-control-lg" placeholder="Search . . ."/>
-                    <div class="p-2 px-3 ml-3" type="submit" style="background-color: #b3b3b3; border: none; opacity: 0.8; border-radius: 15px;">
-                        <i class="fa fa-search"></i>
+                <div class="col-4 mt-1">
+                    <div class="row" v-if="this.productObj.category=='all' || this.productObj.category=='Khai Vị' || this.productObj.category=='Món Chính' || this.productObj.category=='Tráng Miệng'">
+                        <div class="col-7 offset-1 input-group">
+                            <input type="text" style="border-radius: 15px; background-color: #b3b3b3; border: none; opacity: 0.8; color: black;" 
+                                v-model="productObj.name" id="formControlLg" class="form-control form-control-lg" placeholder="Search . . ."/>
+                            <div class="p-2 px-3 ml-3" type="submit" style="background-color: #b3b3b3; border: none; opacity: 0.8; border-radius: 15px;">
+                                <i class="fa fa-search"></i>
+                            </div>
+                        </div>
+                        <div class="col-4" style="padding-left: 0 !important;">
+                            <button class="btn rounded-circle p-2 px-3" style="border: none; background-color: #b3b3b3; font-weight: 900;" @click="sortPrice('asc')">
+                                <i class="fa-solid fa-sort-up"></i>
+                            </button>
+                            <button class="btn rounded-circle p-2 px-3 ml-3" style="border: none; background-color: #b3b3b3; font-weight: 900;" @click="sortPrice('desc')">
+                                <i class="fa-solid fa-sort-down"></i>
+                            </button>
+                            <button class="btn rounded-circle p-2 px-3 ml-3" style="border: none; background-color: #b3b3b3; font-weight: 900;" @click="selectedMota('á')">Á</button>
+                            <button class="btn rounded-circle p-2 px-2 ml-3" style="border: none; background-color: #b3b3b3; font-weight: 900;" @click="selectedMota('âu')">Âu</button>
+                        </div>
+                    </div>
+                    <div class="row" v-else>
+                        <div class="col-7 offset-2 input-group" style="padding-left: 0 !important;"> 
+                            <input type="text" style="border-radius: 15px; background-color: #b3b3b3; border: none; opacity: 0.8; color: black;" 
+                                v-model="productObj.name" id="formControlLg" class="form-control form-control-lg" placeholder="Search . . ."/>
+                            <div class="p-2 px-3 ml-3" type="submit" style="background-color: #b3b3b3; border: none; opacity: 0.8; border-radius: 15px;">
+                                <i class="fa fa-search"></i>
+                            </div>
+                        </div>
+                        <div class="col-3" style="padding-left: 0 !important;">
+                            <button class="btn rounded-circle p-2 px-3" style="border: none; background-color: #b3b3b3; font-weight: 900;" @click="sortPrice('asc')">
+                                <i class="fa-solid fa-sort-up"></i>
+                            </button>
+                            <button class="btn rounded-circle p-2 px-3 ml-3" style="border: none; background-color: #b3b3b3; font-weight: 900;" @click="sortPrice('desc')">
+                                <i class="fa-solid fa-sort-down"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="col-2"></div>
@@ -108,7 +140,7 @@
                                     </div>
                                     <div class="card__body d-flex justify-content-center">
                                         <img :src="require(`../assets/images/${f.product_src}`)" 
-                                            :style="{ width: '100%', height: imageHeight, 'border-radius': '10px'}"/>
+                                            :style="{ width: '100%', height: '230px', 'border-radius': '10px'}"/>
                                         
                                     </div>
                                     <div class="card__footer">
@@ -166,8 +198,8 @@ export default {
 
     data() {
         return {
-            productObj: { name: "", category: "", price: ""},
-
+            productObj: { name: "", category: "", price: "",mota: ""},
+            sortByPrice: '',
             showQuickView: false,
             sendId: null,
 
@@ -192,13 +224,23 @@ export default {
     computed: {
         ...mapState(["allProducts","user"]),
 
-
-        filterProducts: function () {
-            return this.allProducts.filter( (f) => 
+        filterProducts() {
+            let filteredProducts = this.allProducts.filter(f =>
                 f.product_name.toLowerCase().match(this.productObj.name.toLowerCase()) &&
                 (f.product_category.match(this.productObj.category) || this.productObj.category == "all") &&
-                f.product_style != 'Món Tùy Chọn'
+                f.product_style != 'Món Tùy Chọn' && (f.product_mota.match(this.productObj.mota))
             );
+            if (this.sortByPrice!=''){
+                filteredProducts.sort((a, b) => {
+                    if (this.sortByPrice === 'asc') {
+                        return a.product_price - b.product_price; // Sắp xếp tăng dần
+                    } else {
+                        return b.product_price - a.product_price; // Sắp xếp giảm dần
+                    }
+                });
+            }
+            
+            return filteredProducts;
         },
 
         currentPageItems: function () {
@@ -224,6 +266,14 @@ export default {
           return parseFloat(amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         },
 
+        selectedMota(mota){
+            this.productObj.mota = mota;
+        },  
+
+        sortPrice(value){
+            this.sortByPrice = value;
+        },
+
         set(val) {
             this.pageNum = val;
         },
@@ -237,11 +287,6 @@ export default {
         Time() {
             this.productObj.category = 'time';
         },
-
-        numberOfTempProducts() {
-            const optionalProducts = this.allProducts.filter(product => product.product_style === 'Món Tùy Chọn');
-            return optionalProducts.length;
-        },
         
         filterProductBtn: function (e) {
             this.pageNum = 0;
@@ -253,6 +298,8 @@ export default {
             this.productObj.category = e.target.value;
             this.previousCategoryClicked = e;
             e.target.style.color = "#FF0099";
+            this.productObj.mota = "";
+            this.sortByPrice = "";
         },
 
         async addToCart(name,product) {
@@ -271,9 +318,8 @@ export default {
                     let data1 = {
                         product_buy: 1,
                     }
-                    await axios.post("/cartItem/", data)
                     try {
-                        await axios.put(`/productsbuy/${this.product}`, data1)
+                        await axios.put(`/productsbuy/${product}`, data1)
                     } catch (error) {
                         console.error('Error in put product buy ',error);
                     }

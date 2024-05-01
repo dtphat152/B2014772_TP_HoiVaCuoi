@@ -112,11 +112,6 @@ export default {
             if (!this.registerObj.name) {
                 this.errorObj.nameErr.push("Họ Tên Không Được Bỏ Trống");
             }
-            else {
-                if (!/^[A-Za-z]+$/.test(this.registerObj.name.replace(/\s/g, ""))) {
-                    this.errorObj.nameErr.push('Tên Chỉ Có Thể Chứa Các Chữ Cái');
-                }
-            }
 
             // Email validate
             if (!this.registerObj.email) {
@@ -166,9 +161,6 @@ export default {
                     this.errorObj.phoneErr.push('Số điện thoại phải có chính xác 10 chữ số');
                 }
 
-                if (!/[0-9]{11}/.test(this.registerObj.phone)) {
-                    this.errorObj.phoneErr.push('Số điện thoại chỉ có thể chứa số');
-                }
             }
 
             

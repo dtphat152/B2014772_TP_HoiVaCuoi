@@ -25,13 +25,6 @@ import {
 } from "../controllers/user.js";
 
 import {
-    showNumber,
-    addNumber,
-    updateNumberOfGuest,
-    deleteNumber
-} from "../controllers/guest.js";
-
-import {
     getDateNoBillController,
     updateDateByID,
     insertDateByID,
@@ -75,6 +68,7 @@ import {
     showNewestStatusId,
     createBillStatus, 
     getAllBillsByUser,
+    getBillStatusByUserController,
     getAllBillsByBill,
     getAllBills,
     updateBillStatus,
@@ -106,6 +100,7 @@ import {
 
 import {
     showPosts,
+    getPostsAdminController,
     showPostById,
     createPost,
     updatePost,
@@ -158,14 +153,18 @@ import {
     deleteAllStaffScheduleByBillController
 } from "../controllers/staffschedule.js"
 
-
-
+import {
+    getUserVoucherController,
+    insertVoucherController,
+    updateVoucherStatusController
+} from "../controllers/voucher.js"
 
 const router = express.Router();
 
 ////////////////////////// POST ////////////////////////////////
 
 router.get("/api/post/new", showNewestPostId);
+router.get("/api/post/admin", getPostsAdminController);
 router.get("/api/post", showPosts);
 router.get("/api/post/:id", showPostById);
 router.post("/api/post", createPost);
@@ -196,13 +195,6 @@ router.post("/api/users/", createAccount);
 router.put("/api/users/pass", updatePassController);
 router.put("/api/users/status", updateStatusController);
 router.put("/api/users/", updateUserController);
-
-///////////////////////// GUEST ////////////////////////////////
-
-router.get("/api/guestnumber/:id", showNumber);
-router.post("/api/guestnumber/",addNumber);
-router.put("/api/guestnumber/", updateNumberOfGuest);
-router.delete("/api/guestnumber/:id", deleteNumber);
 
 
 ////////////////////////// DATE ////////////////////////////////
@@ -253,6 +245,7 @@ router.get("/api/billstatus/new", showNewestStatusId);
 router.post("/api/billstatus/datetodate", getBillFromDateToDateController);
 router.post("/api/billstatus", createBillStatus);
 router.get("/api/billstatus/user/:id", getAllBillsByUser);
+router.get("/api/billstatus/status/user/:id", getBillStatusByUserController);
 router.get("/api/billstatus/bill/:id", getAllBillsByBill);
 router.get("/api/billstatus", getAllBills);
 router.put("/api/billstatus/notes/", updateBillNotes);
@@ -316,6 +309,11 @@ router.delete("/api/staffschedule/time/:id", deleteAStaffScheduleController);
 router.delete("/api/staffschedule/all/:id", deleteAllAStaffScheduleController);  
 router.delete("/api/staffschedule/allbybill/:id", deleteAllStaffScheduleByBillController);  
     
+////////////////////////// Voucher ////////////////////////////////
+
+router.get("/api/voucher/user/:id", getUserVoucherController);
+router.post("/api/voucher", insertVoucherController);
+router.put("/api/voucher/status", updateVoucherStatusController);
 
 // export default router
 export default router;

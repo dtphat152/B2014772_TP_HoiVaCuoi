@@ -2,27 +2,39 @@
     <div class="container_order" >
         <div class="row p-5" style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999; margin: 0 1px;">
             <div class="col-4">
-                <h1>Orders</h1>
+                <h1 @click="filBill(0,3)">Orders</h1>
             </div>
             <div class="col-6">
                 <div class="row" style="padding: 10px; background-color:#ffe6ea; border-radius: 15px;">
-                    <div class="col">
-                        <h5 style="font-weight: 900; text-align: center;" :class="{'text-danger': orderCounts[1]}">Đơn Mới {{ orderCounts[1] }}</h5>
+                    <div class="col text-center">
+                        <button class="btn p-0 px-2 rounded-lg"  @click="filBill(0,1)" :style="{ 'background-color': (this.filbot === 0 && this.filtop === 1) ? '#fff' : '' }">
+                            <h4 v-if="orderCounts[1]" style="font-weight: 900; text-align: center; color: #DC143C;">Đơn Mới ({{ orderCounts[1] }})</h4>
+                            <h4 v-else style="font-weight: 900; text-align: center;">Đơn Mới (0)</h4>
+                        </button>
                     </div>
-                    <div class="col" >
-                        <h5 style="font-weight: 900; text-align: center;">Đang Chờ Cọc {{ orderCounts[2] }}</h5>
+                    <div class="col text-center" >
+                        <button class="btn p-0 px-1 rounded-lg"  @click="filBill(1,2)" :style="{ 'background-color': (this.filbot === 1 && this.filtop === 2) ? '#fff' : '' }">
+                            <h4 v-if="orderCounts[2]" style="font-weight: 900; text-align: center;">Đang Chờ Cọc ({{ orderCounts[2] }})</h4>
+                            <h4 v-else style="font-weight: 900; text-align: center;">Đang Chờ Cọc (0)</h4>
+                        </button>
                     </div>
-                    <div class="col">
-                        <h5 style="font-weight: 900; text-align: center;">Đang Thực Hiện {{orderCounts[3] }}</h5>
+                    <div class="col text-center">
+                        <button class="btn p-0 rounded-lg"  @click="filBill(2,3)" :style="{ 'background-color': (this.filbot === 2 && this.filtop === 3) ? '#fff' : '' }">
+                            <h4 v-if="orderCounts[3]" style="font-weight: 900; text-align: center; color: #008000;">Đang Thực Hiện ({{ orderCounts[3] }})</h4>
+                            <h4 v-else style="font-weight: 900; text-align: center;">Đang Thực Hiện (0)</h4>
+                        </button>
                     </div>
-                    <div class="col">
-                        <h5 style="font-weight: 900; text-align: center;">Đã Hoàn Thành {{orderCounts[4] }}</h5>
+                    <div class="col text-center">
+                        <button class="btn p-0 px-1 rounded-lg"  @click="filBill(3,4)" :style="{ 'background-color': (this.filbot === 3 && this.filtop === 4) ? '#fff' : '' }">
+                            <h4 v-if="orderCounts[4]" style="font-weight: 900; text-align: center;">Đã Hoàn Thành ({{ orderCounts[4] }})</h4>
+                            <h4 v-else style="font-weight: 900; text-align: center;">Đã Hoàn Thành (0)</h4>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
         <br>
-        <div class="p-5" style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999; height: 785px;">
+        <div class="p-5" style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999; height: 775px;">
             <!-- PROJECT TABLE -->
             <div style="overflow-y: auto; height: 720px;">
                 <div style="width: 95%; margin-left: 2%;">
@@ -67,21 +79,21 @@
                                 </div>
                             </div>
                             <div class="col-1 px-0">
-                                <button v-if="b.bill_status==1" class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id)" 
+                                <button v-if="b.bill_status==1" class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id,b.voucher_id)" 
                                     style="height: 50%;width: 70%; background-color: #40bf77; border-radius: 15px; margin-top: 15%; color: black;">
                                     Chấp Nhận
                                 </button>
-                                <button v-if="b.bill_status==2" class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id)" 
+                                <button v-if="b.bill_status==2" class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id,b.voucher_id)" 
                                     style="height: 50%;width: 70%; background-color: #999999; border-radius: 15px; margin-top: 15%; color: black;">
                                     Xác Nhận
                                 </button>
-                                <button v-if="b.bill_status==3" class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id)" 
+                                <button v-if="b.bill_status==3" class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id,b.voucher_id)" 
                                     style="height: 50%;width: 70%; background-color: #bfbfbf; border-radius: 15px; margin-top: 15%; color: black;">
                                     Hoàn Thành
                                 </button>
 
                                 <button v-if="b.bill_status >= 1 && b.bill_status <=3" class="p-2 " 
-                                    @click="cancelBtn(b.bill_id,b.user_id)" 
+                                    @click="cancelBtn(b.bill_id,b.user_id,b.voucher_id)" 
                                     style="height: 50%;width: 30%;  border-radius: 15px; background-color: #DAA520; color: black;">
                                     Hủy
                                 </button>
@@ -108,7 +120,7 @@
 <script>
 import OrderDetail from "./component/OrderDetails.vue";
 import axios from "axios";
-import { mapState, mapMutations } from "vuex";
+import { mapState } from "vuex";
 
 export default {
     name: 'Order',
@@ -117,6 +129,8 @@ export default {
         return {
             avaiableStatus: ["Hủy", "Chờ Đồng Ý", "Chờ Cọc", "Đang Diễn Ra", "Hoành Thành"],
             allBills: [],
+            filtop: 3,
+            filbot: 0,
             showOrderDetails: false,
             sendId1: undefined,
             sendId2: undefined,
@@ -148,12 +162,12 @@ export default {
         },
 
         filterBills: function () {
-            return this.allBills.filter((b) => b.bill_status <= 6 && b.bill_status > 0);
+            return this.allBills.filter((b) => b.bill_status <= this.filtop && b.bill_status > this.filbot);
         },
     },
 
     methods: {
-        ...mapMutations(["setAdmin"]),
+        // ...mapMutations(["setAdmin"]),
 
         async getAllBills() {
             try {
@@ -169,6 +183,15 @@ export default {
             }
         },
 
+        filBill(bot,top){
+            if (bot==this.filbot && top==this.filtop) {
+                this.filbot=0;
+                this.filtop=3;
+            } else {
+                this.filbot=bot;
+                this.filtop=top;
+            }
+        },
 
         sendBillId: function (id1,id2,id3) {
             this.sendId1 = id1;
@@ -235,8 +258,13 @@ export default {
         return null;
         },
 
-        async nextStatusBtn(id,bill_status,user_id) {
+        async nextStatusBtn(id,bill_status,user_id,voucher_id) {
             if (bill_status==1) {
+                let voucher = {
+                    vc_status: 0,
+                    vc_id: voucher_id,
+                }
+                axios.put(`/voucher/status`,voucher)
                 let email = '';
                 try {
                     const response = await axios.get(`/users/byid/` + user_id);
@@ -255,6 +283,19 @@ export default {
                     console.error("Error Send email:", error);
                 }
             }
+            if (bill_status==3) {
+                let voucher = {
+                    user_id: user_id,
+                    vc_value: 1000000,
+                    vc_status:1
+                }
+                try {
+                    await axios.post(`/voucher`,voucher)
+                } catch (error) {
+                    console.error('Error in crate voucher',error)
+                }
+                
+            }
             await axios.put('/billstatus/' + id);
             this.getAllBills();
     
@@ -265,8 +306,12 @@ export default {
             await this.getAllBills();
         },
 
-        async cancelBtn(id,user_id) {
-
+        async cancelBtn(id,user_id,voucher_id) {
+            let voucher = {
+                    vc_status: 1,
+                    vc_id: voucher_id,
+                }
+                axios.put(`/voucher/status`,voucher)
             let email = '';
             try {
                 const response = await axios.get(`/users/byid/` + user_id);

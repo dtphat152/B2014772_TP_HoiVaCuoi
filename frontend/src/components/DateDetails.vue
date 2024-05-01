@@ -72,6 +72,7 @@
     data() {
       return {
         selectedNum: 0,
+        guestTotal: 0,
         selectedGuest: [],
         selectedTime: [],
         dateID: '',
@@ -80,13 +81,12 @@
     },
   
     created(){
-        
-        this.getMeatSet();
-      
+  
     },
 
     mounted(){
-        
+        this.getMeatSet();
+      
     },
   
     computed: {
@@ -113,7 +113,6 @@
                     let data = response.data;
                     this.selectedNum = data.length;
                 }
-                console.log(this.selectedNum)
             }
         },
 
@@ -138,8 +137,8 @@
                 await this.getDate();
                 await this.getNum();
                 if(this.dateID != '') {
+                    this.guestTotal=0;
                     for (let index = 1; index <= this.selectedNum; index++) {
-                        
                         try {
                             let response = await axios.get(`/datedetailsnobill/${this.dateID}`);
                             if(response.data.length > 0){
@@ -147,10 +146,10 @@
                                 if (data && data.length >= index) {
                                     this.selectedTime[index] = data[index - 1].dd_time;
                                     this.selectedGuest[index] = data[index - 1].dd_guest;
+                                    this.guestTotal += this.selectedGuest[index];
                                 } else {
                                     this.selectedTime[index] = ''; 
                                     this.selectedGuest[index] = ''; 
-                
                                 }
                             }
                         } catch (error) {
@@ -177,6 +176,7 @@
                         this.selectedTime.splice(index, 1);
                         this.selectedGuest.splice(index, 1);
                         this.selectedNum--;
+                        await this.getMeatSet();
                     } else {
                         console.error("Xóa không thành công, mã trạng thái: ", response.status);
                     }
@@ -235,6 +235,8 @@
                     // this.$refs.alert.showAlert('success', 'Thành Công!', 'Suất đãi khách đã được cập nhật!');
                     window.confirm(`Suất đãi khách đã được cập nhật!`)
                 }
+                await this.getMeatSet();
+                
             } else window.confirm("Xin Lỗi! Bạn hãy chọn Ngày Tổ Chức Trước!")
         }
 

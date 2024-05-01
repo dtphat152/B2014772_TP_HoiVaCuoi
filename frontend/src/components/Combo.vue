@@ -48,13 +48,13 @@
             
             <div class="row d-flex justify-content-center" v-for="(f, index) in sortedComboDetails" :key="index" >
               <div class="col text-right">
-                <h4 style="color: black; font-weight: bold;"> {{ f.product_category }} : </h4>
+                <h4 style="color: black; font-weight: bold;"> {{ f.product_category }}  </h4>
               </div>
               <div class="col text-center ">
-                <h4 style="color: black; font-weight: bold;">: {{ f.product_name }} : </h4>
+                <h4 style="color: black; font-weight: bold;"> {{ f.product_name }}  </h4>
               </div>
               <div class="col text-left">
-                <h4 style="color: black; font-weight: bold;">: {{ formatCurrency(f.product_price) }}</h4>
+                <h4 style="color: black; font-weight: bold;"> {{ formatCurrency(f.product_price) }}</h4>
               </div>
             </div>
             <br>

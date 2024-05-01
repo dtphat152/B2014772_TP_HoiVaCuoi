@@ -67,7 +67,7 @@
                                                         <h3 v-if="b.bill_status==1" style=" font-weight: 900; color: #6A5ACD;">Chờ Xác Nhận</h3>
                                                         <h3 v-if="b.bill_status==2" style=" font-weight: 900; color: #6A5ACD;">Chờ Thanh Toán Cọc</h3>
                                                         <h3 v-if="b.bill_status==3" style=" font-weight: 900; color: #3CB371;">Đang Thực Hiện</h3>
-                                                        <h3 v-if="b.bill_status==4" style=" font-weight: 900; color: #1E90FF;">Đã Hoàn Thành</h3>
+                                                        <h3 v-if="b.bill_status>=4" style=" font-weight: 900; color: #1E90FF;">Đã Hoàn Thành</h3>
                                                     </div>
                                                     <div class="col-3 text-right">
                                                         <h4 style=" font-weight: 900;">{{ b.bill_when }}</h4> 
@@ -128,7 +128,7 @@
                     <div style="border-radius: 20px; background-color: white; height: 720px;">
                         <h2 class="text-center" style="font-weight: 900;">User List</h2>
                         <br><hr style="width: 80%; margin-left: 10%;">
-                        <div class="" style="overflow-y: auto; height: 680px; ">
+                        <div class="" style="overflow-y: auto; height: 640px; ">
                             <div style="width: 95%;">
                                 <div v-for="(u, index) in userList" :key="index">
                                     <div class="row" @click="showDetails(u,index)" 
@@ -163,7 +163,7 @@
                     <div style="border-radius: 20px; background-color: white; height: 680px;">
                         <h2 class="text-center" style="font-weight: 900;">User List</h2>
                         <br><hr style="width: 80%; margin-left: 10%;">
-                        <div class="" style="overflow-y: auto; height: 640px; ">
+                        <div class="" style="overflow-y: auto; height: 600px; ">
                             <div style="width: 90%; margin-left: 5%;">
                                 <div v-for="(u, index) in userList" :key="index">
                                     <div class="row justify-content-center" @click="showDetails(u,index)" 

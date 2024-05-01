@@ -6,14 +6,14 @@ export const MomoController = (req, res) => {
     var accessKey = "F8BBA842ECF85";
     var secretkey = "K951B6PE1waDMi640xX08PD3vg6EkVlz";
     var header = `TPno${req.body.bill_id}`;
-    var requestId = header + new Date().getTime();
+    var requestId = header + 'in' + new Date().getTime();
     // var requestId = data.bill_id;
     var orderId = requestId;
-    var orderInfo = `TP Hỏi Cưới | #${req.body.bill_id}`;
-    var redirectUrl = "http://localhost:8080/myorder";
-    var ipnUrl = "http://localhost:8080/myorder";
+    var orderInfo = "TP Hỏi Cưới - "+req.body.bill_type + ' cho hóa đơn #' + req.body.bill_id;
+    var redirectUrl = "http://localhost:8080/thank";
+    var ipnUrl = "http://localhost:8080/thank";
     // var ipnUrl = redirectUrl = "https://webhook.site/454e7b77-f177-4ece-8236-ddf1c26ba7f8";
-    var amount = req.body.bill_total;
+    var amount = req.body.amount;
     var requestType = "captureWallet"
     var extraData = ""; //pass empty value if your merchant does not have stores
     // console.log("BILL ID: ",req.body.bill_id);

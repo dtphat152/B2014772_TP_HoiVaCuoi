@@ -15,6 +15,8 @@
                     <div class="col-1 text-right pr-5">
                         <i class="fa fa-pencil-square" @click="showEdit()" aria-hidden="true" style="font-size: 25px; color: #FF7F50;"></i><br>
                         <i class="fa fa-plus-square pt-3" @click="showUpPost()" aria-hidden="true" style="font-size: 25px; color: #3CB371;"></i> <br>
+                        <i class="fa-solid fa-file-invoice pt-3 ml-1" @click="showBill()" aria-hidden="true" style="font-size: 23px; color: #B0C4DE;"></i>
+                        <i class="fa-solid fa-ticket  pt-3" @click="showVoucher()" style="font-size: 20px; color: #FFA500;"></i>
                         <i class="fa fa-home pt-3" @click="showView0()" aria-hidden="true" style="font-size: 22px; color: #48D1CC;"></i>
                     </div>
                 </div>
@@ -159,6 +161,10 @@
                                         <h1 style="font-weight: 900;">{{ p.post_user_name }}</h1>
                                         <h5 style="font-weight: 800;">{{p.post_when}}</h5>
                                     </div>
+                                    <div class="col-1 text-right pt-2">
+                                        <i v-if="p.post_hide==0" @click="hidePost(index)" class="fa fa-lock" aria-hidden="true" style="font-size: 25px;"></i>
+                                        <i v-if="p.post_hide!=0" @click="hidePost(index)" class="fa fa-unlock-alt" aria-hidden="true" style="font-size: 25px;"></i>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12 px-5 py-1">
@@ -170,12 +176,101 @@
                                         <h4 style="font-weight: bold;">{{ p.post_info }}</h4>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row" v-if="p.post_img!=''">
                                     <div class="col-12 px-5">
                                         <img :src="p.post_img" alt="Selected image" style="width: 100%; border-radius: 10px;">
                                     </div>
                                 </div>
-                            </div>     
+                            </div> 
+                            <br> <br>    
+                        </div>
+                    </div>
+                    <div v-if="view==4">
+                        <h2 class="text-center" style="font-weight: 900;">Your Voucher List</h2>
+                        <div class="row justify-content-center">
+                            <div class="col-8" v-for="(v, index) in voucherList.slice().reverse()" :key="index">
+                                <div class="voucher row mt-5" style="background-color: #ffccdd;">
+                                    <div class="col-2">
+                                        <div class="row">
+                                            <div class="col-10" style="background-color: #f2f2f2; border-top-right-radius: 20px;border-bottom-right-radius: 20px ;"><h1 style="color: #f2f2f2;">.</h1></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-8" style="background-color: #f2f2f2;"><h3 style="color: #f2f2f2;">.</h3></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-10" style="background-color: #f2f2f2; border-top-right-radius: 20px;border-bottom-right-radius: 20px ;"><h1 style="color: #f2f2f2;">.</h1></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <h3 class="text-center" style="font-weight: 900; color: #ff667d;">TP-Voucher</h3>
+                                        <h1 class="text-center" style="font-weight: 900;">{{ formatCurrency(v.voucher_value) }}</h1>
+                                        <h3 v-if="v.voucher_status==1" class="text-center" style="font-weight: 900; color: #2E8B57;">Chưa sử dụng</h3>
+                                        <h3 v-if="v.voucher_status==2" class="text-center">Đang sử dụng</h3>
+                                        <h3 v-if="v.voucher_status==0" class="text-center">Đã sử dụng</h3>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="row">
+                                            <div class="col-10 offset-2" style="background-color: #f2f2f2; border-top-left-radius: 20px;border-bottom-left-radius: 20px ;"><h1 style="color: #f2f2f2;">.</h1></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-8 offset-4" style="background-color: #f2f2f2;"><h3 style="color: #f2f2f2;">.</h3></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-10 offset-2" style="background-color: #f2f2f2; border-top-left-radius: 20px;border-bottom-left-radius: 20px ;"><h1 style="color: #f2f2f2;">.</h1></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br> <br>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="view==5">
+                        <h2 class="text-center" style="font-weight: 900;">Bill List</h2> <br>
+                        <div class="" style="overflow-y: auto; height: 380px;">
+                            <div style="width: 90%; margin-left: 4%;">
+                                <div v-for="(b, index) in billList.slice().reverse()" :key="index">
+                                    <div class="row" 
+                                    :style="{ 
+                                        'background-color': '#ffb3cc', 
+                                        'margin-left': '10px', 
+                                        'border-radius': '25px', 
+                                        'padding': '5px'
+                                    }">
+                                    <div class="col-12">
+                                        <div class="row justify-content-between">
+                                            <div class="col-3">
+                                                <h4 style=" font-weight: 900;">Bill #{{ b.bill_id }}</h4> 
+                                            </div>
+                                            <div class="col-4 text-center" style="">
+                                                <h3 v-if="b.bill_status==0" style=" font-weight: 900; color: #FF0000;">Đã Hủy</h3>
+                                                <h3 v-if="b.bill_status==1" style=" font-weight: 900; color: #6A5ACD;">Chờ Xác Nhận</h3>
+                                                <h3 v-if="b.bill_status==2" style=" font-weight: 900; color: #6A5ACD;">Chờ Thanh Toán Cọc</h3>
+                                                <h3 v-if="b.bill_status==3" style=" font-weight: 900; color: #3CB371;">Đang Thực Hiện</h3>
+                                                <h3 v-if="b.bill_status>=4" style=" font-weight: 900; color: #1E90FF;">Đã Hoàn Thành</h3>
+                                            </div>
+                                            <div class="col-3 text-right">
+                                                <h4 style=" font-weight: 900;">{{ b.bill_when }}</h4> 
+                                            </div>
+                                        </div>
+                                        <hr style="width: 80%; margin-left: 10%;">
+                                        <div class="row justify-content-center">
+                                            <div class="col-5 text-center">
+                                                <h5 style=" font-weight: 900;">Ngày Tổ Chức: {{ b.bill_date }}</h5>
+                                            </div> 
+                                        </div>
+                                        <div class="row justify-content-between">
+                                            <div class="col-3"></div>
+                                            <div class="col-4 text-center" style="">
+                                                <h5 v-if="b.bill_status" style=" font-weight: 900;">{{ b.bill_address }}</h5>
+                                                <h4 v-if="b.bill_status" style=" font-weight: 900;">{{ formatCurrency(b.bill_total) }}</h4>
+                                            </div>
+                                            <div class="col-3 text-right"></div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -196,6 +291,7 @@ export default {
         return {
             postList: [],
             billList: [],
+            voucherList: [],
             view: 0,
             checkPass: '',
             errPass: '',
@@ -225,26 +321,77 @@ export default {
     },
 
     methods: {
+        showVoucher(){
+            if (this.view==4) this.view=0 
+            else {
+                this.view = 4;
+                this.getVoucher();
+            }
+        },
+        async getVoucher(){
+            try {
+                let rsp = await axios.get(`/voucher/user/${this.user.user_id}`);
+                this.voucherList = rsp.data.map(voucher => ({
+                    voucher_id : voucher.vc_id,
+                    voucher_value: voucher.vc_value,
+                    voucher_status: voucher.vc_status,
+                }));
+                console.log(this.voucherList)
+            } catch (error) {
+                console.error('Error while get Voucher:', error);
+            }
+        },
+        formatCurrency(amount) {
+          if (!amount) return '';
+          return parseFloat(amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        },
+
         showView0(){
             this.view = 0;
             this.getAllBillInfo()
             this.getAllPost()
+        },
+        showBill(){
+            if (this.view==5) this.view=0 
+            else {
+                this.view = 5;
+                this.getAllBillInfo();
+            }
         },
 
         async getAllPost(){
             try {
                 let rsp = await axios.get(`/post/${this.user.user_id}`);
                 this.postList = rsp.data.map(post => ({
+                    post_id : post.post_id,
                     post_user_avt: post.user_avt,
                     post_user_name: post.user_name,
                     post_when : post.post_when,
                     post_cap : post.caption,
                     post_info : post.info,
                     post_img : post.image,
+                    post_hide : post.hide,
                 }));
             } catch (error) {
                 console.error('Error while fetching bill info:', error);
             }
+        },
+        async hidePost(index){
+            if(this.postList[index].post_hide == 0) {
+                let data = {
+                    caption: this.postList[index].post_cap,
+                    hide: 1
+                }
+                await axios.put(`/post/${this.postList[index].post_id}`,data)
+                this.postList[index].post_hide = 1
+            } else if(this.postList[index].post_hide == 1) {
+                let data = {
+                    caption: this.postList[index].post_cap,
+                    hide: 0
+                }
+                await axios.put(`/post/${this.postList[index].post_id}`,data)
+                this.postList[index].post_hide = 0
+            } else window.confirm('Bạn không thể bỏ ẩn bài đăng này!')
         },
         showUpPost(){
             if (this.view==3) this.view=0 
@@ -277,6 +424,11 @@ export default {
                 this.billList = rsp.data.map(bill => ({
                     bill_id: bill.bill_id,
                     bill_address: bill.bill_address,
+                    bill_when: bill.bill_when,
+                    bill_discount: bill.bill_discount,
+                    bill_total: bill.bill_total,
+                    bill_status : bill.bill_status,
+                    date_id : bill.date_id,
                     bill_date : this.formatDate(bill.date_date),
                 }));
             } catch (error) {
@@ -291,14 +443,17 @@ export default {
             return `${day}/${month}/${year}`;
         },
         async submitPost(){
-            const formData = new FormData();
-            formData.append('image', this.file);           
-            const response = await axios.post(`/uploading/post/`, formData, {
-                headers: {
-                'Content-Type': 'multipart/form-data'
-                }
-            });
-            let urlimg = response.data;
+            let urlimg = '';
+            if (this.file) {
+                const formData = new FormData();
+                formData.append('image', this.file);           
+                const response = await axios.post(`/uploading/post/`, formData, {
+                    headers: {
+                    'Content-Type': 'multipart/form-data'
+                    }
+                });
+                urlimg = response.data;
+            }
             var now = new Date();
             var day = ("0" + now.getDate()).slice(-2);
             var month = ("0" + (now.getMonth() + 1)).slice(-2);
@@ -308,7 +463,7 @@ export default {
             let data = {
                 user_id : this.user.user_id,
                 caption : this.caption,
-                likes: 0,
+                hide: 0,
                 info : '#'+this.postDate+' tại '+this.postAddress,
                 image : urlimg,
                 post_when: currentTime

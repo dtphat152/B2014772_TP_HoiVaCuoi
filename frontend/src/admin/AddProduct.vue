@@ -35,10 +35,11 @@
                                             <option>Khai Vị</option>
                                             <option>Món Chính</option>
                                             <option>Tráng Miệng</option>
+                                            <option>Bàn Ghế</option>
                                             <option>Rạp Che</option>
+                                            <option>Cổng Hoa</option>
                                             <option>Sảnh Tiệc</option>
                                             <option>Gia Tiên</option>
-                                            <option>Sân Khấu</option>
                                             <option>Mâm Quả</option>
                                             <option>Xe Hoa</option>
                                         </select>
@@ -58,6 +59,11 @@
                                     <textarea name="txtMsg" class="form-control" placeholder="Mô tả..." 
                                         style="width: 100%; height: 150px;"  v-model="productObj.desc" ></textarea>
                                     <!-- <p class="error-mess" v-if="errorObj.descErr.length > 0">{{ errorObj.descErr[0] }}</p> -->
+                                </div>
+                                <div class="form-group">
+                                    <input type="text"  placeholder="Đặc điểm thể loại" class="form-control"
+                                        v-model="productObj.mota" />
+                                    <!-- <p class="error-mess" v-if="errorObj.srcErr.length > 0">{{ errorObj.srcErr[0] }}</p> -->
                                 </div>
                                 <div class="form-group">
                                     <input type="text"  placeholder="Hình ảnh: folder/name.jpg" class="form-control"
@@ -110,7 +116,7 @@ export default {
 
     data() {
         return {
-            productObj: { name: "", price: "", desc: "", cat: "", src: ""},
+            productObj: { name: "", price: "", desc: "", cat: "", mota:"", src: ""},
             errorObj: { nameErr: [], priceErr: [], descErr: [], catErr: [], srcErr: [] },
         }
     },
@@ -181,6 +187,7 @@ export default {
                     product_price: this.productObj.price,
                     product_desc: this.productObj.desc,
                     product_category: this.productObj.cat,
+                    product_mota: this.productObj.mota,
                     product_src: this.productObj.src,
                     product_buy: 0
                 }

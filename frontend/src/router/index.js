@@ -25,6 +25,7 @@ import AddCombo from '../admin/AddCombo.vue';
 import EditProduct from '../admin/EditProduct.vue';
 import EditCombo from '../admin/EditCombo.vue';
 import UserManager from "../admin/UserManager.vue";
+import PostsManager from "../admin/PostsManager.vue";
 const routes = [
   {
     path: "/",
@@ -150,6 +151,11 @@ const routes = [
     path: "/admin/usermanager",
     name: "UserManager",
     component: UserManager,
+  },
+  {
+    path: "/admin/postsmanager",
+    name: "PostsManager",
+    component: PostsManager,
   },
   {
     path: '/:pathMatch(.*)*',

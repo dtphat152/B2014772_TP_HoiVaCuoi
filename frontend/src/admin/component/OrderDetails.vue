@@ -26,7 +26,7 @@
                     
                     <ProductBill v-if="showProductBill==1" :Bill=[this.bill[0],this.email] ></ProductBill>
 
-                    <ProductOrder v-if="showProductBill==2" :ID="this.sendId" >
+                    <ProductOrder v-if="showProductBill==2" :ID=[this.sendId,this.email,this.total] >
                         <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
                     </ProductOrder>                    
                 </div>
@@ -153,26 +153,26 @@
                     <br>
                     <div class="container-info" style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
                         <div class="mx-1" style="background: #f2f2f2; border-radius: 15px;">
-                            <div class="row mx-1 p-2" :style="status >= 3 ? { 'color': 'MediumSeaGreen'} : '' ">
+                            <div class="row mx-1 p-2" :style="this.status >= 3 ? { 'color': 'MediumSeaGreen'} : '' ">
                                 <div class="col-4 text-left">
                                     <h5 class="" style="font-weight: 900;">Tiền Cọc: </h5>
                                 </div>
                                 <div class="col-4 text-center">
-                                    <h6 v-if="status >= 3" style="font-weight: 900;">(đã thanh toán)</h6>
+                                    <h6 v-if="this.status >= 3" style="font-weight: 900;">(đã thanh toán)</h6>
                                 </div>
                                 <div class="col-4 text-right">
-                                    <h5 style="font-weight: 900;">{{ formatCurrency(total/10) }}</h5>
+                                    <h5 style="font-weight: 900;">{{ formatCurrency(this.deposits) }}</h5>
                                 </div>    
                             </div>
-                            <div class="row mx-1 p-2" :style="status >= 4 ? { 'color': 'MediumSeaGreen'} : '' ">
+                            <div class="row mx-1 p-2" :style="this.status >= 4 ? { 'color': 'MediumSeaGreen'} : '' ">
                                 <div class="col-4 text-left">
                                     <h5 class="" style="font-weight: 900;">Còn Lại: </h5>
                                 </div>
                                 <div class="col-4 text-center">
-                                    <h6 v-if="status >= 4" style="font-weight: 900;">(đã thanh toán)</h6>
+                                    <h6 v-if="this.status >= 4" style="font-weight: 900;">(đã thanh toán)</h6>
                                 </div>
                                 <div class="col-4 text-right">
-                                    <h5 style="font-weight: 900;">{{ formatCurrency(total*9/10) }}</h5>
+                                    <h5 style="font-weight: 900;">{{ formatCurrency(this.total-this.deposits) }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -202,6 +202,7 @@ export default {
             address:"",
             phone:"",
             date:'',
+            deposits:'',
             total:'',
             selectedTime: [],
             selectedGuest: [],
@@ -266,6 +267,7 @@ export default {
                 this.notes = data[0].bill_notes;
                 this.address = data[0].bill_address;
                 this.phone = data[0].bill_phone;
+                this.deposits = data[0].bill_deposits;
                 this.total = data[0].bill_total;
                 this.status = data[0].bill_status;
             }

@@ -20,9 +20,9 @@
                             </div>
                             <hr class="my-4">
 
-                            <div class="" style="overflow-y: auto; height: 550px;">
+                            <div class="" style="overflow-y: auto; height: 600px;">
                                 <div style="width: 95%;">
-                                <template v-for="(category, catIndex) in ['Khai Vị', 'Món Chính', 'Tráng Miệng']" :key="catIndex">
+                                <template v-for="(category, catIndex) in ['Khai Vị', 'Món Chính', 'Tráng Miệng','Bàn Ghế','Rạp Che','Cổng Hoa','Sảnh Tiệc','Gia Tiên','Mâm Quả','Xe Hoa']" :key="catIndex">
                                     <h3 class="mb-2 mb-2" style="color: #d35ea4;font-weight: 900;">{{ category }}</h3>
                                     <div v-for="(f, index) in filterProducts" :key="index">
                                         <div v-if="f.product_category === category" class="row mb-1 d-flex justify-content-between align-items-center"
@@ -57,7 +57,7 @@
                                             style="background-color: #ffb3cc; margin-left: 10px; border-radius: 10px;">
                                             <div class="form-group col-10">
                                                 <input type="text" placeholder="Ghi chú..." class="form-control" 
-                                                    style="border: none; font-weight: bold; background-color: #ffb3cc; color: white;" 
+                                                    style="border: none; font-weight: bold; background-color: #ffb3cc; color: black; font-size: 13px;" 
                                                     v-model="itemNotes[index]"
                                                 >
                                             </div>
@@ -163,17 +163,62 @@
                         style="width: 100%; border: none; background: #ffb3cc; color: black; border-radius: 10px; font-weight: 900; font-size: 14px;" class="form-control" v-model="checkoutObj.address" />
                     </div>
                     
+                    <div class="row">
+                        <div class="col-5">
+                            <button style="width: 100%; background-color: #d9d9d9;" @click="showVoucher()">
+                                <div class="row pl-4">
+                                    <h4 style="font-weight: 800;">Chọn Voucher</h4> 
+                                    <i class="fa-solid fa-ticket ml-3" style="font-size: 20px"></i> 
+                                </div>  
+                            </button>
+                        </div>
+                        <div class="col-7 text-right"> 
+                            <h4 v-if="selectedVoucher!=0" style="font-weight: 800;">{{ formatCurrency(this.selectedVoucher) }}</h4> 
+                            <h5 v-else style="font-weight: 800; color: #999999; padding-top: 3px;">Chưa có voucher được chọn</h5> 
+                        </div>
+                    </div>
+
+                    <div v-if="showvoucher">
+                        <div class="row justify-content-center">
+                            <div class="col-10" v-for="(v, index) in voucherList.slice().reverse()" :key="index">
+                                <div class="voucher row mt-3" style="background-color: #ffccdd; border-radius: 15px;">
+                                    <div class="col-5">
+                                        <h5 class="text-center" style="font-weight: 900; color: #ff667d;">TP-Voucher</h5>
+                                        <h5 v-if="v.voucher_status==1" class="text-center" style="font-weight: 900; color: #2E8B57;">Chưa sử dụng</h5>
+                                        <h5 v-if="v.voucher_status==2" class="text-center">Đang sử dụng</h5>
+                                        <h5 v-if="v.voucher_status==0" class="text-center">Đã sử dụng</h5>
+                                    </div>
+                                    <div class="col-5 pt-3">
+                                        <h3 class="text-center" style="font-weight: 900;">{{ formatCurrency(v.voucher_value) }}</h3>
+                                    </div>
+                                    <div class="col-2" style="padding-top: 5px;">
+                                        <button class="btn" style="border-radius: 15px; font-weight: 800;" @click="addVoucher(v.voucher_id,v.voucher_value,v.voucher_status)">Chọn</button>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+
                     <hr class="my-4">
-                    <div class="d-flex justify-content-between mb-5">
+                    <div class="d-flex justify-content-between mb-3">
                         <h5 class="text-uppercase" style="font-weight: 800;">Số lượng Bàn tiệc</h5>
                         <h5 style="font-weight: 800;">{{ tableNum }} </h5>
                     </div>
-                    <div class="d-flex justify-content-between mb-5">
+                    <div class="d-flex justify-content-between mb-3">
                         <h5 class="text-uppercase" style="font-weight: 800;">Giá mỗi Bàn (mâm)</h5>
                         <h5 style="font-weight: 800;">{{ formatCurrency(PriceOfTable())}} </h5>
                     </div>
-                    <div class="d-flex justify-content-between mb-5">
-                        <h5 class="text-uppercase" style="font-weight: 800;">Tổng chi phí</h5>
+                    <div class="d-flex justify-content-between mb-3">
+                        <h5 class="text-uppercase" style="font-weight: 800;">Giá thành</h5>
+                        <h5 style="font-weight: 800;">{{ formatCurrency(calculateSummaryPrice()+this.selectedVoucher) }}</h5>
+                    </div>
+                    <div v-if="this.selectedVoucher" class="d-flex justify-content-between mb-3">
+                        <h5 class="text-uppercase" style="font-weight: 800;">Khuyến mãi</h5>
+                        <h5 style="font-weight: 800;">- {{ formatCurrency(this.selectedVoucher) }}</h5>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <h5 class="text-uppercase" style="font-weight: 800;">Tổng Thanh Toán</h5>
                         <h5 style="font-weight: 800;">{{ formatCurrency(calculateSummaryPrice()) }}</h5>
                     </div>
 
@@ -203,6 +248,7 @@ export default {
             cartItem: [],
             itemQuantity: [],
             itemNotes: [],
+            voucherList: [],
             checkoutObj: {notes:"", phone: "", address: ""},
             dateID: '',
             date: '',
@@ -212,16 +258,23 @@ export default {
             tempTime: '',
             tableNum: 0,
             tien: 100000,
-            showAddMealSet: false
+            showAddMealSet: false,
+            selectedVoucher: 0,
+            selectedVoucher_id: null,
+            showvoucher: false,
         };
     },
 
-    created() {
+    created(){
+
+    },
+
+    mounted() {
         this.getAllCartItem();
         this.loadInfo();
         this.getDate();
         this.getNum();
-        // this.getMeatSet();
+        this.getVoucher();
     },
 
     computed: {
@@ -260,6 +313,36 @@ export default {
                     this.itemQuantity.push(element.item_qty);
                     this.itemNotes.push(element.item_notes);
                 });
+            }
+        },
+
+        showVoucher() {
+            this.showvoucher = !this.showvoucher;
+        },
+        async getVoucher() {
+            try {
+                let rsp = await axios.get(`/voucher/user/${this.user.user_id}`);
+                this.voucherList = rsp.data
+                    .filter(voucher => voucher.vc_status === 1)
+                    .map(voucher => ({
+                        voucher_id: voucher.vc_id,
+                        voucher_value: voucher.vc_value,
+                        voucher_status: voucher.vc_status,
+                    }));
+                console.log(this.voucherList);
+            } catch (error) {
+                console.error('Error while getting Voucher:', error);
+            }
+        },
+
+        addVoucher(id,value,status){
+            if(status==1){
+                if(this.selectedVoucher!=0) this.selectedVoucher=0
+                else {
+                    this.selectedVoucher=value;
+                    this.selectedVoucher_id = id;
+                    this.showvoucher = false;
+                }
             }
         },
 
@@ -361,24 +444,22 @@ export default {
             let confirmResult = window.confirm("Xác Nhận Hủy Suất Thứ " + temp );
             if (confirmResult) {
                 let data = {
-                    date_id: parseInt(this.dateID),
-                    dd_name: parseInt(index + 1),
+                    date_id: this.dateID,
+                    dd_name: temp,
                 };
+                console.log(data);
                 try {
-                    let response = await axios.delete(`/datedetails/detail/`, { data });
-                    if (response.status >= 200 && response.status < 300) {
-                        console.log("Xóa thành công");
-                        this.$refs.alert.showAlert('success', 'Success!', 'The Meat Set is deleted!');
-                        this.selectedTime.splice(index, 1);
-                        this.selectedGuest.splice(index, 1);                            
-                    } else {
-                        console.error("Xóa không thành công, mã trạng thái: ", response.status);
-                    }
+                    await axios.delete(`/datedetails/detail/`, { data });            
+                        console.log("Xóa thành công")
+                        this.$refs.alert.showAlert('success', 'Success!', 'The Meat Set is deleted!')
+                        this.selectedTime.splice(index, 1)
+                        this.selectedGuest.splice(index, 1)                          
                 } catch (error) {
                     console.error("Lỗi khi thực hiện xóa: ", error);
                 }
 
-                this.getMeatSet();
+                this.getNum();
+                // this.setQuantity();
             }
         },
         async updateDateBtn(index) {
@@ -388,25 +469,21 @@ export default {
                 dd_time: this.selectedTime[index],
                 dd_guest: this.selectedGuest[index],
             };
-
             try {
                 await axios.put('/datedetails/', data);
                 console.log('Dữ liệu đã được chỉnh sửa thành công');
                 console.log(data);
                 // Sau khi cập nhật thành công, gọi hàm để lấy lại dữ liệu
                 this.$refs.alert.showAlert('success', 'Thành Công!', 'Suất Đãi Khách đã được Cập nhật!');
-                await this.getMeatSet();
+                await this.getNum();
             } catch (error) {
                 console.error('Lỗi khi chỉnh sửa dữ liệu:', error);
             }
         },
 
-
         calculateItemPrice: function (index) {
             let a = 0;
-            
                 a = parseInt(this.filterProducts[index].product_price) * this.itemQuantity[index];
-            
             return a;
         },
 
@@ -429,7 +506,7 @@ export default {
                 subtotal = subtotal + this.calculateItemPrice(i)
                 i = i + 1
             }
-            return subtotal;
+            return subtotal-this.selectedVoucher;
         },
 
         async getNum() {
@@ -441,6 +518,7 @@ export default {
                     if (data && data.length > 0) {
                         let selectedTimes = [];
                         let selectedGuests = [];
+                        this.tableNum=0;
                         // Lặp qua mỗi phần tử trong mảng data
                         data.forEach(item => {
                             selectedTimes.push(item.dd_time);
@@ -469,7 +547,14 @@ export default {
                             if (this.filterProducts[index].product_category === 'Khai Vị' 
                              || this.filterProducts[index].product_category === 'Món Chính'
                              || this.filterProducts[index].product_category === 'Tráng Miệng') {
-                                if (this.itemQuantity[index] < this.tableNum ) this.itemQuantity[index] = this.tableNum;
+                                this.itemQuantity[index] = this.tableNum;
+                            }
+                            if (this.filterProducts[index].product_category === 'Rạp Che' ) {
+                                // if (this.itemQuantity[index] < Math.ceil(this.tableNum / 2)) 
+                                this.itemQuantity[index] = Math.ceil(this.tableNum / 2);
+                            }
+                            if (this.filterProducts[index].product_category === 'Bàn Ghế' ) {
+                                this.itemQuantity[index] =this.tableNum;
                             }
                             let data = {
                                 user_id: parseInt(this.user.user_id),
@@ -600,9 +685,12 @@ export default {
                     bill_id: parseInt(billId),
                     user_id: parseInt(this.user.user_id),
                     date_id: this.dateID,
+                    voucher_id: this.selectedVoucher_id,
                     bill_phone: this.checkoutObj.phone,
                     bill_address: this.checkoutObj.address,
                     bill_when: currentTime,
+                    bill_discount: this.selectedVoucher,
+                    bill_deposits: parseInt(this.calculateSummaryPrice()/10),
                     bill_total: parseInt(this.calculateSummaryPrice()),
                     bill_notes: this.checkoutObj.notes,
                     bill_status: 1
@@ -616,7 +704,11 @@ export default {
                     bill_id: parseInt(billId)
                 }
                 axios.post("/datebill",dataDateBill)
-                
+                let voucher = {
+                    vc_status: 2,
+                    vc_id: this.selectedVoucher_id,
+                }
+                axios.put(`/voucher/status`,voucher)
                 axios.delete(`/date/${this.user.user_id}`)
                 this.cartItem = [];
                 this.itemQuantity = [];

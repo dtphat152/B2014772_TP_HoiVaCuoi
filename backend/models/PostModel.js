@@ -4,7 +4,20 @@ import db from "../config/database.js";
 // get all Posts
 export const getPosts = (result) => {
     db.query(`
-    SELECT * FROM post JOIN user ON post.user_id = user.user_id;
+    SELECT * FROM post JOIN user ON post.user_id = user.user_id WHERE post.hide = 0; 
+    `, (err, results) => {
+        if (err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });
+};
+
+export const getPostsAdmin = (result) => {
+    db.query(`
+    SELECT * FROM post JOIN user ON post.user_id = user.user_id; 
     `, (err, results) => {
         if (err) {
             console.log(err);
@@ -42,14 +55,14 @@ export const insertPost = (data, result) => {
 // update Post
 export const updatePostById = (data, id, result) => {
     db.query(
-        "UPDATE post SET caption = ?, likes = ? WHERE post_id = ?",
-        [data.caption, data.likes, id],
+        "UPDATE post SET caption = ?, hide = ? WHERE post_id = ?",
+        [data.caption, data.hide, id],
         (err, results) => {
             if (err) {
                 console.log(err);
                 result(err, null);
             } else {
-                result(null, results);
+                result(null, results[0]);
             }
         }
     );

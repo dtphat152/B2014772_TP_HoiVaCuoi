@@ -6,6 +6,10 @@
             <h4 v-none>{{ this.OrderInfo }} Thành Công!</h4>
         </div>
 
+        <div v-if="this.orderInfo!='' && this.message=='Successful.'" class="thank-letter p-5">
+            <h4 v-none>{{ this.orderInfo }} Thành Công!</h4>
+        </div>
+
         <div v-else class="thank-letter p-5">
             <h4 v-none>Vì đã chọn chúng tôi!</h4>
         </div>
@@ -61,25 +65,44 @@ export default {
             TransactionStatus: null,
             TxnRef: null,
             SecureHash: null,
+
+            orderId: null,
+            requestId: null,
+            amount: null,
+            orderInfo: null,
+            transId: null,
+            message: null,
+            payType: null,
         };
     },
 
     mounted() {
         const urlParams = new URLSearchParams(window.location.search);
-        this.Amount = urlParams.get('vnp_Amount');
-        this.BankCode = urlParams.get('vnp_BankCode');
-        this.BankTranNo = urlParams.get('vnp_BankTranNo');
-        this.CardType = urlParams.get('vnp_CardType');
-        this.OrderInfo = urlParams.get('vnp_OrderInfo');
-        this.PayDate = urlParams.get('vnp_PayDate');
-        this.ResponseCode = urlParams.get('vnp_ResponseCode');
-        this.TmnCode = urlParams.get('vnp_TmnCode');
-        this.TransactionNo = urlParams.get('vnp_TransactionNo');
-        this.TransactionStatus = urlParams.get('vnp_TransactionStatus');
-        this.TxnRef = urlParams.get('vnp_TxnRef');
-        this.SecureHash = urlParams.get('vnp_SecureHash');
-
+        if (urlParams.has('vnp_Amount')) {
+            this.Amount = urlParams.get('vnp_Amount');
+            this.BankCode = urlParams.get('vnp_BankCode');
+            this.BankTranNo = urlParams.get('vnp_BankTranNo');
+            this.CardType = urlParams.get('vnp_CardType');
+            this.OrderInfo = urlParams.get('vnp_OrderInfo');
+            this.PayDate = urlParams.get('vnp_PayDate');
+            this.ResponseCode = urlParams.get('vnp_ResponseCode');
+            this.TmnCode = urlParams.get('vnp_TmnCode');
+            this.TransactionNo = urlParams.get('vnp_TransactionNo');
+            this.TransactionStatus = urlParams.get('vnp_TransactionStatus');
+            this.TxnRef = urlParams.get('vnp_TxnRef');
+            this.SecureHash = urlParams.get('vnp_SecureHash');
+        } else if (urlParams.has('amount')) {
+            this.orderId = urlParams.get('orderId');
+            this.requestId = urlParams.get('requestId');
+            this.amount = urlParams.get('amount');
+            this.orderInfo = urlParams.get('orderInfo');
+            this.transId = urlParams.get('transId');
+            this.message = urlParams.get('message');
+            this.payType = urlParams.get('payType');
+        } 
+       
         if (this.Amount!='' && this.TransactionStatus=='00') this.sendInfoPayment();
+        if (this.amount!='' && this.message=='Successful.') this.sendMoMoPayment();
     },
 
     methods: {
@@ -139,6 +162,27 @@ export default {
 
             return txnRef.substring(startIndex, endIndex);
         },
+
+        async sendMoMoPayment(){
+            console.log('sendMoMoPayment');
+            const id = this.extractIdFromTxnRef(this.requestId);
+            console.log("ID: ",id);
+            try {
+                await axios.put(`/billstatus/${id}`);
+                console.log("Bill status updated successfully!");
+                // try {
+                //     let mailData = {
+                //         email: 'tphoivacuoi@gmail.com',
+                //         content: this.OrderInfo+' đã hoàn thành!',
+                //     }
+                //     await axios.post('/sendemail/status', mailData);
+                // } catch (error) {
+                //     console.error("Error send mail:", error);
+                // }
+            } catch (error) {
+                console.error("Error updating bill status:", error);
+            }
+        }
     },
 
 }
@@ -155,25 +199,24 @@ export default {
 h1 {
     padding-top: 100px;
     color: #ff69b4;
-    font-weight: bold;
+    font-weight: 900;
     font-size: 50px;
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7); /* Tạo hiệu ứng chữ nổi */
-    -webkit-text-stroke: 3px rgb(234, 216, 216); /* Viền chữ màu trắng */
 }
 
 h4{
-    color: #ff69b4;
+    color: black;
     opacity: 0.3;
+    font-weight: 900;
 }
 
 .fa1 {
-    background-color: #660066;
+    background-color: #ff99a8;
     text-align: center;
     padding: 5px;
     border-radius: 25px;
     padding: 10px;
-    font-size: 30px;
-    color: white;
+    font-size: 50px;
+    color: #e6e6e6;
     opacity: 0.4;
 }
 </style>

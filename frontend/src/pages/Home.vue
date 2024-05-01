@@ -17,20 +17,24 @@
                         <div class="col-2 text-center">
                             <router-link @click="scrollToTop()" to="/booking">
                                 <i class="fa fa1 fa-sticky-note" aria-hidden="true" style="color: white;"></i>
-                                <h6 class="text-center font-weight-bold p-2" style="color: white;">Đặt Hàng</h6>
+                                <h6 class="text-center p-2" style="color: #808080; font-weight: 900;">Đặt Hàng</h6>
                             </router-link>
                         </div>
                         <div class="col-2 text-center">
                             <router-link @click="scrollToTop()" to="/contact">
-                                <i class="fa fa1 fa-phone-square" aria-hidden="true"></i>
-                                <h6 class="text-center font-weight-bold p-2" style="color: white;">Liên Hệ</h6>
+                                <i class="fa fa1 fa-phone-square" aria-hidden="true" style="color: white;"></i>
+                                <h6 class="text-center p-2" style="color: #808080; font-weight: 900;">Liên Hệ</h6>
                             </router-link>
                         </div>
                         <div class="col-2 text-center">
                             <router-link @click="scrollToTop()" to="/about">
-                                <i class="fa fa1 fa-university" aria-hidden="true"></i>
-                                <h6 class="text-center font-weight-bold p-2" style="color: white;">Chúng Tôi</h6>
+                                <i class="fa fa1 fa-university" aria-hidden="true" style="color: white;"></i>
+                                <h6 class="text-center p-2" style="color: #808080; font-weight: 900;">Chúng Tôi</h6>
                             </router-link>
+                        </div>
+                        <div class="col-2 text-center">
+                                <i class="fa1 fa-regular fa-message" style="color: white;" @click="chatBox()"></i>
+                                <h6 class="text-center p-2" style="color: #808080; font-weight: 900;">Giải Đáp</h6>
                         </div>
                     </div>
                 </div>
@@ -87,6 +91,13 @@
     >
         <div v-if="this.page==2" class="home-container" style="background-color: none !important;">
             <h1 class="text-center">Home 2</h1>
+            <div class="row">
+                <div class="col-8"></div>
+                <div class="col-4">
+                    
+                </div>
+            </div>
+            
         </div>
     </transition>
 
@@ -108,7 +119,7 @@ export default {
         return {
             page: 1,
             images: ['wedding_circle1', 'wedding_circle2', 'wedding_circle3'],
-            currentImageIndex: 0
+            currentImageIndex: 0,
         };
     },
 
@@ -127,7 +138,23 @@ export default {
         setInterval(() => {
             this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
         }, 5000);
+
+        // Kiểm tra xem script Kommunicate đã được tải chưa
+        if (!window.kommunicate) {
+            // Nếu chưa được tải, thêm script vào trang
+            (function(d, m){
+                var kommunicateSettings = {"appId":"fd1cc1a862ae4f2bc125423232a0a2d5","popupWidget":true,"automaticChatOpenOnNavigation":true};
+                var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+                s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+                var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+                window.kommunicate = m; m._globals = kommunicateSettings;
+            })(document, window.kommunicate || {});
+        }
+
+        // Gỡ bỏ bắt sự kiện khi component bị hủy
+        window.removeEventListener('wheel', this.handleScroll);
     },
+
 
     beforeUnmount() {
         // Gỡ bỏ bắt sự kiện khi component bị hủy
@@ -225,6 +252,14 @@ rounded-circle text-center p-2 {
     height: 40px;
     color: #e6e6e6;
     opacity: 0.4;
+}
+
+.chatbox {
+    width: 100%; /* Đặt chiều rộng là 100% của phần tử mẹ */
+    height: 536px; /* Đặt chiều cao là 500px */
+    border: 10px solid #f1b3bc; /* Đặt đường viền 1px, màu xám */
+    border-radius: 20px; /* Đặt góc cong 10px */
+    opacity: 0.8;
 }
 
 </style>

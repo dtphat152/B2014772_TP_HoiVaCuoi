@@ -33,6 +33,11 @@
         </div>
         <div class="row">
           <button class="btn">
+            <router-link to="/admin/postsmanager"><h2>Posts</h2></router-link>
+          </button>
+        </div>
+        <div class="row">
+          <button class="btn">
             <router-link to="/admin/usermanager"><h2>User</h2></router-link>
           </button>
         </div>

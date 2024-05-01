@@ -1,6 +1,7 @@
 // import functions from Post and Image models
 import {
     getPosts,
+    getPostsAdmin,
     getPostById,
     insertPost,
     updatePostById,
@@ -14,6 +15,16 @@ import {
 // get all Posts
 export const showPosts = (req, res) => {
     getPosts((err, results) => {
+        if (err) {
+            res.send(err);
+        } else {
+            res.json(results);
+        }
+    });
+};
+
+export const getPostsAdminController = (req, res) => {
+    getPostsAdmin((err, results) => {
         if (err) {
             res.send(err);
         } else {

@@ -3,6 +3,7 @@ import {
     insertBillStatus,
     getBillsByUser,
     getBillsByBill,
+    getBillStatusByUserModel,
     getAll,
     updateStatus,
     updateStatusCancelModel,
@@ -40,6 +41,16 @@ export const createBillStatus=(req,res)=>{
 // get Bills Status
 export const getAllBillsByUser=(req,res)=>{
     getBillsByUser(req.params.id,(err,results)=> {
+        if (err) {
+            res.send(err);
+        }else {
+            res.json(results);
+        }
+    });
+};
+
+export const getBillStatusByUserController=(req,res)=>{
+    getBillStatusByUserModel(req.params.id,(err,results)=> {
         if (err) {
             res.send(err);
         }else {

@@ -39,6 +39,18 @@ export const getBillsByUser = (id,result) => {
     });
 };
 
+export const getBillStatusByUserModel = (id,result) => {
+    db.query("SELECT bill_status FROM billstatus WHERE user_id = ?",id, (err,results)=> {
+        if (err){
+            console.log(err);
+            result(err,null);
+        }
+        else{
+            result(null,results);
+        }
+    });
+};
+
 
 // get all Bills Status
 export const getBillsByBill = (id,result) => {

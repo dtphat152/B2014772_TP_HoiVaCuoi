@@ -12,18 +12,18 @@
                         </h4>
                         <button v-if="b.bill_status==0 || b.bill_status==4" @click="hideBill(b.bill_id,b.bill_status)"
                             class="col-1 btn ml-1" style="background-color:Orange; border-radius: 10px; font-weight: 900;"> Ẩn </button>
-                        <button v-if="b.bill_status==1" @click="cancelBill(b.bill_id)"
+                        <button v-if="b.bill_status==1" @click="cancelBill(b.bill_id,b.voucher_id)"
                             class="col-1 btn ml-1" style="background-color:Tomato; border-radius: 10px;  font-weight: 900;"> Hủy </button>
                         <button v-if="b.bill_status==2"  @click="showPaymentBTN()" 
                             class="col-1 btn ml-1" style="background-color:MediumSeaGreen; border-radius: 10px;"> Thanh Toán Cọc</button>
-                            <button v-if="showPayment && b.bill_status==2" @click="sendMomo(b.bill_id,b.bill_total)"
+                            <button v-if="showPayment && b.bill_status==2" @click="sendMomo(b.bill_status,b.bill_id,b.bill_total,b.bill_deposits)"
                             class="col-1 btn ml-1" style="background-color:white; border-radius: 10px; color: Violet; font-weight: 900;">MOMO</button>
                             <button v-if="showPayment && b.bill_status==2" @click="sendVnPay(b.bill_status,b.bill_id,b.bill_total)"
                             class="col-1 btn ml-1" style="background-color:white; border-radius: 10px; color: Violet; font-weight: 900;">VN PAY</button>
 
                         <button v-if="b.bill_status==3" @click="showPaymentBTN()"
                             class="col-1 btn ml-1" style="background-color:SteelBlue; border-radius: 10px;"> Thanh Toán Đơn</button>
-                            <button v-if="showPayment && b.bill_status==3" @click="sendMomo(b.bill_id,b.bill_total)"
+                            <button v-if="showPayment && b.bill_status==3" @click="sendMomo(b.bill_status,b.bill_id,b.bill_total,b.bill_deposits)"
                             class="col-1 btn ml-1 " style="background-color:white; border-radius: 10px; color: Violet; font-weight: 900;">MOMO</button>
                             <button v-if="showPayment && b.bill_status==3" @click="sendVnPay(b.bill_status,b.bill_id,b.bill_total)"
                             class="col-1 btn ml-1 " style="background-color:white; border-radius: 10px; color: Violet; font-weight: 900;">VN PAY</button>
@@ -60,7 +60,11 @@
             
             <div class="row">
                 <div class="col-8" style="border-radius: 20px; background-color: #ffb3cc">
-                    <ProductBill @send-price="handlePriceFromChild" :Bill="b.bill_id" ></ProductBill>
+                    <ProductBill  v-if="showProductBill" @send-price="handlePriceFromChild" :Bill="b.bill_id" ></ProductBill>
+
+                    <ProductOrder v-if="!showProductBill" :ID="this.sendId" >
+                        <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
+                    </ProductOrder> 
                 </div>
                 <div class="col-4">
                     
@@ -200,7 +204,7 @@
                                     <h6 v-if="b.bill_status >= 3" style="font-weight: 900;">(đã thanh toán)</h6>
                                 </div>
                                 <div class="col-4 text-right">
-                                    <h5 style="font-weight: 900;">{{ formatCurrency(b.bill_total/10) }}</h5>
+                                    <h5 style="font-weight: 900;">{{ formatCurrency(b.bill_deposits) }}</h5>
                                 </div>    
                             </div>
                             <div class="row mx-1 p-2" :style="b.bill_status >= 4 ? { 'color': 'MediumSeaGreen'} : '' ">
@@ -211,21 +215,26 @@
                                     <h6 v-if="b.bill_status >= 4" style="font-weight: 900;">(đã thanh toán)</h6>
                                 </div>
                                 <div class="col-4 text-right">
-                                    <h5 style="font-weight: 900;">{{ formatCurrency(b.bill_total*9/10) }}</h5>
+                                    <h5 style="font-weight: 900;">{{ formatCurrency(b.bill_total-b.bill_deposits) }}</h5>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <button class="btn py-0" @click="sendBillId(b.bill_id)">
+                    <h4 style="font-weight: 800; color: #32CD32;">Thêm Dịch Vụ</h4>
+                </button>
             </div>  
         </div>
     </div>
 </div> 
 </div>
+<div v-if="filterBills.length==0"  class="my-order"><div class="my-order-inner"><h1 style="text-align: center; font-weight: 900;">Đơn Hàng Rỗng</h1></div></div>
 </template>
 
 
 <script>
+import ProductOrder from "../components/ProductOrder.vue"
 import ProductBill from "../components/ProductBill.vue"
 import axios from "axios";
 import { mapState } from "vuex";
@@ -235,7 +244,6 @@ export default {
 
     data() {
         return {
-            avaiableStatus: ["cancel", "confirmed", "preparing", "checking", "delivering", "delivered"],
             allBills: [],
             selectedTime: [],
             selectedGuest: [],
@@ -245,20 +253,24 @@ export default {
             tempTime: '',
             tableNum: '',
             priceOfTable:'',
-            showOrderDetails: false,
+            showProductBill: true,
             sendId: null,
             showPayment: false,
             interval: "",
+            checkChangeStatus:0,
         }
     },
 
-    created() {
-   
+    watch: {
+        checkChangeStatus: {
+            handler: 'getAllBills', 
+            immediate: true 
+        },
     },
 
     mounted: function () {
         this.getAllBills();
-        // this.autoUpdate();
+        this.autoUpdate();
     },
 
     beforeUnmount() {
@@ -295,6 +307,23 @@ export default {
             }
         },
 
+        async getAllBillStatus() {
+            if (this.user) {
+                try {
+                    let response = await axios.get('/billstatus/status/user/' + this.user.user_id);
+                    if (response.data) {
+                        for (let i = 0; i < this.allBills.length; i++) {
+                            if (this.allBills[i].bill_status !== response.data[i].bill_status) {
+                                this.checkChangeStatus += 1;
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error while fetching bill status:', error);
+                }
+            }
+        },
+
         formatCurrency(amount) {
           if (!amount) return '';
           return parseFloat(amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
@@ -317,11 +346,11 @@ export default {
 
         sendBillId: function (id) {
             this.sendId = id
-            this.showOrderDetails = !this.showOrderDetails;
+            this.showProductBill = !this.showProductBill;
         },
 
         closeView: function () {
-            this.showOrderDetails = !this.showOrderDetails;
+            this.showProductBill = !this.showProductBill;
         },
 
         showAddMealSetFunction() {
@@ -336,25 +365,31 @@ export default {
             this.getAllBills();
         },
 
-        // autoUpdate: function () {
-        //     this.interval = setInterval(function () {
-        //         this.getAllBills();
-        //     }.bind(this), 1000);
-        // },
+        autoUpdate: function () {
+            this.interval = setInterval(function () {
+                this.getAllBillStatus();
+            }.bind(this), 1000);
+        },
 
         handlePriceFromChild(price) {
             // Bắt sự kiện từ component con và cập nhật giá trị trong component cha
             this.priceOfTable = price;
         },
 
-        async sendMomo( bill_id, bill_total) {
+        async sendMomo(bill_status , bill_id, bill_total , bill_deposits) {
             try {
-                let tien = parseInt(bill_total) / 10;
+                let tien = bill_total-bill_deposits;
+                let type = 'Thanh Toán Kết Sổ'
+                if (bill_status==2) {
+                    tien = parseInt(bill_deposits);
+                    type = 'Thanh Toán Cọc'
+                }       
                 let data = {
                     bill_id: bill_id,
-                    bill_total: tien
+                    amount: tien,
+                    bill_type: type
                 };
-                console.log("check:");
+                console.log("check:",data);
                 const response = await axios.post(`/payment-online`, data);
                 const redirectUrl = response.data.redirectUrl;
                 console.log('Redirect URL:', redirectUrl);
@@ -364,14 +399,14 @@ export default {
             }
         },
         
-        async sendVnPay(bill_status,bill_id,bill_total) {
+        async sendVnPay(bill_status,bill_id,bill_total , bill_deposits) {
             try {
-                let tien = parseInt(bill_total)*9/10;
+                let tien = bill_total-bill_deposits;
                 let type = 'Thanh Toán Kết Sổ'
                 if (bill_status==2) {
-                    tien = parseInt(bill_total) / 10;
+                    tien = parseInt(bill_deposits);
                     type = 'Thanh Toán Cọc'
-                }        
+                }    
                 let data = {
                     bill_id: bill_id,
                     amount: tien,
@@ -439,7 +474,12 @@ export default {
             } 
         },
 
-        async cancelBill(id) {
+        async cancelBill(id,voucher_id) {
+            let voucher = {
+                vc_status: 1,
+                vc_id: voucher_id,
+            }
+            axios.put(`/voucher/status`,voucher);
             await axios.put('/billstatus/cancel/' + id);
             this.getAllBills();
         },
@@ -596,7 +636,7 @@ export default {
 
 
     },
-    components: { ProductBill }
+    components: { ProductBill , ProductOrder}
 }
 </script>
 

@@ -51,7 +51,7 @@ export default {
             const revenueData = {}; 
 
             this.allBills.forEach(bill => {
-                if (bill.bill_status >= 3) {
+                if (bill.bill_status >= 4) {
                     const dateString = bill.bill_when;
                     const parts = dateString.split(" - ");
 

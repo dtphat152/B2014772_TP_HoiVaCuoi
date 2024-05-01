@@ -119,8 +119,8 @@ export default {
 
 
         async addToBill(i,name){
-            console.log(this.ID)
-            let rsp = await axios.get(`/billdetails/${this.ID}`);
+            console.log(this.ID[0])
+            let rsp = await axios.get(`/billdetails/${this.ID[0]}`);
             const productIds = rsp.data.map(item => item.product_id);
             console.log(productIds)
             if (productIds.includes(parseInt(this.filterProducts[i].product_id))) window.confirm('Sản Phẩm đã có trong đơn trước đó!')
@@ -129,7 +129,7 @@ export default {
                     let confirmResult = window.confirm("Bạn muốn thêm " + this.filterProducts[i].product_name + " với số lượng " + this.itemQuantity[i] + "?");
                     if (confirmResult) {
                         let billDetails = {
-                            bill_id: parseInt(this.ID),
+                            bill_id: parseInt(this.ID[0]),
                             product_id: parseInt(this.filterProducts[i].product_id),
                             item_qty: parseInt(this.itemQuantity[i])
                         };
@@ -138,14 +138,18 @@ export default {
                             console.log("Successfully added to bill:", billDetails);
                             // Kích hoạt sự kiện và truyền thông tin sản phẩm đã thêm
                             this.$emit('productAdded');
-
+                            let billdata = { 
+                                bill_total: this.ID[2] + parseInt(this.filterProducts[i].product_price*this.itemQuantity[i]),
+                            };
+                            await axios.put(`/billstatus/billtotal/${this.ID[0]}`, billdata);
                             let data1 = {
-                                email: this.email,
-                                title:`Đơn hàng #${this.ID} của bạn đã được cập nhật!`,
+                                email: this.ID[1],
+                                title:`Đơn hàng #${this.ID[0]} của bạn đã được cập nhật!`,
                                 content: `Nội dung: Thêm mới ${name} vào đơn hàng của bạn với số lượng ${billDetails.item_qty}.`,
                             }
                             try {
-                                axios.post(`/sendemail/update`,data1);
+                                console.log(data1)
+                                // axios.post(`/sendemail/update`,data1);
                             } catch (error) {
                                 console.error("Error Send email update:", error);
                             }     
@@ -164,7 +168,7 @@ export default {
                 let confirmResult = window.confirm("Bạn muốn thêm " + this.filterProducts[i].product_name +" vào Combo?");
                 if (confirmResult) {
                     let ComboDetails = {
-                        combo_id: parseInt(this.ID),
+                        combo_id: parseInt(this.ID[0]),
                         product_id: parseInt(this.filterProducts[i].product_id),
                     };
                     try {
