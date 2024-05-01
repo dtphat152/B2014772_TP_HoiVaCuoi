@@ -9,7 +9,7 @@
             <div class="col-4">
                 <h1>TP Hỏi và Cưới</h1>
                 <hr class="my-4" style="background-color: #ff69b4;">
-                <h5 style="font-weight: 900; color: #808080;">Chúng tôi hiểu rằng mỗi cặp đôi mang trong mình những mong muốn và mong đợi riêng biệt về ngày cưới của mình. Đó là lý do tại sao chúng tôi cam kết cung cấp dịch vụ tùy chỉnh và chuyên nghiệp, đảm bảo rằng mỗi chi tiết trong ngày cưới của bạn được tổ chức một cách hoàn hảo và đặc biệt. </h5>
+                <h4 style="font-weight: 800; color: #808080;">Chúng tôi hiểu rằng mỗi cặp đôi mang trong mình những mong muốn và mong đợi riêng cho ngày cưới của mình. Đó là lý do tại sao chúng tôi cam kết cung cấp dịch vụ chất lượng, đảm bảo rằng mỗi chi tiết trong ngày cưới của bạn được tổ chức một cách hoàn hảo và đặc biệt. </h4>
                 <div class="row" style="padding-top: 50px !important;">
                     <div class="col-2 text-center">
                         <router-link @click="scrollToTop()" to="/booking">
@@ -18,14 +18,14 @@
                         </router-link>
                     </div>
                     <div class="col-2 text-center">
-                        <router-link @click="scrollToTop()" to="/contact">
-                            <i class="fa fa1 fa-phone-square" aria-hidden="true" style="color: white;"></i>
-                            <h6 class="text-center p-2" style="color: #808080; font-weight: 900;">Liên Hệ</h6>
+                        <router-link @click="scrollToTop()" to="/connect">
+                            <i class="fa1 fa-solid fa-link py-4" style="color: white; font-size: 40px;"></i>
+                            <h6 class="text-center p-2" style="color: #808080; font-weight: 900;">Kết Nối</h6>
                         </router-link>
                     </div>
                     <div class="col-2 text-center">
                         <router-link @click="scrollToTop()" to="/about">
-                            <i class="fa fa1 fa-university" aria-hidden="true" style="color: white;"></i>
+                            <i class="fa1 fa-solid fa-building px-4" style="color: white;"></i>
                             <h6 class="text-center p-2" style="color: #808080; font-weight: 900;">Chúng Tôi</h6>
                         </router-link>
                     </div>
@@ -241,16 +241,20 @@ export default {
         this.getProductRecommend();
         this.getTopProduct();
         // Kiểm tra xem script Kommunicate đã được tải chưa
-        // if (!window.kommunicate) {
-        //     // Nếu chưa được tải, thêm script vào trang
-        //     (function(d, m){
-        //         var kommunicateSettings = {"appId":"fd1cc1a862ae4f2bc125423232a0a2d5","popupWidget":true,"automaticChatOpenOnNavigation":true};
-        //         var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
-        //         s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
-        //         var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
-        //         window.kommunicate = m; m._globals = kommunicateSettings;
-        //     })(document, window.kommunicate || {});
-        // }
+        if (!window.kommunicate) {
+            // Nếu chưa được tải, thêm script vào trang
+            (function(d, m){
+                var kommunicateSettings = {"appId":"fd1cc1a862ae4f2bc125423232a0a2d5","popupWidget":true,"automaticChatOpenOnNavigation":true};
+                var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+                s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+                var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+                window.kommunicate = m; m._globals = kommunicateSettings;
+            })(document, window.kommunicate || {});
+        }
+
+        setInterval(() => {
+            this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
+        }, 3000);
     },
 
 

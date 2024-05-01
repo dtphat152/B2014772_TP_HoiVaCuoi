@@ -7,7 +7,7 @@ import ResetPassword from '../pages/ResetPassword.vue';
 import Home from '../pages/Home.vue';
 import About from '../pages/About.vue';
 import Product from '../pages/Product.vue';
-import Contact from '../pages/Contact.vue';
+import Connect from '../pages/Connect.vue';
 import Cart from '../pages/Cart.vue';
 import Checkout from '../pages/Checkout.vue';
 import Thank from '../pages/Thank.vue';
@@ -43,9 +43,9 @@ const routes = [
     component: Product,
   },
   {
-    path: "/contact",
-    name: "Contact",
-    component: Contact,
+    path: "/connect",
+    name: "Connect",
+    component: Connect,
   },
   {
     path: "/cart",

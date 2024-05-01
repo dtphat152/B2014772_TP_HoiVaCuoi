@@ -25,8 +25,8 @@
                 </router-link>
             </div>
             <div class="col-lg-3 col-md-6 col-6">
-                <router-link @click="scrollToTop()" to="/contact">
-                    <h2 class="" style="color: #ff69b4; font-weight: 900;" >Liên Hệ</h2>
+                <router-link @click="scrollToTop()" to="/connect">
+                    <h2 class="" style="color: #ff69b4; font-weight: 900;" >Kết Nối</h2>
                 </router-link>
             </div>
             <div class="col-lg-3 col-md-6 col-6">
