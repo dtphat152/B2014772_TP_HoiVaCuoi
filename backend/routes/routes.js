@@ -10,6 +10,7 @@ import {
     deleteProduct,
     updateProductBuyController,
     getProductsTop5Controller,
+    getProductsTop8Controller,
     getProductsBot5Controller
 } from "../controllers/product.js";
 
@@ -176,6 +177,7 @@ router.delete("/api/postimage/:id", deleteImage);
 
 ////////////////////////// Product ////////////////////////////////
 
+router.get("/api/productstop8", getProductsTop8Controller);
 router.get("/api/productstop5", getProductsTop5Controller);
 router.get("/api/productsbot5", getProductsBot5Controller);
 router.get("/api/products", showProducts);

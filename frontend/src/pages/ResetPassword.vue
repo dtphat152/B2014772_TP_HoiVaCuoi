@@ -92,12 +92,13 @@ export default {
                 console.log("Data: ", JSON.stringify(data));
 
                 try {
-                    await axios.put("/users/", data);
+                    await axios.put("/users/pass", data);
+                    await axios.delete(`/resetpass/${this.user_id}`);
                 } catch (error) {
                     console.error("Error in PUT ",error);
                 }
                 this.$router.push("/login");
-            }
+            } else window.confirm("Mật khẩu và xác nhận mật khẩu không khớp!")
         }
     },
 

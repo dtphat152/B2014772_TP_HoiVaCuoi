@@ -103,14 +103,14 @@
                     </div>
                     <div v-if="this.showAddMealSet==true" class="row pt-2 align-items-center m-1" style="background-color: #ffb3cc; border-radius: 15px;">
                         <div class="col-3 text-left">
-                            <h6>Suất Mới: </h6>
+                            <h5 style="font-weight: 900;">Suất Mới: </h5>
                         </div>
                         <div class="col-3">
                             <input title="Số Khách" type="number" class="form-control" min="0" max="1000" 
-                            v-model="this.tempGuest" style="border: none; text-align: center; background: #ffb3cc;">
+                            v-model="this.tempGuest" style="border: none; text-align: center; background: #ffb3cc; font-weight: 900; font-size: 15px; margin-bottom: 5px;">
                         </div>
                         <div class="col-3">
-                            <input type="time" v-model="this.tempTime" style=" background: #ffb3cc;">
+                            <input type="time" v-model="this.tempTime" style=" background: #ffb3cc; font-size: 15px; font-weight: 900; ">
                         </div>
                         <div class="col-1 ">
                         </div>
@@ -180,22 +180,27 @@
 
                     <div v-if="showvoucher">
                         <div class="row justify-content-center">
-                            <div class="col-10" v-for="(v, index) in voucherList.slice().reverse()" :key="index">
-                                <div class="voucher row mt-3" style="background-color: #ffccdd; border-radius: 15px;">
-                                    <div class="col-5">
-                                        <h5 class="text-center" style="font-weight: 900; color: #ff667d;">TP-Voucher</h5>
-                                        <h5 v-if="v.voucher_status==1" class="text-center" style="font-weight: 900; color: #2E8B57;">Chưa sử dụng</h5>
-                                        <h5 v-if="v.voucher_status==2" class="text-center">Đang sử dụng</h5>
-                                        <h5 v-if="v.voucher_status==0" class="text-center">Đã sử dụng</h5>
+                            <div v-if="voucherList.length==0"><h5 style="font-weight: 800; color: red; padding-top: 10px;">Bạn chưa có voucher</h5></div>
+                            <div v-else class="col-10" >
+                                <h5 style="font-weight: 800; color: black; padding-top: 10px; text-align: center;">Áp dụng cho đơn từ 5.000.000 vnd</h5>
+                                <div v-for="(v, index) in voucherList.slice().reverse()" :key="index">
+                                    <div class="voucher row mt-3" style="background-color: #ffccdd; border-radius: 15px;">
+                                        <div class="col-5">
+                                            <h5 class="text-center" style="font-weight: 900; color: #ff667d;">TP-Voucher</h5>
+                                            <h5 v-if="v.voucher_status==1" class="text-center" style="font-weight: 900; color: #2E8B57;">Chưa sử dụng</h5>
+                                            <h5 v-if="v.voucher_status==2" class="text-center">Đang sử dụng</h5>
+                                            <h5 v-if="v.voucher_status==0" class="text-center">Đã sử dụng</h5>
+                                        </div>
+                                        <div class="col-5 pt-3">
+                                            <h3 class="text-center" style="font-weight: 900;">{{ formatCurrency(v.voucher_value) }}</h3>
+                                        </div>
+                                        <div class="col-2" style="padding-top: 5px;">
+                                            <button v-if="calculateSummaryPrice()>=5000000" class="btn" style="border-radius: 15px; font-weight: 800;" 
+                                                @click="addVoucher(v.voucher_id,v.voucher_value,v.voucher_status)">Chọn</button>
+                                        </div>
                                     </div>
-                                    <div class="col-5 pt-3">
-                                        <h3 class="text-center" style="font-weight: 900;">{{ formatCurrency(v.voucher_value) }}</h3>
-                                    </div>
-                                    <div class="col-2" style="padding-top: 5px;">
-                                        <button class="btn" style="border-radius: 15px; font-weight: 800;" @click="addVoucher(v.voucher_id,v.voucher_value,v.voucher_status)">Chọn</button>
-                                    </div>
+                                    <br>
                                 </div>
-                                <br>
                             </div>
                         </div>
                     </div>
@@ -428,6 +433,7 @@ export default {
                 if (existDate.data.length > 0) {
                     await axios.put("/date", dateSelect);
                     window.confirm(`Ngày Tổ Chức đã được thay đổi!`)
+                    this.getDate();
                 } else {
                     await axios.post("/date", dateSelect);
                     window.confirm(`Ngày Tổ Chức đã được lưu lại!`)
@@ -530,7 +536,7 @@ export default {
                         this.selectedGuest = selectedGuests;
 
                         
-                        this.tableNum = this.tableNum / 10;
+                        this.tableNum =  Math.ceil(this.tableNum / 10);
                         this.setQuantity();
                     } else {
                         this.tableNum = 0;

@@ -73,6 +73,17 @@ export const getProductsTop5 = (result) => {
     });
 };
 
+export const getProductsTop8 = (result) => {
+    db.query("SELECT * FROM product ORDER BY product_buy DESC LIMIT 8; ", (err,results)=> {
+        if (err){
+            console.log(err);
+            result(err,null);
+        }else{
+            result(null,results);
+        }
+    });
+};
+
 export const getProductsBot5 = (result) => {
     db.query("SELECT * FROM product ORDER BY product_buy ASC LIMIT 5; ", (err,results)=> {
         if (err){

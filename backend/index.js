@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import router from "./routes/routes.js";
 import uploads from "./uploads/uploads.js";
+import recommend from "./recommend/routes.js";
 
 import path from "path";
 import { fileURLToPath } from 'url';
@@ -37,7 +38,7 @@ app.use(cors(corsOptions));
 
 app.use(router);
 app.use(uploads);
-
+app.use(recommend);
 
 const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {

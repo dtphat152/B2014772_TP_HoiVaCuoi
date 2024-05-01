@@ -8,6 +8,7 @@ import {
     deleteProductById,
     updateProductBuyModel,
     getProductsTop5,
+    getProductsTop8,
     getProductsBot5
 } from "../models/ProductModel.js";
 
@@ -75,6 +76,16 @@ export const updateProductBuyController=(req,res)=>{
 
 export const getProductsTop5Controller=(req,res)=>{
     getProductsTop5((err,results)=> {
+        if (err) {
+            res.status(500).json({ error: "Lỗi Nội Server" });
+        }else {
+            res.json(results);
+        }
+    });
+};
+
+export const getProductsTop8Controller=(req,res)=>{
+    getProductsTop8((err,results)=> {
         if (err) {
             res.status(500).json({ error: "Lỗi Nội Server" });
         }else {

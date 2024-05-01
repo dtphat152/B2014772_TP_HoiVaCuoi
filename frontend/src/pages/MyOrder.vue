@@ -456,7 +456,7 @@ export default {
                         this.selectedTime = []; 
                         this.selectedGuest = []; 
                     }
-                    this.tableNum = table/10;
+                    this.tableNum =  Math.ceil(table/10);
                 } catch (error) {
                     console.error('Lỗi khi lấy dữ liệu từ API:', error);
                 }
