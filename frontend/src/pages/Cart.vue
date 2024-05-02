@@ -9,7 +9,7 @@
                 <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12">
                     <div class="card card-registration card-registration-2" 
-                        style="background-color: #d9d9d9; opacity: 0.8;border-radius: 15px;">
+                        style="background-color: #f2f2f2; opacity: 0.8;border-radius: 15px;">
                     <div class="card-body p-0">
                         <div class="row g-0">
 
@@ -39,14 +39,14 @@
                                             <div class="col-md-3 col-lg-2 col-xl-2">
                                                 <input type="number" id="number" v-model="itemQuantity[index]" @change="onQtyChange(index)"
                                                     class="form-control " min="0" max="1000" 
-                                                    style="border: none; text-align: center; background: #d9d9d9; color: black;font-weight: 900; border-radius: 10px;">
+                                                    style="border: none; text-align: center; background: #f2f2f2; color: black;font-weight: 900; border-radius: 10px;">
                                             </div>
                                             <div class="col-md-3 col-lg-2 col-xl-2">
                                                 <h6 class="mb-0" style="font-weight: 900; font-size: 15px;">{{ formatCurrency(calculateItemPrice(index)) }}</h6>
                                             </div>
                                             <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                                                 <button class="btn" @click="removeBtn(index)" 
-                                                style="background: #d9d9d9; color: black;font-weight: 900; border-radius: 10px;">
+                                                style="background: #f2f2f2; color: black;font-weight: 900; border-radius: 10px;">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </div>
@@ -92,7 +92,7 @@
                             <div class="row d-flex justify-content-around p-2">
                                 <h4 class="mt-2" style="color: black;font-weight: 900;">Ngày tổ chức</h4>
                                 <input type="date" class="form-control" id="startDateInput" v-model="formattedStartDate"
-                                style="background-color: #d9d9d9; font-weight: 900; text-align: center; border-radius: 15px; font-size: 15px; width: 180px; color: black;" >
+                                style="background-color: #f2f2f2; font-weight: 900; text-align: center; border-radius: 15px; font-size: 15px; width: 180px; color: black;" >
                                 <button @click="changeDate()" 
                                     style="background-color: #ffb3cc; border-radius: 15px;" class="px-2 my-1"><h5 style="font-weight: 900;">Lưu</h5></button>
                             </div>
@@ -121,26 +121,26 @@
                         </div>
                     </div>  
                     <div v-for="(time, index) in this.selectedTime" :key="index">
-                        <div class="row align-items-center m-1 mt-3" style="background-color: #d9d9d9; border-radius: 15px; padding-top: 5px;">
+                        <div class="row align-items-center m-1 mt-3" style="background-color: #f2f2f2; border-radius: 15px; padding-top: 5px;">
                             <div class="col-4 text-left">
                                 <h5 style="color: black;font-weight: 900;">Suất thứ {{ index+1 }}</h5>
                             </div>
                             <div class="col-3">
                                 <input title="Số Khách" type="number" :id="'number-' + index" class="form-control mb-3" min="0" max="1000" 
-                                v-model="this.selectedGuest[index]" style="border: none; text-align: center; background: #d9d9d9; font-weight: 900; font-size: 14px; color: black;">
+                                v-model="this.selectedGuest[index]" style="border: none; text-align: center; background: #f2f2f2; font-weight: 900; font-size: 14px; color: black;">
                             </div>
                             <div class="col-2">
-                                <input type="time" :id="'time-' + index" v-model="this.selectedTime[index]" style=" background: #d9d9d9; font-weight: 900; font-size: 14px; margin-bottom: 5px;">
+                                <input type="time" :id="'time-' + index" v-model="this.selectedTime[index]" style=" background: #f2f2f2; font-weight: 900; font-size: 14px; margin-bottom: 5px;">
                             </div>
                             <div class="col-1 ">
                                 <button class="btn" @click="removeDateBtn(index)"
-                                    style="border-radius: 10px; background-color: #d9d9d9;">
+                                    style="border-radius: 10px; background-color: #f2f2f2;">
                                     <h5 style="font-weight: 900;">Xóa</h5>
                                 </button>
                             </div>
                             <div class="col-1 ">
                                 <button class="btn" @click="updateDateBtn(index)"
-                                    style="border-radius: 10px; background-color: #d9d9d9;">
+                                    style="border-radius: 10px; background-color: #f2f2f2;">
                                     <h5 style="font-weight: 900;">Lưu</h5>
                                 </button>
                             </div>
@@ -165,7 +165,7 @@
                     
                     <div class="row">
                         <div class="col-5">
-                            <button style="width: 100%; background-color: #d9d9d9;" @click="showVoucher()">
+                            <button style="width: 100%; background-color: #f2f2f2;" @click="showVoucher()">
                                 <div class="row pl-4">
                                     <h4 style="font-weight: 800;">Chọn Voucher</h4> 
                                     <i class="fa-solid fa-ticket ml-3" style="font-size: 20px"></i> 

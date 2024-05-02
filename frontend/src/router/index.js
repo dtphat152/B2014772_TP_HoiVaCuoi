@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+import { computed } from 'vue';
+
+import store from '../store/index.js';
+
 import { createWebHistory, createRouter } from "vue-router";
 import Login from '../pages/Login.vue';
 import Register from '../pages/Register.vue';
@@ -26,6 +30,8 @@ import EditProduct from '../admin/EditProduct.vue';
 import EditCombo from '../admin/EditCombo.vue';
 import UserManager from "../admin/UserManager.vue";
 import PostsManager from "../admin/PostsManager.vue";
+import Notfound from "../pages/Notfound.vue";
+
 const routes = [
   {
     path: "/",
@@ -159,8 +165,8 @@ const routes = [
   },
   {
     path: '/:pathMatch(.*)*',
-    component: Home,
-  },
+    component: Notfound,
+  }
 ];
 
 const router = createRouter({
@@ -209,6 +215,22 @@ router.beforeEach(async (to, from, next) => {
     next();
   }
 });
+
+router.beforeEach(async (to, from, next) => {
+  // Kiểm tra nếu route không phải là trang /admin
+  const isAdmin = computed(() => store.state.admin);
+  if (to.path !== '/admin' && to.path.startsWith('/admin')) {
+    if (isAdmin.value) {
+      next();
+    } else {
+      next('/admin');
+    }
+  } else {
+    // Nếu là trang /admin, cho phép truy cập mà không cần kiểm tra
+    next();
+  }
+});
+
 
 
 export default router;

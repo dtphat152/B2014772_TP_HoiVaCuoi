@@ -168,7 +168,7 @@ export default {
                 let confirmResult = window.confirm("Bạn muốn thêm " + this.filterProducts[i].product_name +" vào Combo?");
                 if (confirmResult) {
                     let ComboDetails = {
-                        combo_id: parseInt(this.ID[0]),
+                        combo_id: parseInt(this.ID),
                         product_id: parseInt(this.filterProducts[i].product_id),
                     };
                     try {

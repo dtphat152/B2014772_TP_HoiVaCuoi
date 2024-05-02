@@ -16,8 +16,8 @@ function cosineSimilarity(user1, user2, data, totalProductCount) {
     console.log(`user1Products`,user1Products);
     console.log(`user2Products`,user2Products);
     // Tính vector của mỗi người dùng
-    const user1Vector = _.range(1, totalProductCount).map(product_id => user1Products.includes(product_id) ? 1 : 0);
-    const user2Vector = _.range(1, totalProductCount).map(product_id => user2Products.includes(product_id) ? 1 : 0);
+    const user1Vector = _.range(1, totalProductCount+1).map(product_id => user1Products.includes(product_id) ? 1 : 0);
+    const user2Vector = _.range(1, totalProductCount+1).map(product_id => user2Products.includes(product_id) ? 1 : 0);
     console.log(`user1Vector`,user1Vector);
     console.log(`user2Vector`,user2Vector);
     // Tính toán cosine similarity

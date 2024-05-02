@@ -13,15 +13,15 @@
         <div class="col-lg-4 col-md-12 mb-4 mb-md-0">
         <h4 class="text-uppercase mb-4" style="color:black; font-weight:900">Đôi Nét</h4>
 
-        <h6 style="font-weight: 800;"> 
+        <h6 style="font-weight: bold;"> 
             Tại TP - Hỏi và Cưới, chúng tôi hiểu rằng mỗi cặp đôi mang trong mình những mong muốn và mong đợi riêng biệt về ngày cưới của mình. Đó là lý do tại sao chúng tôi cam kết cung cấp dịch vụ tùy chỉnh và chuyên nghiệp, đảm bảo rằng mỗi chi tiết trong ngày cưới của bạn được tổ chức một cách hoàn hảo và đặc biệt.
         </h6>
 
-        <h6 style="font-weight: 800;">
+        <h6 style="font-weight: bold;">
             Hãy để chúng tôi giúp bạn biến ước mơ cưới của bạn trở thành hiện thực. 
         </h6>
 
-        <h6 style="font-weight: 800;">
+        <h6 style="font-weight: bold;">
             Liên hệ với TP - Hỏi và Cưới ngay hôm nay để bắt đầu hành trình kỳ diệu của bạn!
         </h6>
 
@@ -112,6 +112,8 @@
 </template>
 
 <style>
-   
+td {
+    font-weight: bold !important;
+}
 </style>
 

@@ -21,7 +21,7 @@
                   <h5 style="font-weight: 900;">{{ formatCurrency(c.combo_price) }}</h5>
                 </div>
                 <div class="col-6">
-                  <p style="padding-right: 30px;">{{ c.combo_desc }}</p>
+                  <h5 style="padding-right: 30px; font-weight: bold;">{{ c.combo_desc }}</h5>
                 </div>
                 <div class="col-2 text-right px-5">
                   <button @click="showdetails(c.combo_id)" class="btn p-2 mr-2" style="background-color:#e6e6e6; border-radius: 15px;">Details</button>

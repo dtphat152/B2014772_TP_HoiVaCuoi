@@ -1,6 +1,6 @@
 <template>
     <vue-basic-alert :duration="300" :closeIn="2000" ref="alert" />
-    <div class="py-4" style="background-color: #cccccc; width: 100%; border-radius: 15px; z-index: 90; box-shadow: 0 2px 2px #999999; 
+    <div class="py-4" style="background-color: #e6e6e6; width: 100%; border-radius: 15px; z-index: 90; box-shadow: 0 2px 2px #d9d9d9; 
         position: fixed; top: 66px;"> 
         <div class="row d-flex">
             <div class="col-10 offset-1 btn-group btn-group-lg pl-4">
@@ -25,7 +25,7 @@
     <div  v-if="this.productObj.category == 'time' && filterProducts.length==0  " 
         style="margin-top: 150px;">
 
-        <div style="width: 60%; margin-left: 20%; background-color: #d9d9d9; opacity: 0.9; border-radius: 25px; box-shadow: 0 1px 1px #999999;">
+        <div style="width: 60%; margin-left: 20%; background-color: #f2f2f2; opacity: 0.9; border-radius: 25px; box-shadow: 0 1px 1px #999999;">
         
             <div class="row">
                 <div class="col-2 d-flex justify-content-end"></div>
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <div style="margin-top: 50px; width: 60%; margin-left: 20%; background-color: #d9d9d9; opacity: 0.9; border-radius: 25px;">
+        <div style="margin-top: 50px; width: 60%; margin-left: 20%; background-color: #f2f2f2; opacity: 0.9; border-radius: 25px;">
             <div class="row">
                 <div class="col-2 d-flex justify-content-end"> </div>
                 <div class="col-8">
@@ -64,7 +64,7 @@
                     <div v-if="calculatePages > 1"> 
                         <button v-if="pageNum != 0" @click="previous" style="background: none; border: none; ">
                             <span class="fa fa-chevron-circle-left" 
-                                style="background-color: #b3b3b3; color: #d9d9d9; padding: 5px; border-radius: 10px;">
+                                style="background-color: #b3b3b3; color: #f2f2f2; padding: 5px; border-radius: 10px;">
                             </span>
                         </button> 
                     </div>
@@ -113,7 +113,7 @@
                     <div v-if="calculatePages > 1"> 
                         <button v-if="pageNum != calculatePages - 1" @click="next" style="background: none; border: none; ">
                             <span class="fa fa-chevron-circle-right" 
-                                style="background-color: #b3b3b3; color: #d9d9d9; padding: 5px; border-radius: 10px;">
+                                style="background-color: #b3b3b3; color: #f2f2f2; padding: 5px; border-radius: 10px;">
                             </span>
                         </button> 
                     </div>
@@ -166,7 +166,7 @@
                                     <img src="../assets/images/notfound.jpg" alt="" />
                                 </div>
                                 <div class="content">
-                                    <h1 style="color: #17a2b8;">No Product!</h1>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -396,9 +396,9 @@ export default {
     }
 
     .card{
-        box-shadow: 0 1px 1px #999999;
+        box-shadow: 0 1px 1px #d9d9d9;
         border-radius: 25px;
-        background-color: #d9d9d9; 
+        background-color: #f2f2f2; 
         opacity: 0.9;
         
         transition: transform 0.2s ease;
@@ -478,7 +478,7 @@ export default {
 
     .card:hover {
       transform: scale(1.01); /* Hoặc bất kỳ giá trị zoom nào bạn muốn */
-      background-color: #bfbfbf;
+      background-color: #e6e6e6;
     }
 
     

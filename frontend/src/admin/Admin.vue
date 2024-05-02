@@ -39,6 +39,7 @@ export default {
             keyname: "p",
             keypass: "p",
             errors: [],
+            matchAdmin: undefined,
         }
     },
 
@@ -57,7 +58,8 @@ export default {
             else {
                 e.preventDefault();
                 if (this.adminObj.pass === this.keypass && this.adminObj.name === this.keyname) {
-                    this.setAdmin("admin");
+                    this.matchAdmin={"name":this.keyname};
+                    this.setAdmin(this.matchAdmin);
                     this.$router.push("/admin/adminHome");
                 }
                 else {

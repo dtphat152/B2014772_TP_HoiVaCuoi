@@ -217,7 +217,7 @@ export default {
 
         async handleSubmit(e) {
             this.checkForm();
-
+            console.log("SUBMIT++++++++++++++++++++++++++++++++++++++++++++++++++++");
             if (!this.checkEmptyErr()) {
                 e.preventDefault();
             } else {

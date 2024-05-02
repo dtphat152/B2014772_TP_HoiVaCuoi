@@ -66,8 +66,8 @@
                         <div class="p-4" style="border-radius: 20px; background-color: #d3d3d3; width: 100%;">
                             <div class="row p-2 m-1 d-flex justify-content-between" style="border-radius: 20px; background-color: #f2f2f2;"
                                 v-for="(f) in filterProductsAsc" :key="f.product_id">
-                                <h4 style="color: #d35ea4">{{ f.product_name }}</h4>
-                                <h4 style="color: #d35ea4">{{ f.product_buy }} Lượt Chọn</h4>
+                                <h4 style="color: #ff80aa; font-weight: 900;">{{ f.product_name }}</h4>
+                                <h4 style="color: #ff80aa; font-weight: 900;">{{ f.product_buy }} Lượt Chọn</h4>
                             </div>
                         </div>
                     </div>

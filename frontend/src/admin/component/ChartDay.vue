@@ -91,7 +91,7 @@ export default {
             chartElement.height = chartElement.parentElement.offsetHeight;
 
             this.chart1 = new Chart(ctx1, {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: labels,
                     datasets: [{
@@ -99,7 +99,8 @@ export default {
                     data: data,
                     backgroundColor: '#ffb3cc',
                     borderRadius: 15,
-                    borderWidth: 1
+                    borderWidth: 5,
+                    borderColor: '#ffb3cc',
                     }]
                 },
                 options: {

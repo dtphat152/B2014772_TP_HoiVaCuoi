@@ -21,7 +21,7 @@
             <br>
             <div class="row">
                 <div class="col-8 ">
-                    <img :src="require(`../assets/images/${selectedProduct[0].product_src}`)" style="width: 100%; height: 650px; border-radius: 15px;"/>
+                    <img :src="require(`../assets/images/${selectedProduct[0].product_src}`)" style="width: 100%; height: 635px; border-radius: 15px;"/>
                 </div>
                 <div class="col-4" style="background-color: #ffe6ea; border-radius: 15px;">
                      
@@ -137,8 +137,8 @@ export default {
 .quick-view .quick-view-inner {
     width: 80%;
     height: 80%;
-    background-color: #d9d9d9;
-    padding: 32px;
+    background-color: #f2f2f2;
+    padding: 32px !important;
     border: none; /* Clear border */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow for better visibility */
     border-radius: 20px;
