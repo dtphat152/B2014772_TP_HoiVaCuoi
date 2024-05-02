@@ -34,7 +34,7 @@
                     <div  v-for="(f, index) in filterProducts" :key="index">
                         <div class="row" style="background-color: #f08faf; margin-left: 10px; border-radius: 10px;">
                             <div class="col-2 image pl-0 mr-4">
-                                <img :src="require(`../../assets/images/${f.product_src}`)" alt="" 
+                                <img :src="f.product_src" alt="" 
                                 style="height: 100px; width: 150px; border-radius: 10px;"/>
                             </div>
                             <div class="col-5 pl-5" style="padding-top: 20px;">
@@ -149,7 +149,7 @@ export default {
                             }
                             try {
                                 console.log(data1)
-                                // axios.post(`/sendemail/update`,data1);
+                                axios.post(`/sendemail/update`,data1);
                             } catch (error) {
                                 console.error("Error Send email update:", error);
                             }     

@@ -5,6 +5,7 @@ import express from "express";
 import {
     showProducts,
     showProductById,
+    showProductByMota,
     createProduct,
     updateProduct,
     deleteProduct,
@@ -180,6 +181,7 @@ router.delete("/api/postimage/:id", deleteImage);
 router.get("/api/productstop8", getProductsTop8Controller);
 router.get("/api/productstop5", getProductsTop5Controller);
 router.get("/api/productsbot5", getProductsBot5Controller);
+router.get("/api/products/mota/:id", showProductByMota);
 router.get("/api/products", showProducts);
 router.get("/api/products/:id", showProductById);
 router.post("/api/products", createProduct);

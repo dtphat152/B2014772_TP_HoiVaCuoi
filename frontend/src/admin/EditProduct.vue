@@ -19,7 +19,7 @@
                 <div class="row mx-1">
                     <div class="col-12 checkout-form-container" 
                         style="background-color: #ffe6ee;box-shadow: 0 1px 1px #999999; border: none; border-radius: 20px;">
-                        <form @submit="handleSubmit" autocomplete="off" class="myform" style="border: none;">
+                        <form @submit.prevent="handleSubmit" autocomplete="off" class="myform" style="border: none;">
                             <div class="form-group details-group">
                                 <div class="row"></div>
                                 <div class="form-group row">
@@ -57,8 +57,19 @@
                                         style="width: 100%; height: 150px;"  v-model="productObj.desc" ></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text"  placeholder="Src Image" class="form-control"
-                                        v-model="productObj.src" />
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <input type="text"  placeholder="Src Image" class="form-control"
+                                                v-model="productObj.src" readonly />
+                                        </div>
+                                        <div class="col-2">
+                                            <input type="file" id="fileInputImage" accept="image/*" ref="fileInput" @change="handleImageChange" style="display: none;">
+                                            <div class="col-1"><i class="fa fa-camera-retro text-center" @click="openPostImage" style="font-size: 30px; color: black;" aria-hidden="true"></i></div>
+                                        </div>
+                                        <div class="col-4">
+                                            <img v-if="images.length > 0" :src="images" alt="Selected image" style="width: 100%; border-radius: 10px;">
+                                        </div>
+                                    </div>   
                                 </div>
                                 <div class="form-group">
                                     <div class="form-group row">
@@ -107,9 +118,7 @@
                         <h5 style="color: Crimson; font-weight: bold; margin-bottom: 15px;" v-if="errorObj.descErr.length > 0">
                             {{ errorObj.descErr[0] }}
                         </h5>
-                        <h5 style="color: Crimson; font-weight: bold; margin-bottom: 15px;" v-if="errorObj.srcErr.length > 0">
-                            {{ errorObj.srcErr[0] }}
-                        </h5>
+                    
                     </div>
                 </div>
             </div>
@@ -127,14 +136,16 @@ export default {
     data() {
         return {
             productObj: { name: "", price: "", desc: "", cat: "", src: "" , sty:""},
-            errorObj: { nameErr: [], priceErr: [], descErr: [], catErr: [], srcErr: [] },
-            
+            errorObj: { nameErr: [], priceErr: [], descErr: [], catErr: [] },
+            images: '',
+            file: null,
         }
     },
 
     created() {
         this.loadSelectedProduct();
     },
+
 
     computed: {
         ...mapState(["allProducts"]),
@@ -145,6 +156,20 @@ export default {
     },
 
     methods: {
+
+        openPostImage() {
+            this.$refs.fileInput.click();
+        },
+        handleImageChange() {
+            this.file = this.$refs.fileInput.files[0];
+            if (this.file) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                this.images = reader.result;
+                };
+                reader.readAsDataURL(this.file);
+            }
+        },
         async loadSelectedProduct() {
             try {            
             // Lấy phần tử đầu tiên từ mảng selectedProduct
@@ -169,7 +194,7 @@ export default {
             this.errorObj.priceErr = [];
             this.errorObj.descErr = [];
             this.errorObj.catErr = [];
-            this.errorObj.srcErr = [];
+
         },
 
         checkEmptyErr: function () {
@@ -203,9 +228,20 @@ export default {
             if (!this.productObj.cat) {
                 this.errorObj.catErr.push('Phải Chọn Phân Loại Cho Sản Phẩm');
             }
-            // Src validate
-            if (!this.productObj.src) {
-                this.errorObj.srcErr.push('Đường Dẫn Hình Ảnh Không Được Để Trống');
+          
+        },
+
+        async delete(pic) {
+            try {
+                let path = pic.substring(pic.indexOf('/uploads'));
+                let basePath = 'D://Luan_Van//TP_HoiVaCuoi//backend';
+                let absolutePath = basePath.concat(path);
+                console.log(absolutePath);
+                let data = { old: absolutePath };
+                await axios.put(`/uploading/useravt`, data);
+                
+            } catch (error) {
+                console.error('Error updating user avatar:', error);
             }
         },
 
@@ -216,6 +252,21 @@ export default {
                 e.preventDefault();
             } else {
                 if(this.productObj.sty=="Món Chính Thức") this.productObj.sty="";
+                if (this.productObj.src!=this.images) {
+                    let urlimg = '';
+                    if (this.file) {
+                        const formData = new FormData();
+                        formData.append('image', this.file);           
+                        const response = await axios.post(`/uploading/post/`, formData, {
+                            headers: {
+                            'Content-Type': 'multipart/form-data'
+                            }
+                        });
+                        urlimg = response.data;
+                        this.delete(this.productObj.src);
+                        this.productObj.src = urlimg;
+                    }
+                }
                 let product = {
                     product_name: this.productObj.name,
                     product_price: this.productObj.price,

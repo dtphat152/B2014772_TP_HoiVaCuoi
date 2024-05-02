@@ -139,7 +139,7 @@
                                         <div class="col-9 text-lg-right pr-0"><h4>{{ f.product_name }}</h4></div>
                                     </div>
                                     <div class="card__body d-flex justify-content-center">
-                                        <img :src="require(`../assets/images/${f.product_src}`)" 
+                                        <img :src="f.product_src" 
                                             :style="{ width: '100%', height: '230px', 'border-radius': '10px'}"/>
                                         
                                     </div>

@@ -160,9 +160,11 @@ export const cancelStatus = (id,result) => {
 
 export const getBillFromDateToDateModel = (data,result) => {
     db.query(`SELECT * 
-            FROM billstatus 
-            WHERE STR_TO_DATE(SUBSTRING_INDEX(bill_when, ' - ', 1), '%d/%m/%Y') >= ? 
-            AND STR_TO_DATE(SUBSTRING_INDEX(bill_when, ' - ', 1), '%d/%m/%Y') <= ?;`,[data.start, data.end], (err,results)=> {
+            FROM billstatus bs
+            INNER JOIN datebill db ON bs.date_id = db.date_id
+            WHERE STR_TO_DATE(db.date_date, '%m-%d-%Y') >= ? 
+            AND STR_TO_DATE(db.date_date, '%m-%d-%Y') <= ? 
+            ORDER BY STR_TO_DATE(db.date_date, '%m-%d-%Y') ASC;`,[data.start, data.end], (err,results)=> {
         if (err){
             console.log(err);
             result(err,null);

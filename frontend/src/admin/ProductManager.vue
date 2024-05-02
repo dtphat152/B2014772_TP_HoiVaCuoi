@@ -28,9 +28,10 @@
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Khai Vị" @click="filterProductBtn($event)">Khai Vị</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Món Chính" @click="filterProductBtn($event)">Món Chính</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Tráng Miệng" @click="filterProductBtn($event)">Tráng Miệng</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Bàn Ghế" @click="filterProductBtn($event)">Bàn Ghế</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Rạp Che" @click="filterProductBtn($event)">Rạp Che</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Cổng Hoa" @click="filterProductBtn($event)">Cổng Hoa</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Sảnh Tiệc" @click="filterProductBtn($event)">Sảnh Tiệc</button>
-                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Sân Khấu" @click="filterProductBtn($event)">Sân Khấu</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Gia Tiên" @click="filterProductBtn($event)">Gia Tiên</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Mâm Quả" @click="filterProductBtn($event)">Mâm Quả</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Xe Hoa" @click="filterProductBtn($event)">Xe Hoa</button>
@@ -68,7 +69,7 @@
                     <div v-for="(f, index) in currentPageItems" :key="index">
                         <div class="row" style="background-color: #ffb3cc; box-shadow: 0 1px 1px #ff99bb; border-radius: 20px;">
                             <div class="col-2 pr-0">
-                                <img :src="require(`../assets/images/${f.product_src}`)" alt="" 
+                                <img :src="f.product_src" alt="" 
                                  style="height: 100%; width: 150px; border-radius: 20px;"/>
                             </div>
                             <div class="col-8 pl-5">
@@ -159,7 +160,7 @@ export default {
         filterProductBtn: function (e) {
             this.pageNum = 0;
             if (this.productObj.category != e.target.value && this.previousCategoryClicked != "") {
-                this.previousCategoryClicked.target.style.color = "#948c8c";
+                this.previousCategoryClicked.target.style.color = "black";
             }
             this.productObj.category = e.target.value;
             this.previousCategoryClicked = e;

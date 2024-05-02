@@ -21,7 +21,7 @@
             <br>
             <div class="row">
                 <div class="col-8 ">
-                    <img :src="require(`../assets/images/${selectedProduct[0].product_src}`)" style="width: 100%; height: 635px; border-radius: 15px;"/>
+                    <img :src="selectedProduct[0].product_src" style="width: 100%; height: 635px; border-radius: 15px;"/>
                 </div>
                 <div class="col-4" style="background-color: #ffe6ea; border-radius: 15px;">
                      

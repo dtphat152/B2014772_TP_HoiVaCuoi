@@ -12,12 +12,12 @@
                 <div class="col-2 text-right"></div>
             </div>
             
-            <div class="" style="overflow-y: auto; height: 570px;">
+            <div class="" style="overflow-y: auto; height: 543px;">
                 <div style="width: 95%;">
                     <div  v-for="(f, index) in filterProducts" :key="index">
                         <div class="row" style="background-color: #fff; margin-left: 10px; border-radius: 10px;">
                             <div class="col-2 image pl-0 mr-4">
-                                <img :src="require(`../assets/images/${f.product_src}`)" alt="" 
+                                <img :src="f.product_src" alt="" 
                                 style="height: 100px; width: 150px; border-radius: 10px;"/>
                             </div>
                             <div class="col-5 pl-5" style="padding-top: 20px;">

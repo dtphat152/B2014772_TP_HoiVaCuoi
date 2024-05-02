@@ -29,7 +29,7 @@
                                         style="background-color: #ffb3cc; border-radius: 15px;margin-left: 10px;">
                                             <!-- Content for each product -->
                                             <div class="col-md-2 col-lg-2 col-xl-2" style="padding-left: 0px;">
-                                                <img :src="require(`../assets/images/${f.product_src}`)" alt="" class="cart-product-img" 
+                                                <img :src="f.product_src" alt="" class="cart-product-img" 
                                                 style="width: 100px; border-radius: 10px;">
                                             </div>
                                             <div class="col-md-3 col-lg-3 col-xl-4">
@@ -569,6 +569,7 @@ export default {
                                 item_notes: this.itemNotes[index]
                             };
                             axios.put("/cartItem/", data)
+                            
                         });
             } catch (error) {
                 console.error('Lỗi khi cài Số Lượng:', error);
@@ -606,7 +607,7 @@ export default {
             };
             let confirmResult = window.confirm("Bạn có chắc chắn muốn thay đổi số lượng sản phẩm thành " + this.itemQuantity[i] + "?" );
             if (confirmResult) {
-                await axios.put("/cartItem/", data)
+                await axios.put("/cartItem/", data);
             }
         },
         

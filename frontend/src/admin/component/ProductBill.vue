@@ -8,7 +8,7 @@
                     class="row mb-1 d-flex justify-content-between align-items-center" style="background-color: #f08faf; margin-left: 10px; border-radius: 10px;">
                         
                         <div class="col-md-2 col-lg-2 col-xl-2" style="padding-left: 0px;">
-                            <img :src="require(`../../assets/images/${f.product_src}`)" alt="" class="cart-product-img" 
+                            <img :src="f.product_src" alt="" class="cart-product-img" 
                             style="width: 100px; border-radius: 10px; ">
                         </div>
                         <div class="col-md-3 col-lg-3 col-xl-4">
@@ -109,25 +109,6 @@ export default {
             }
         },
 
-        // async getEmail() {
-        //     if (this.Bill[1]) {
-        //         try {
-        //             let rsp = await axios.get('/users/byid/' + this.Bill[0][1]);
-        //             let data = rsp.data;
-        //             if (data && Array.isArray(data) && data.length > 0) {
-        //                 let userEmail = data[0].user_email;
-        //                 console.log("EMAIL " + this.Bill[0][1] + ": " + userEmail);
-        //                 this.email = userEmail; // uncomment this line if you want to assign the email to this.email
-        //             } else {
-        //                 console.log("No email found for ID " + this.Bill[0][1]);
-        //             }
-        //         } catch (error) {
-        //             console.error("Error fetching email:", error);
-        //         }
-        //     }
-        // },
-
-
 
         async onQtyChange(i,name) {
 
@@ -140,14 +121,13 @@ export default {
             let confirmResult = window.confirm("Bạn có chắc chắn muốn thay đổi số lượng "+name+" thành " + this.item_qty[i] + "?" );
                 if (confirmResult) {
                     await axios.put("/billdetails/", data);
-                    
                     let billdata = { 
                         bill_total: parseInt(this.calculateSummaryPrice()),
                     };      
                     try {
                         await axios.put(`/billstatus/billtotal/${this.Bill[0]}`, billdata);
                         console.log("Successfully updated bill total:", billdata);
-
+                        this.$emit('childEvent');
                         let data1 = {
                             email: this.Bill[1],
                             title:`Đơn hàng #${this.Bill[0]} của bạn đã được cập nhật!`,
@@ -182,7 +162,7 @@ export default {
                 try {
                     await axios.put(`/billstatus/billtotal/${this.Bill[0]}`, billdata);
                     console.log("Successfully updated bill total:", billdata);
-
+                    this.$emit('childEvent');
                     let data1 = {
                         email: this.Bill[1],
                         title:`Đơn hàng #${this.Bill[0]} của bạn đã được cập nhật!`,

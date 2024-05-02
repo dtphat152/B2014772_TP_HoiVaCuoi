@@ -193,14 +193,13 @@ export default {
 
             this.allBills.forEach(bill => {
                 if (bill.bill_status >= 4) {
-                    const dateString = bill.bill_when;
-                    const parts = dateString.split(" - ");
-
-                    const datePart = parts[0]; 
-                    const dateParts = datePart.split("/"); 
+                    const dateString = bill.date_date;
+                    const parts = dateString.split("-");
+                    // const datePart = parts[0]; 
+                    // const dateParts = datePart.split("-"); 
                     
-                    const year = parseInt(dateParts[2]);
-                    const month = parseInt(dateParts[1]); 
+                    const year = parseInt(parts[2]);
+                    const month = parseInt(parts[0]); 
 
                     const key = `${month}-${year}`; 
 

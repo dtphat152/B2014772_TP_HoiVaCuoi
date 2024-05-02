@@ -29,10 +29,10 @@
                             <h6 class="text-center p-2" style="color: #808080; font-weight: 900;">Chúng Tôi</h6>
                         </router-link>
                     </div>
-                    <div class="col-2 text-center">
+                    <!-- <div class="col-2 text-center">
                             <i class="fa1 fa-regular fa-message" style="color: white;" @click="chatBox()"></i>
                             <h6 class="text-center p-2" style="color: #808080; font-weight: 900;">Giải Đáp</h6>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="col-4">
@@ -108,7 +108,7 @@
                             <div class="col-9 text-lg-right pr-0"><h4>{{ f.product_name }}</h4></div>
                         </div>
                         <div class="card__body d-flex justify-content-center">
-                            <img :src="require(`../assets/images/${f.product_src}`)" 
+                            <img :src="f.product_src" 
                                 :style="{ width: '100%', height: '230px', 'border-radius': '10px'}"/>
                             
                         </div>
@@ -167,7 +167,7 @@
                             <div class="col-9 text-lg-right pr-0"><h4>{{ f.product_name }}</h4></div>
                         </div>
                         <div class="card__body d-flex justify-content-center">
-                            <img :src="require(`../assets/images/${f.product_src}`)" 
+                            <img :src="f.product_src" 
                                 :style="{ width: '100%', height: '230px', 'border-radius': '10px'}"/>
                             
                         </div>
@@ -393,9 +393,9 @@ rounded-circle text-center p-2 {
 
 
 .card{
-        box-shadow: 0 1px 1px #999999;
+        box-shadow: 0 1px 1px #d9d9d9;
         border-radius: 25px;
-        background-color: #d9d9d9; 
+        background-color: #f2f2f2; 
         opacity: 0.9;
         
         transition: transform 0.2s ease;
@@ -475,7 +475,7 @@ rounded-circle text-center p-2 {
 
     .card:hover {
       transform: scale(1.01); /* Hoặc bất kỳ giá trị zoom nào bạn muốn */
-      background-color: #bfbfbf;
+      background-color: #d9d9d9;
     }
 
 </style>

@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-11">
                     <div class="row">
-                        <h4 class="col-1 ml-4 pt-1 mb-0 text-center font-weight-bold" 
+                        <h4 class="col-2 ml-4 pt-1 mb-0 text-center font-weight-bold" 
                             style="background-color:white; border-radius: 10px; color: #FF0099;">
                             Mã đơn #{{ b.bill_id }} 
                         </h4>
@@ -60,11 +60,15 @@
             
             <div class="row">
                 <div class="col-8" style="border-radius: 20px; background-color: #ffb3cc">
-                    <ProductBill  v-if="showProductBill" @send-price="handlePriceFromChild" :Bill="b.bill_id" ></ProductBill>
+                    <ProductBill  v-if="view==1" @send-price="handlePriceFromChild" :Bill="b.bill_id" ></ProductBill>
 
-                    <ProductOrder v-if="!showProductBill" :ID="this.sendId" >
+                    <ProductOrder v-if="view==2" :ID="this.sendId" >
                         <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
                     </ProductOrder> 
+                    
+                    <ProductNew v-if="view==3" :ID="this.sendId" @childEvent="closeView">
+                        <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
+                    </ProductNew> 
                 </div>
                 <div class="col-4">
                     
@@ -221,8 +225,15 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn py-0" @click="sendBillId(b.bill_id)">
+                <button class="btn py-0 ml-5" @click="sendBillId2(b.bill_id)"
+                    :style="this.view == 2 ? { 'background-color': '#ffb3cc', 'border-end-end-radius': '10px', 'border-end-start-radius': '10px' , 
+                    'border-start-start-radius': '0px', 'border-start-end-radius': '0px' } : ''">
                     <h4 style="font-weight: 800; color: #32CD32;">Thêm Dịch Vụ</h4>
+                </button>
+                <button class="btn py-0 ml-5 " @click="sendBillId3(b.bill_id)"
+                    :style="this.view == 3 ? { 'background-color': '#ffb3cc', 'border-end-end-radius': '10px', 'border-end-start-radius': '10px' , 
+                    'border-start-start-radius': '0px', 'border-start-end-radius': '0px' } : ''">
+                    <h4 style="font-weight: 800; color: #32CD32;">Thêm Dịch Vụ Tự Chọn</h4>
                 </button>
             </div>  
         </div>
@@ -234,6 +245,7 @@
 
 
 <script>
+import ProductNew from "../components/ProductNew.vue"
 import ProductOrder from "../components/ProductOrder.vue"
 import ProductBill from "../components/ProductBill.vue"
 import axios from "axios";
@@ -253,7 +265,7 @@ export default {
             tempTime: '',
             tableNum: '',
             priceOfTable:'',
-            showProductBill: true,
+            view: 1,
             sendId: null,
             showPayment: false,
             interval: "",
@@ -266,6 +278,10 @@ export default {
             handler: 'getAllBills', 
             immediate: true 
         },
+        view: {
+            handler: 'getAllBills', 
+            immediate: true
+        }
     },
 
     mounted: function () {
@@ -344,13 +360,16 @@ export default {
             return null;
         },
 
-        sendBillId: function (id) {
+        sendBillId2: function (id) {
             this.sendId = id
-            this.showProductBill = !this.showProductBill;
+            this.view = 2;
         },
-
         closeView: function () {
-            this.showProductBill = !this.showProductBill;
+            this.view = 1;
+        },
+        sendBillId3: function (id) {
+            this.sendId = id
+            this.view = 3;
         },
 
         showAddMealSetFunction() {
@@ -636,7 +655,7 @@ export default {
 
 
     },
-    components: { ProductBill , ProductOrder}
+    components: { ProductBill , ProductOrder, ProductNew}
 }
 </script>
 

@@ -3,6 +3,7 @@
 import {
     getProducts,
     getProductById,
+    getProductByMota,
     insertProduct,
     updateProductById,
     deleteProductById,
@@ -27,6 +28,16 @@ export const showProducts=(req,res)=>{
 // get single Product
 export const showProductById=(req,res)=>{
     getProductById(req.params.id,(err,results)=> {
+        if (err) {
+            res.send(err);
+        }else {
+            res.json(results);
+        }
+    });
+};
+
+export const showProductByMota=(req,res)=>{
+    getProductByMota(req.params.id,(err,results)=> {
         if (err) {
             res.send(err);
         }else {

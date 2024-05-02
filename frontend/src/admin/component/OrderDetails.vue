@@ -5,6 +5,9 @@
             <h2 class="d-flex justify-content-between font-weight-bold">Chi Tiết Đơn #{{ this.bill[0] }} 
                 
                 <div>
+                    <button v-if="this.newProduct!=''" @click="sendBillId3(this.bill[0],this.bill[1])" class="btn mr-2" style="background-color: #FFD700; border-radius: 10px;">
+                        <h5 style="font-weight: 900;">Add New</h5>
+                    </button>
                     <button @click="sendBillId1(this.bill[0])" class="btn mr-2" style="background-color: #40bf77; border-radius: 10px;">
                         <h5 style="font-weight: 900;">Add to bill</h5>
                     </button>
@@ -24,11 +27,15 @@
                         <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
                     </Staff>
                     
-                    <ProductBill v-if="showProductBill==1" :Bill=[this.bill[0],this.email] ></ProductBill>
+                    <ProductBill v-if="showProductBill==1" :Bill=[this.bill[0],this.email] @childEvent="getBillStatus"></ProductBill>
 
                     <ProductOrder v-if="showProductBill==2" :ID=[this.sendId,this.email,this.total] >
                         <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
-                    </ProductOrder>                    
+                    </ProductOrder>           
+                    
+                    <ProductNew v-if="showProductBill==4" :ID=[this.sendId,this.email,this.number,this.total] @childEvent="closeView" >
+                        <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
+                    </ProductNew>    
                 </div>
                 <div class="col-4 pt-3" style="background-color: #f08faf; border-radius: 20px;">
                     <div class="container-info" style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
@@ -185,6 +192,7 @@
 </template>
 
 <script>
+import ProductNew from "./ProductNew.vue";
 import ProductBill from "./ProductBill.vue";
 import ProductOrder from "./ProductOrder.vue";
 import Staff from "./Staff.vue";
@@ -215,6 +223,8 @@ export default {
 
             showProductBill: 1,
             sendId: undefined,
+
+            newProduct: '',
         }
     },
 
@@ -222,6 +232,14 @@ export default {
         this.getEmail();
         this.getBillStatus();
         this.getMeatSet();
+        this.getProdductNew();
+    },
+
+    watch: {
+        showProductBill: {
+            handler: 'getBillStatus', 
+            immediate: true 
+        },
     },
 
     computed: {
@@ -243,6 +261,7 @@ export default {
           return parseFloat(amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         },
 
+
         closeView: function () {
             this.showProductBill = 1;
         },
@@ -250,13 +269,25 @@ export default {
         sendBillId1: function (id) {
             this.sendId = id
             if ( this.showProductBill == 2 ) this.showProductBill = 1
-            else this.showProductBill = this.showProductBill + 1;
+            else this.showProductBill = 2;
         },
 
         sendBillId2: function (id) {
             this.sendId = id
             if ( this.showProductBill == 3 ) this.showProductBill = 1
-            else this.showProductBill = this.showProductBill + 2;
+            else this.showProductBill = 3;
+        },
+
+        sendBillId3: function (id) {
+            this.sendId = id
+            if ( this.showProductBill == 4 ) this.showProductBill = 1
+            else this.showProductBill = 4;
+        },
+
+        refresh(){
+            this.getBillStatus();
+            // this.getMeatSet();
+            // this.showProductBill = 1;
         },
 
         async getBillStatus() {
@@ -271,6 +302,11 @@ export default {
                 this.total = data[0].bill_total;
                 this.status = data[0].bill_status;
             }
+        },
+
+        async getProdductNew() {
+            let rsp = await axios.get(`/products/mota/${this.bill[0]}`)
+            this.newProduct = rsp.data;
         },
 
         async getNotes() {
@@ -581,7 +617,7 @@ export default {
         },
     },
 
-    components: { ProductOrder, ProductBill , Staff, VueBasicAlert}
+    components: { ProductOrder, ProductBill , Staff, ProductNew, VueBasicAlert}
 }
 </script>
 

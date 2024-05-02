@@ -7,7 +7,7 @@
           <span class="carousel-control-prev-icon" style="background-color: #f2f2f2; box-shadow: 0 1px 1px #999999; padding: 25px; border-radius: 15px;"></span>
         </button> 
       </div>
-      <div class="col-10" style="background-color: #e6e6e6; box-shadow: 0 1px 1px #999999; border-radius: 100px; opacity: 0.8; width: 80%;">
+      <div class="col-10" style="background-color: #f2f2f2; box-shadow: 0 1px 1px #999999; border-radius: 100px; opacity: 0.8; width: 80%;">
         <br>
         <div class="row align-content-center">
           <div class="col-12">
@@ -17,7 +17,7 @@
               <div class="row justify-content-center mb-5">
                   <div class="col-3" v-for="(f, index) in sortedComboDetails.slice(0, 1)" :key="index">
                       <div>
-                        <img :src="require(`../assets/images/${f.product_src}`)" class="zoom-img"
+                        <img :src="f.product_src" class="zoom-img"
                         :style="{ width: '100%', height: '83px', 'border-radius': '10px'}"/> 
                       </div>
                   </div>
@@ -27,7 +27,7 @@
               <div class="row justify-content-center">
                   <div class="col-3" v-for="(f, index) in sortedComboDetails.slice(1, 4)" :key="index">
                       <div>
-                        <img :src="require(`../assets/images/${f.product_src}`)"  class="zoom-img"
+                        <img :src="f.product_src"  class="zoom-img"
                         :style="{ width: '100%', height: '83px', 'border-radius': '10px'}"/> 
                       </div>
                   </div>
@@ -37,7 +37,7 @@
               <div class="row justify-content-center mt-5">
                   <div class="col-3" v-for="(f, index) in sortedComboDetails.slice(4, 5)" :key="index">
                       <div>
-                        <img :src="require(`../assets/images/${f.product_src}`)"  class="zoom-img"
+                        <img :src="f.product_src"  class="zoom-img"
                         :style="{ width: '100%', height: '83px', 'border-radius': '10px'}"/> 
                       </div>
                   </div>

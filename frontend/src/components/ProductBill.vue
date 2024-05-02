@@ -8,7 +8,7 @@
                     class="row mb-1 d-flex justify-content-between align-items-center" style="background-color: #f2f2f2; margin-left: 10px; border-radius: 10px;">
                         
                         <div class="col-md-2 col-lg-2 col-xl-2" style="padding-left: 0px;">
-                            <img :src="require(`../assets/images/${f.product_src}`)" alt="" class="cart-product-img" 
+                            <img :src="f.product_src" alt="" class="cart-product-img" 
                             style="width: 100px; border-radius: 10px; ">
                         </div>
                         <div class="col-md-3 col-lg-3 col-xl-4">
