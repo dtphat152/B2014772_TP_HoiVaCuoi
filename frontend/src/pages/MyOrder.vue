@@ -69,6 +69,10 @@
                     <ProductNew v-if="view==3" :ID="this.sendId" @childEvent="closeView">
                         <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
                     </ProductNew> 
+
+                    <Refund v-if="view==4" :Bill="this.sendId">
+                        <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
+                    </Refund> 
                 </div>
                 <div class="col-4">
                     
@@ -235,6 +239,11 @@
                     'border-start-start-radius': '0px', 'border-start-end-radius': '0px' } : ''">
                     <h4 style="font-weight: 800; color: #32CD32;">Thêm Dịch Vụ Tự Chọn</h4>
                 </button>
+                <button v-if="b.bill_status>=3 && this.refunds[b.bill_id]==true" class="btn py-0 ml-5 " @click="sendBillId4(b.bill_id)"
+                    :style="this.view == 4 ? { 'background-color': '#ffb3cc', 'border-end-end-radius': '10px', 'border-end-start-radius': '10px' , 
+                    'border-start-start-radius': '0px', 'border-start-end-radius': '0px' } : ''">
+                    <h4 style="font-weight: 800; color: #32CD32;">Xem Dịch Vụ Đã Hoàn Trả</h4>
+                </button>
             </div>  
         </div>
     </div>
@@ -245,6 +254,7 @@
 
 
 <script>
+import Refund from "../components/Refund.vue"
 import ProductNew from "../components/ProductNew.vue"
 import ProductOrder from "../components/ProductOrder.vue"
 import ProductBill from "../components/ProductBill.vue"
@@ -270,6 +280,7 @@ export default {
             showPayment: false,
             interval: "",
             checkChangeStatus:0,
+            refunds: [],
         }
     },
 
@@ -317,8 +328,15 @@ export default {
             if (this.user) {
                 let bills = (await axios.get('/billstatus/user/' + this.user.user_id)).data;
                 this.allBills = bills;
-                for (const bill of bills) {
-                    this.getMeatSet(bill.date_id,bill.bill_id);
+                
+                for (const bill of this.allBills) {
+                    console.log('TP');                     
+                    // Gọi hàm để lấy thông tin set thịt
+                    this.getMeatSet(bill.date_id, bill.bill_id);
+                    let checkRF = await axios.get(`/billdetails/refund/${bill.bill_id}`);
+                    if (checkRF.data.length > 0) {
+                        this.refunds[bill.bill_id] = true;
+                    }
                 }
             }
         },
@@ -360,16 +378,23 @@ export default {
             return null;
         },
 
-        sendBillId2: function (id) {
-            this.sendId = id
-            this.view = 2;
-        },
         closeView: function () {
             this.view = 1;
         },
+        sendBillId2: function (id) {
+            this.sendId = id
+            if (this.view!=2) this.view = 2; 
+            else this.closeView();
+        },
         sendBillId3: function (id) {
             this.sendId = id
-            this.view = 3;
+            if (this.view!=3) this.view = 3;
+            else this.closeView();
+        },
+        sendBillId4: function (id) {
+            this.sendId = id
+            if (this.view!=4) this.view = 4;
+            else this.closeView();
         },
 
         showAddMealSetFunction() {
@@ -655,7 +680,7 @@ export default {
 
 
     },
-    components: { ProductBill , ProductOrder, ProductNew}
+    components: { ProductBill , ProductOrder, ProductNew, Refund}
 }
 </script>
 

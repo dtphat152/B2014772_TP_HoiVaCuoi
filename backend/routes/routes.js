@@ -63,7 +63,9 @@ import {
     createBillDetails,
     getBillDetailsById,
     updateBillItem,
-    deleteProductInBill
+    deleteProductInBill,
+    updateRefundContrller,
+    getRefundInBillController
 } from "../controllers/billdetails.js";
 
 import {
@@ -238,10 +240,16 @@ router.delete("/api/cartItem/:id", deleteItems);
 
 ////////////////////////// Bill Details ////////////////////////////////
 router.post("/api/billdetails", createBillDetails);
+router.get("/api/billdetails/refund/:id", getRefundInBillController);
 router.get("/api/billdetails/:id", getBillDetailsById);
+router.put("/api/billdetails/refund", updateRefundContrller);
 router.put("/api/billdetails/", updateBillItem);
 router.delete("/api/billdetails/all/:id", deleteAllItemsInACombo);
 router.delete("/api/billdetails/:bill_id/:product_id", deleteProductInBill);
+
+// router.post("/api/refund", insertRefundController);
+// router.get("/api/refund/:id", getRefundController);
+// router.put("/api/refund/", updateRefundController);
 
 
 ////////////////////////// Bill Status ////////////////////////////////

@@ -96,7 +96,7 @@ export const getProductsTop8 = (result) => {
 };
 
 export const getProductsBot5 = (result) => {
-    db.query("SELECT * FROM product ORDER BY product_buy ASC LIMIT 5; ", (err,results)=> {
+    db.query("SELECT * FROM product WHERE product_style = '' ORDER BY product_buy ASC LIMIT 5; ", (err,results)=> {
         if (err){
             console.log(err);
             result(err,null);

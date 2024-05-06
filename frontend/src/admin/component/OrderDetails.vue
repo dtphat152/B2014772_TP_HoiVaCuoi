@@ -27,7 +27,7 @@
                         <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
                     </Staff>
                     
-                    <ProductBill v-if="showProductBill==1" :Bill=[this.bill[0],this.email] @childEvent="getBillStatus"></ProductBill>
+                    <ProductBill v-if="showProductBill==1" :Bill=[this.bill[0],this.email,this.status] @childEvent="getBillStatus"></ProductBill>
 
                     <ProductOrder v-if="showProductBill==2" :ID=[this.sendId,this.email,this.total] >
                         <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
@@ -144,22 +144,14 @@
                         </div>
                     </div>
                     <br>
-                    <div style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
+                    <div class="container-info" style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
                         <div class="mx-1" style="background: #f2f2f2; border-radius: 15px;">
                             <div class="row mx-1 p-1 d-flex justify-content-between">
                                 <h5 style="font-weight: 900;">{{ this.number*10 }} khách mời</h5>
                                 <h5 style="font-weight: 900;">{{ this.number }} bàn tiệc</h5>
                             </div>                    
                         </div>
-                        <div class="row pt-3 mx-1">
-                            <div class="col-12" style="width: 100%; height: 25px; border: none;  background: #f2f2f2; border-radius: 15px;">
-                                <h4 class="text-center font-weight-bold pt-1" style="color: #FF0099;">{{ formatCurrency(this.total) }}</h4>  
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="container-info" style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
-                        <div class="mx-1" style="background: #f2f2f2; border-radius: 15px;">
+                        <div class="mx-1 mt-3" style="background: #f2f2f2; border-radius: 15px;">
                             <div class="row mx-1 p-2" :style="this.status >= 3 ? { 'color': 'MediumSeaGreen'} : '' ">
                                 <div class="col-4 text-left">
                                     <h5 class="" style="font-weight: 900;">Tiền Cọc: </h5>
@@ -184,6 +176,20 @@
                             </div>
                         </div>
                     </div>
+                    <br>
+                    <div style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
+                        <div v-if="this.refund!=0" class="row pb-3 mx-1">
+                            <div class="col-12" style="width: 100%; height: 25px; border: none;  background: #f2f2f2; border-radius: 15px;">
+                                <h5 class="text-center pt-2" style="font-weight: 900;">Số tiền đã hoàn lại: +{{ formatCurrency(this.refund) }}</h5> 
+                            </div>
+                        </div>
+                        <div class="row mx-1">
+                            <div class="col-12" style="width: 100%; height: 25px; border: none;  background: #f2f2f2; border-radius: 15px;">
+                                <h4 class="text-center font-weight-bold pt-1" style="color: #FF0099;">{{ formatCurrency(this.total) }}</h4>  
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
                       
@@ -218,7 +224,7 @@ export default {
             showAddMealSet : false,
             tempGuest: '',
             tempTime: '',
-
+            refund: 0,
             billMatch: undefined,
 
             showProductBill: 1,
@@ -301,6 +307,11 @@ export default {
                 this.deposits = data[0].bill_deposits;
                 this.total = data[0].bill_total;
                 this.status = data[0].bill_status;
+                let checkRF = await axios.get(`/billdetails/refund/${this.bill[0]}`)
+                if (checkRF.data.length>0) {
+                    this.refund = checkRF.data.reduce((total, item) => total + item.value_refund, 0);
+                }
+                console.log("RF",this.refund)
             }
         },
 

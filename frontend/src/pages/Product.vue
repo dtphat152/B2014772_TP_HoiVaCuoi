@@ -11,6 +11,7 @@
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Khai Vị" @click="filterProductBtn($event)">Khai Vị</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Món Chính" @click="filterProductBtn($event)">Món Chính</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Tráng Miệng" @click="filterProductBtn($event)">Tráng Miệng</button>
+                <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Thức Uống" @click="filterProductBtn($event)">Thức Uống</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Bàn Ghế" @click="filterProductBtn($event)">Bàn Ghế</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Rạp Che" @click="filterProductBtn($event)">Rạp Che</button>
                 <button type="button" class="btn btnheadingmennu mx-1 " style="border-radius: 10px; padding: 5px;" value="Cổng Hoa" @click="filterProductBtn($event)">Cổng Hoa</button>

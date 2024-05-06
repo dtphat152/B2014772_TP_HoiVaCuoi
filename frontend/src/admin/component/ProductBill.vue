@@ -1,7 +1,7 @@
 <template>
     <div style="overflow-y: auto; height: 600px;">
         <div style="width: 95%;">
-            <template v-for="(category, catIndex) in ['Khai Vị', 'Món Chính', 'Tráng Miệng','Bàn Ghế','Rạp Che','Cổng Hoa','Sảnh Tiệc','Gia Tiên','Mâm Quả','Xe Hoa']" :key="catIndex">
+            <template v-for="(category, catIndex) in ['Khai Vị', 'Món Chính', 'Tráng Miệng','Thức Uống','Bàn Ghế','Rạp Che','Cổng Hoa','Sảnh Tiệc','Gia Tiên','Mâm Quả','Xe Hoa']" :key="catIndex">
                 <h3 class="mb-2 mb-2" style="color: #d35ea4; font-weight: 900;">{{ category }}</h3>
                 <div v-for="(f, index) in filterProducts" :key="index">
                     <div v-if="f.product_category === category" 
@@ -20,10 +20,19 @@
                             class="form-control " min="0" max="1000" 
                             style="border: none; text-align: center; background: #d3d3d3; border-radius: 10px; color: black; font-weight: 900;">
                         </div>
-                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                            <button class="btn" @click="removeBtn(index,f.product_name)" style="background-color: #d3d3d3; color: black; border-radius: 10px;">
-                                <i class="fa fa-trash"></i>
-                            </button>
+                        <div class="col-md-2 col-lg-2 col-xl-2 text-end">
+                            <div class="row">
+                                <button class="btn" @click="removeBtn(index,f.product_name)" style="background-color: #d3d3d3; color: black; border-radius: 10px;">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <div class="row ml-2" v-if="f.product_category=='Thức Uống' && this.Bill[2]>=3">
+                                    <button class="btn" @click="refundBtn(index,f.product_name)" style="background-color: #d3d3d3; color: black; border-radius: 10px;">
+                                        <i class="fa-solid fa-rotate-right"></i>
+                                    </button>
+                                    <input type="number" id="number" v-model="quantity[index]" class="form-control " min="0" max="1000"
+                                    style="border: none; text-align: center; background: #d3d3d3; border-radius: 10px; color: black; font-weight: 900; width: 60px;">
+                                </div>         
+                            </div>
                         </div>
                         <hr class="my-4">
                     </div>
@@ -62,6 +71,7 @@ export default {
             item_qty: [],
             itemNotes: [],
             tablePrice: '',
+            quantity: [],
         }
     },
 
@@ -103,8 +113,9 @@ export default {
                 let data = (await axios.get('/billdetails/' + this.Bill[0])).data;
                 data.forEach(element => {
                     this.allProductsInBill.push(element.product_id);
-                    this.item_qty.push(element.item_qty)
-                    this.itemNotes.push(element.item_notes)
+                    this.item_qty.push(element.item_qty);
+                    this.itemNotes.push(element.item_notes);
+                    this.quantity.push(element.refund);
                 });
             }
         },
@@ -175,6 +186,40 @@ export default {
                     } 
                 } catch (error) {
                     console.error("Error updating bill total:", error);
+                }
+            }
+        },
+        
+        async refundBtn(index,name) {
+            if (this.quantity[index] > this.item_qty[index]) window.confirm("Số lượng hoàn trả không được lớn hơn số lượng đặt hàng!");
+            else {
+                let confirmResult = window.confirm("Bạn muốn hoàn trả "+name+" với số lượng "+this.quantity[index]+"?" );
+                if (confirmResult) {
+                    try {
+                        let data = {
+                            bill_id: this.Bill[0],
+                            product_id: this.allProductsInBill[index],
+                            refund: this.quantity[index],
+                            value_refund : parseInt(this.filterProducts[index].product_price) * this.quantity[index]
+                        }
+                        await axios.put("/billdetails/refund", data); 
+                        console.log("Successfully add product to refund:", this.Bill[0] , this.allProductsInBill[index], this.quantity[index], data.value_refund);
+                    } catch (error) {
+                        console.error("Error add product to refund:", error);
+                    }
+                    let amount = parseInt(this.filterProducts[index].product_price) * this.quantity[index];
+                    console.log(amount)
+                    let billdata = { 
+                        bill_total: parseInt(this.calculateSummaryPrice() - amount),
+                    };      
+                    console.log(billdata.bill_total)
+                    try {
+                        await axios.put(`/billstatus/billtotal/${this.Bill[0]}`, billdata);
+                        console.log("Successfully updated bill total:", billdata);
+                        this.$emit('childEvent');
+                    } catch (error) {
+                        console.error("Error updating bill total:", error);
+                    }
                 }
             }
         },

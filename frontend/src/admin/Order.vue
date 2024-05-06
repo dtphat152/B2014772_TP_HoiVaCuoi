@@ -14,20 +14,20 @@
                     </div>
                     <div class="col text-center" >
                         <button class="btn p-0 px-1 rounded-lg"  @click="filBill(1,2)" :style="{ 'background-color': (this.filbot === 1 && this.filtop === 2) ? '#fff' : '' }">
-                            <h4 v-if="orderCounts[2]" style="font-weight: 900; text-align: center;">Đang Chờ Cọc ({{ orderCounts[2] }})</h4>
-                            <h4 v-else style="font-weight: 900; text-align: center;">Đang Chờ Cọc (0)</h4>
+                            <h4 v-if="orderCounts[2]" style="font-weight: 900; text-align: center;">Chờ Cọc ({{ orderCounts[2] }})</h4>
+                            <h4 v-else style="font-weight: 900; text-align: center;">Chờ Cọc (0)</h4>
                         </button>
                     </div>
                     <div class="col text-center">
                         <button class="btn p-0 rounded-lg"  @click="filBill(2,3)" :style="{ 'background-color': (this.filbot === 2 && this.filtop === 3) ? '#fff' : '' }">
-                            <h4 v-if="orderCounts[3]" style="font-weight: 900; text-align: center; color: #008000;">Đang Thực Hiện ({{ orderCounts[3] }})</h4>
-                            <h4 v-else style="font-weight: 900; text-align: center;">Đang Thực Hiện (0)</h4>
+                            <h4 v-if="orderCounts[3]" style="font-weight: 900; text-align: center; color: #008000;">Thực Hiện ({{ orderCounts[3] }})</h4>
+                            <h4 v-else style="font-weight: 900; text-align: center;">Thực Hiện (0)</h4>
                         </button>
                     </div>
                     <div class="col text-center">
                         <button class="btn p-0 px-1 rounded-lg"  @click="filBill(3,4)" :style="{ 'background-color': (this.filbot === 3 && this.filtop === 4) ? '#fff' : '' }">
-                            <h4 v-if="orderCounts[4]" style="font-weight: 900; text-align: center;">Đã Hoàn Thành ({{ orderCounts[4] }})</h4>
-                            <h4 v-else style="font-weight: 900; text-align: center;">Đã Hoàn Thành (0)</h4>
+                            <h4 v-if="orderCounts[4]" style="font-weight: 900; text-align: center;">Hoàn Thành ({{ orderCounts[4] }})</h4>
+                            <h4 v-else style="font-weight: 900; text-align: center;">Hoàn Thành (0)</h4>
                         </button>
                     </div>
                 </div>

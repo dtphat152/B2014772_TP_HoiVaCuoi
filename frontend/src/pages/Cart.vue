@@ -22,7 +22,7 @@
 
                             <div class="" style="overflow-y: auto; height: 600px;">
                                 <div style="width: 95%;">
-                                <template v-for="(category, catIndex) in ['Khai Vị', 'Món Chính', 'Tráng Miệng','Bàn Ghế','Rạp Che','Cổng Hoa','Sảnh Tiệc','Gia Tiên','Mâm Quả','Xe Hoa']" :key="catIndex">
+                                <template v-for="(category, catIndex) in ['Khai Vị', 'Món Chính', 'Tráng Miệng','Thức Uống','Bàn Ghế','Rạp Che','Cổng Hoa','Sảnh Tiệc','Gia Tiên','Mâm Quả','Xe Hoa']" :key="catIndex">
                                     <h3 class="mb-2 mb-2" style="color: #d35ea4;font-weight: 900;">{{ category }}</h3>
                                     <div v-for="(f, index) in filterProducts" :key="index">
                                         <div v-if="f.product_category === category" class="row mb-1 d-flex justify-content-between align-items-center"
