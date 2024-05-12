@@ -206,8 +206,8 @@
                                         <h3 class="text-center" style="font-weight: 900; color: #ff667d;">TP-Voucher</h3>
                                         <h1 class="text-center" style="font-weight: 900;">{{ formatCurrency(v.voucher_value) }}</h1>
                                         <h3 v-if="v.voucher_status==1" class="text-center" style="font-weight: 900; color: #2E8B57;">Chưa sử dụng</h3>
-                                        <h3 v-if="v.voucher_status==2" class="text-center">Đang sử dụng</h3>
-                                        <h3 v-if="v.voucher_status==0" class="text-center">Đã sử dụng</h3>
+                                        <h3 v-if="v.voucher_status==2" class="text-center" style="font-weight: 900;">Đang sử dụng</h3>
+                                        <h3 v-if="v.voucher_status==0" class="text-center" style="font-weight: 900;">Đã sử dụng</h3>
                                     </div>
                                     <div class="col-2">
                                         <div class="row">
@@ -230,7 +230,7 @@
                         <div class="" style="overflow-y: auto; height: 380px;">
                             <div style="width: 90%; margin-left: 4%;">
                                 <div v-for="(b, index) in billList.slice().reverse()" :key="index">
-                                    <div class="row" 
+                                    <div class="row" @click="showDetailsBill(this.billList.length-index-1)"
                                     :style="{ 
                                         'background-color': '#ffb3cc', 
                                         'margin-left': '10px', 
@@ -278,11 +278,14 @@
             </div>
         </div>
     </div>
-      
+    <ProductBillView v-if="DetailsBill" :Bill="sendId">
+        <button class="px-3" style="color: white; background-color: #808080; border-radius: 15px;" @click="closeView"><h4 style="font-weight: 900;">Trở Về</h4></button>
+    </ProductBillView>
 
 </template>
 
 <script>
+import ProductBillView from "../components/ProductBillView.vue"
 import VueBasicAlert from 'vue-basic-alert';
 import { mapState } from "vuex";
 import axios from "axios";
@@ -304,6 +307,8 @@ export default {
             images: '',
             file: null,
             selectedFile: null,
+            DetailsBill: false,
+            sendId: null,
         }
     },
 
@@ -323,6 +328,14 @@ export default {
     },
 
     methods: {
+        showDetailsBill(index){
+            this.sendId = this.billList[index].bill_id
+            this.DetailsBill = true;
+        },
+        closeView: function () {
+            this.DetailsBill = false;
+        },
+
         showVoucher(){
             if (this.view==4) this.view=0 
             else {
@@ -608,7 +621,8 @@ export default {
         },
     },
     components: {
-        VueBasicAlert
+        VueBasicAlert,
+        ProductBillView
     }
 };
 </script>

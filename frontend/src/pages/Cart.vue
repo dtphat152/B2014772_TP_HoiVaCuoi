@@ -43,9 +43,12 @@
                                                 <h5 style="font-weight: 900;color: #d35ea4;">{{ formatCurrency(f.product_price) }}</h5>
                                             </div>
                                             <div class="col-md-3 col-lg-2 col-xl-2">
-                                                <input type="number" id="number" v-model="itemQuantity[index]" @change="onQtyChange(index)"
-                                                    class="form-control " min="0" max="1000" 
-                                                    style="border: none; text-align: center; background: #f2f2f2; color: black;font-weight: 900; border-radius: 10px;">
+                                                <div class="row">
+                                                    <input type="number" id="number" v-model="itemQuantity[index]" 
+                                                        class="form-control" min="0" max="1000" 
+                                                        style="border: none; text-align: center; background: #f2f2f2; color: black;font-weight: 900; border-radius: 10px; width: 70%; margin-right: 2%;">
+                                                    <i class="fa-solid fa-circle-check" style="font-size: 25px; color: #f2f2f2;" @click="validateQty(index)"></i>
+                                                </div>
                                             </div>
                                             <div class="col-md-3 col-lg-2 col-xl-2">
                                                 <h6 class="mb-0" style="font-weight: 900; font-size: 15px;">{{ formatCurrency(calculateItemPrice(index)) }}</h6>
@@ -256,6 +259,7 @@ export default {
         return {
             cartItem: [],
             itemQuantity: [],
+            itemQuantityTemp:[],
             itemNotes: [],
             voucherList: [],
             checkoutObj: {notes:"", phone: "", address: ""},
@@ -328,6 +332,7 @@ export default {
                 existItem.data.forEach(element => {
                     this.cartItem.push(element.product_id);
                     this.itemQuantity.push(element.item_qty);
+                    this.itemQuantityTemp.push(element.item_qty);
                     this.itemNotes.push(element.item_notes);
                 });
             }
@@ -364,7 +369,9 @@ export default {
         },
 
         showAddMealSetFunction() {
+            if (this.user)
             this.showAddMealSet = !this.showAddMealSet;
+            else this.$refs.alert.showAlert('error', 'Xin Lỗi!', 'Bạn chưa đăng nhập!');
         },
 
         async loadInfo() {
@@ -435,6 +442,24 @@ export default {
 
         async changeDate() {
             if (this.user) {
+                const today = new Date();
+                const yesterday = new Date(today);
+                yesterday.setDate(yesterday.getDate() - 1);
+                if (!this.date) {
+                    this.$refs.alert.showAlert('error', 'Vui lòng chọn ngày!', 'Bạn chưa chọn ngày!');
+                    return;
+                }
+                if (this.date < yesterday) {
+                    this.$refs.alert.showAlert('error', 'Vui lòng chọn lại ngày khác!', 'Bạn đã chọn ngày ở quá khứ!');
+                    return;
+                }
+                const twoMonthsLater = new Date(today);
+                twoMonthsLater.setMonth(twoMonthsLater.getMonth() + 2);
+
+                if (this.date.getTime() > twoMonthsLater.getTime()) {
+                    this.$refs.alert.showAlert('error', 'Vui lòng chọn lại ngày khác!', 'Ngày quá xa sau 2 tháng!');
+                    return;
+                }
                 let dateSelect = {
                     date_date: this.formatDateToSubmit(this.date),
                     user_id: parseInt(this.user.user_id),
@@ -444,17 +469,17 @@ export default {
 
                 if (existDate.data.length > 0) {
                     await axios.put("/date", dateSelect);
-                    window.confirm(`Ngày Tổ Chức đã được thay đổi!`)
+                    this.$refs.alert.showAlert('success', 'Thành công!', 'Ngày Tổ Chức đã được thay đổi!');
                     this.getDate();
                 } else {
                     await axios.post("/date", dateSelect);
-                    window.confirm(`Ngày Tổ Chức đã được lưu lại!`)
+                    this.$refs.alert.showAlert('success', 'Thành công!', 'Ngày Tổ Chức đã được lưu lại!');
                 }
                 } catch (error) {
                     console.error('Error submitting date:', error);
                     window.confirm(`Lỗi khi xác nhận ngày Tổ chức!`)
                 }
-            } 
+            } else this.$refs.alert.showAlert('error', 'Xin Lỗi!', 'Bạn chưa đăng nhập!');
         },
 
         async removeDateBtn(id,index) {
@@ -475,22 +500,24 @@ export default {
             }
         },
         async updateDateBtn(index) {
-            let data = {
-                date_id: this.dateID,
-                dd_name: index + 1,
-                dd_time: this.selectedTime[index],
-                dd_guest: this.selectedGuest[index],
-            };
-            try {
-                await axios.put('/datedetails/', data);
-                console.log('Dữ liệu đã được chỉnh sửa thành công');
-                console.log(data);
-                // Sau khi cập nhật thành công, gọi hàm để lấy lại dữ liệu
-                this.$refs.alert.showAlert('success', 'Thành Công!', 'Suất Đãi Khách đã được Cập nhật!');
-                await this.getNum();
-            } catch (error) {
-                console.error('Lỗi khi chỉnh sửa dữ liệu:', error);
-            }
+            if (this.dateID!=''){ 
+                let data = {
+                    date_id: this.dateID,
+                    dd_name: index + 1,
+                    dd_time: this.selectedTime[index],
+                    dd_guest: this.selectedGuest[index],
+                };
+                try {
+                    await axios.put('/datedetails/', data);
+                    console.log('Dữ liệu đã được chỉnh sửa thành công');
+                    console.log(data);
+                    // Sau khi cập nhật thành công, gọi hàm để lấy lại dữ liệu
+                    this.$refs.alert.showAlert('success', 'Thành Công!', 'Suất Đãi Khách đã được Cập nhật!');
+                    await this.getNum();
+                } catch (error) {
+                    console.error('Lỗi khi chỉnh sửa dữ liệu:', error);
+                } 
+            } else this.$refs.alert.showAlert('error', 'Xin Lỗi!', 'Hãy chọn ngày Tổ chức trước!') 
         },
 
         calculateItemPrice: function (index) {
@@ -573,6 +600,9 @@ export default {
                         // if (this.itemQuantity[index] < Math.ceil(this.tableNum / 2)) 
                         this.itemQuantity[index] = Math.ceil(maxElement / 20);
                     }
+                    if (this.filterProducts[index].product_category === 'Bàn Ghế' ) {
+                        this.itemQuantity[index] = this.tableNum;
+                    }
                     if (this.filterProducts[index].product_category === 'Thức Uống' ) {
                         this.itemQuantity[index] = this.tableNum;
                     }
@@ -617,6 +647,16 @@ export default {
             
         },
 
+        validateQty(index) {
+            // Kiểm tra số lượng sản phẩm có hợp lệ hay không
+            if (this.itemQuantity[index] < 0 || this.itemQuantity[index] > 1000) {
+                this.$refs.alert.showAlert('warning', 'Xin Lỗi!', 'Số lượng không phù hợp!');
+                this.itemQuantity[index] = this.itemQuantityTemp[index]
+                return;
+            }
+            // Gọi hàm onQtyChange chỉ khi số lượng hợp lệ
+            this.onQtyChange(index);
+        },
         async onQtyChange(i) {
             let data = {
                 user_id: parseInt(this.user.user_id),
@@ -629,6 +669,7 @@ export default {
                 await axios.put("/cartItem/", data);
             }
         },
+
         
         async updateItemNotes(i) {
             let data = {
@@ -674,6 +715,7 @@ export default {
         },
 
         async sendBillDetails(billId, productId, qty , notes, price) {
+            console.log("PRICE: ",price);
             let billDetails = {
                 bill_id: parseInt(billId),
                 product_id: parseInt(productId),
@@ -681,73 +723,78 @@ export default {
                 item_notes: notes,
                 product_price: price
             }
-
             await axios.post("/billdetails", billDetails);
         },
 
         async getProductPrice(id){
-            let rsp = axios.get(`/products/${id}`);
-            let price = rsp.data.product_price;
+            let rsp = await axios.get(`/products/${id}`);
+            let data = rsp.data;
+            let price = data.product_price;
+            console.log('Price: ',price)
             return price;
         },
 
         async checkOutBtn() {
-            let confirmResult = window.confirm("Xác Nhận Gửi Yêu Cầu" );
-            if (confirmResult) {
-                let billId = (await axios.get("/billstatus/new")).data;
+            if (this.user) {
+                let confirmResult = window.confirm("Xác Nhận Gửi Yêu Cầu" );
+                if (confirmResult) {
+                    let billId = (await axios.get("/billstatus/new")).data;
 
-                if (billId == "") {
-                    billId = 1
-                } else {
-                    billId = parseInt(billId.bill_id) + 1
+                    if (billId == "") {
+                        billId = 1
+                    } else {
+                        billId = parseInt(billId.bill_id) + 1
+                    }
+                    
+                    for (let index = 0; index < this.cartItem.length; index++) {
+                        let productId = this.cartItem[index];
+                        let price = await this.getProductPrice(productId); // Chờ hàm trả về giá trị
+                        this.sendBillDetails(billId, productId, this.itemQuantity[index], this.itemNotes[index], price);
+                    }
+
+                    var now = new Date();
+                    var day = ("0" + now.getDate()).slice(-2);
+                    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+                    var hour = ("0" + (now.getHours())).slice(-2);
+                    var min = ("0" + (now.getMinutes())).slice(-2);
+                    var currentTime = day + "/" + month + "/" + now.getFullYear() + " - " + hour + ":" + min;
+
+
+                    let billStatus = {
+                        bill_id: parseInt(billId),
+                        user_id: parseInt(this.user.user_id),
+                        date_id: this.dateID,
+                        voucher_id: this.selectedVoucher_id,
+                        bill_phone: this.checkoutObj.phone,
+                        bill_address: this.checkoutObj.address,
+                        bill_when: currentTime,
+                        bill_discount: this.selectedVoucher,
+                        bill_deposits: parseInt(this.calculateSummaryPrice()/10),
+                        bill_total: parseInt(this.calculateSummaryPrice()),
+                        bill_notes: this.checkoutObj.notes,
+                        bill_status: 1
+                    }
+
+                    axios.post("/billstatus", billStatus);
+                    axios.delete("/cartItem/" + this.user.user_id);
+                    let dataDateBill = {
+                        date_id: this.dateID,
+                        date_date: this.formatDateToSubmit(this.date),
+                        bill_id: parseInt(billId)
+                    }
+                    axios.post("/datebill",dataDateBill)
+                    let voucher = {
+                        vc_status: 2,
+                        vc_id: this.selectedVoucher_id,
+                    }
+                    axios.put(`/voucher/status`,voucher)
+                    axios.delete(`/date/${this.user.user_id}`)
+                    this.cartItem = [];
+                    this.itemQuantity = [];
+
+                    this.$router.push("/myorder");
                 }
-
-                this.cartItem.forEach((productId, index) => {
-                    this.sendBillDetails(billId, productId, this.itemQuantity[index], this.itemNotes[index],this.getProductPrice(productId))
-                });
-
-                var now = new Date();
-                var day = ("0" + now.getDate()).slice(-2);
-                var month = ("0" + (now.getMonth() + 1)).slice(-2);
-                var hour = ("0" + (now.getHours())).slice(-2);
-                var min = ("0" + (now.getMinutes())).slice(-2);
-                var currentTime = day + "/" + month + "/" + now.getFullYear() + " - " + hour + ":" + min;
-
-
-                let billStatus = {
-                    bill_id: parseInt(billId),
-                    user_id: parseInt(this.user.user_id),
-                    date_id: this.dateID,
-                    voucher_id: this.selectedVoucher_id,
-                    bill_phone: this.checkoutObj.phone,
-                    bill_address: this.checkoutObj.address,
-                    bill_when: currentTime,
-                    bill_discount: this.selectedVoucher,
-                    bill_deposits: parseInt(this.calculateSummaryPrice()/10),
-                    bill_total: parseInt(this.calculateSummaryPrice()),
-                    bill_notes: this.checkoutObj.notes,
-                    bill_status: 1
-                }
-
-                axios.post("/billstatus", billStatus);
-                axios.delete("/cartItem/" + this.user.user_id);
-                let dataDateBill = {
-                    date_id: this.dateID,
-                    date_date: this.formatDateToSubmit(this.date),
-                    bill_id: parseInt(billId)
-                }
-                axios.post("/datebill",dataDateBill)
-                let voucher = {
-                    vc_status: 2,
-                    vc_id: this.selectedVoucher_id,
-                }
-                axios.put(`/voucher/status`,voucher)
-                axios.delete(`/date/${this.user.user_id}`)
-                this.cartItem = [];
-                this.itemQuantity = [];
-
-                this.$router.push("/myorder");
-            }
+            } this.$refs.alert.showAlert('error', 'Xin Lỗi!', 'Bạn chưa đăng nhập!');
         }
 
 

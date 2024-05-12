@@ -17,7 +17,7 @@
                         </div>
                         <div class="col-md-3 col-lg-2 col-xl-2">
                             <input type="number" id="number" v-model="item_qty[index]" @change="onQtyChange(index,f.product_name)"
-                            class="form-control " min="0" max="1000" 
+                            class="form-control " 
                             style="border: none; text-align: center; background:#ffb3cc; border-radius: 10px; color: black; font-weight: 900;">
                         </div>
                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
@@ -123,10 +123,14 @@ export default {
         },
 
         async onQtyChange(i,name) {
-            let data = {
-                item_qty: this.item_qty[i],
-            };
-            let confirmResult = window.confirm("Thay đổi số lượng "+name+" thành " + this.item_qty[i] + "? Yêu cầu sẽ được gửi cho cửa hàng!" );
+            if (this.item_qty[i]<0 || this.item_qty[i]>1000) {
+                window.confirm('Số lượng không hợp lệ');
+                this.item_qty[i] = ''
+            } else {
+                let data = {
+                    item_qty: this.item_qty[i],
+                };
+                let confirmResult = window.confirm("Thay đổi số lượng "+name+" thành " + this.item_qty[i] + "? Yêu cầu sẽ được gửi cho cửa hàng!" );
                 if (confirmResult) {
                     let data1 = {
                         email: '',
@@ -140,6 +144,7 @@ export default {
                         console.error("Error Send email request:", error);
                     }            
                 } 
+            }
         },
 
         async removeBtn(name) {
@@ -174,7 +179,7 @@ export default {
 
 
         sendPriceToParent() {
-            this.$emit('send-price', this.tablePrice); 
+            this.$emit('send-price', this.tablePrice,this.Bill); 
         },
 
     }

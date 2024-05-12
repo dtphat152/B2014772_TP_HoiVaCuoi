@@ -62,7 +62,7 @@
                           <div class="row">
                             <div class="col-10 offset-1" style="padding-left: 0px !important;">
                               <div class="row">
-                                <textarea name="" id="" style="background-color: #e6e6e6; border-radius: 15px; width: 82%; font-weight: 800; font-size: 15px; height: 40px; padding: 5px;"
+                                <textarea name="" id="" style="background-color: #e6e6e6; border-radius: 15px; width: 84%; margin-right: 1%; font-weight: 800; font-size: 15px; height: 40px; padding: 5px;"
                                   v-model="this.contentCmt"></textarea> 
                                 <button class="btn" @click="sendCmt(p.post_id,index,i)" 
                                   style="background-color: #e6e6e6; border-radius: 15px; width: 10%; font-weight: 800; font-size: 15px; color: #ff99bb;">Gửi</button>

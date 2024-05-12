@@ -1,5 +1,5 @@
 <template>
-<div class="row"  v-for="b in filterBills.slice().reverse()" :key="b.bill_id">
+<div class="row"  v-for="(b,index) in filterBills.slice().reverse()" :key="index">
 <div class="col">
    <div class="my-order">
         <div class="my-order-inner">
@@ -8,7 +8,7 @@
                     <div class="row">
                         <h4 class="col-2 ml-4 pt-1 mb-0 text-center font-weight-bold" 
                             style="background-color:white; border-radius: 10px; color: #FF0099;">
-                            Mã đơn #{{ b.bill_id }} 
+                            Mã đơn #{{ b.bill_id }}
                         </h4>
                         <button v-if="b.bill_status==0 || b.bill_status==4" @click="hideBill(b.bill_id,b.bill_status)"
                             class="col-1 btn ml-1" style="background-color:Orange; border-radius: 10px; font-weight: 900;"> Ẩn </button>
@@ -60,18 +60,18 @@
             
             <div class="row">
                 <div class="col-8" style="border-radius: 20px; background-color: #ffb3cc">
-                    <ProductBill  v-if="view==1" @send-price="handlePriceFromChild" :Bill="b.bill_id" ></ProductBill>
+                    <ProductBill  v-if="view[b.bill_id]==1" @send-price="handlePriceFromChild" :Bill="b.bill_id" ></ProductBill>
 
-                    <ProductOrder v-if="view==2" :ID="this.sendId" >
-                        <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
+                    <ProductOrder v-if="view[b.bill_id]==2" :ID="this.sendId" >
+                        <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView(b.bill_id)">Trở Về</button>
                     </ProductOrder> 
                     
-                    <ProductNew v-if="view==3" :ID="this.sendId" @childEvent="closeView">
-                        <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
+                    <ProductNew v-if="view[b.bill_id]==3" :ID="this.sendId" @childEvent="closeView(b.bill_id)">
+                        <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView(b.bill_id)">Trở Về</button>
                     </ProductNew> 
 
-                    <Refund v-if="view==4" :Bill="this.sendId">
-                        <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
+                    <Refund v-if="view[b.bill_id]==4" :Bill="this.sendId">
+                        <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView(b.bill_id)">Trở Về</button>
                     </Refund> 
                 </div>
                 <div class="col-4">
@@ -82,7 +82,7 @@
                                 <div class="col-10" style="background-color: #f2f2f2; border-radius: 15px;">
                                     <div class="row d-flex justify-content-around p-2">
                                         <h4 class="mt-2" style="color: black;font-weight: 900;">Ngày tổ chức:</h4>
-                                        <input type="date" class="form-control" id="startDateInput" v-model="formattedStartDate"
+                                        <input type="date" class="form-control" id="startDateInput" v-model="this.date[b.bill_id]"
                                             style="background-color: #ffb3cc; font-weight: 900; text-align: center; border-radius: 15px; font-size: 15px; width: 180px;" >
                                         <button @click="sendDate(b.bill_id,b.bill_status)" 
                                             style="background-color: #f2f2f2; border-radius: 15px;" class="px-2 my-1"><h5 style="font-weight: 900;">Lưu</h5></button>
@@ -113,26 +113,26 @@
                                 </div>
                             </div>  
 
-                            <div v-for="(time, index) in this.selectedTime" :key="index">
+                            <div v-for="(time, i) in selectedTime[this.filterBills.length-index-1]" :key="i">
                                 <div class="row align-items-center m-1 mt-3" style="background-color: #f2f2f2; border-radius: 15px; padding-top: 5px;">
                                     <div class="col-3 text-left">
-                                        <h5 style="color: black;font-weight: 900;">Suất thứ {{ index+1 }}</h5>
+                                        <h5 style="color: black;font-weight: 900;">Suất thứ {{ i+1 }}</h5>
                                     </div>
                                     <div class="col-3">
-                                        <input title="Số Khách" type="number" :id="'number-' + index" class="form-control mb-2" min="0" max="1000" 
-                                        v-model="this.selectedGuest[index]" style="border: none; text-align: center; background: #f2f2f2; font-weight: 900; font-size: 15px;">
+                                        <input title="Số Khách" type="number" :id="'number-' + i" class="form-control mb-2" min="0" max="1000" 
+                                        v-model="time.dd_guest" style="border: none; text-align: center; background: #f2f2f2; font-weight: 900; font-size: 15px;">
                                     </div>
                                     <div class="col-3">
-                                        <input type="time" :id="'time-' + index" v-model="this.selectedTime[index]" style=" background: #f2f2f2; font-weight: 900; font-size: 15px; margin-bottom: 5px;">
+                                        <input type="time" :id="'time-' + i" v-model="time.dd_time" style=" background: #f2f2f2; font-weight: 900; font-size: 15px; margin-bottom: 5px;">
                                     </div>
                                     <div class="col-1 ">
-                                        <button class="btn" @click="removeDateBtn(index,b.bill_id,b.bill_status)"
+                                        <button class="btn" @click="removeDateBtn(i,b.bill_id,b.bill_status)"
                                             style="border-radius: 10px; background-color: #f2f2f2;">
                                             <h5 style="font-weight: 800;">Xóa</h5>
                                         </button>
                                     </div>
                                     <div class="col-1 ">
-                                        <button class="btn" @click="updateDateBtn(index,b.bill_id,b.bill_status)"
+                                        <button class="btn" @click="updateDateBtn(i,time.dd_time,time.dd_guest,b.bill_id,b.bill_status)"
                                             style="border-radius: 10px; background-color: #f2f2f2;">
                                             <h5 style="font-weight: 800;">Lưu</h5>
                                         </button>
@@ -187,13 +187,18 @@
                         <div class="mx-1" style="background: #f2f2f2; border-radius: 15px;">
                             <div class="row mx-1 p-1 d-flex justify-content-between">
                                 <h5 style="font-weight: 900;">Số lượng Bàn tiệc (Mâm): </h5>
-                                <h5 style="font-weight: 900;">{{ this.tableNum }} bàn</h5>
+                                <h5 style="font-weight: 900;">{{ this.tableNum[filterBills.length-index-1] }} bàn</h5>
                             </div>
                             <div class="row mx-1 p-1 d-flex justify-content-between">
                                 <h5 style="font-weight: 900;">Giá cả mỗi Bàn tiệc (Mâm): </h5>
-                                <h5 style="font-weight: 900;">{{ formatCurrency(this.priceOfTable) }}</h5>
+                                <h5 style="font-weight: 900;">{{ formatCurrency(this.priceOfTable[b.bill_id]) }}</h5>
                             </div>
                             
+                        </div>
+                        <div v-if="this.refunds[b.bill_id]!=0" class="row pt-3 mx-1">
+                            <div class="col-12" style="width: 100%; height: 25px; border: none;  background: #f2f2f2; border-radius: 15px;">
+                                <h5 class="text-center pt-1" style="color: black; font-weight: 800">Số tiền đã hoàn lại: +{{ formatCurrency(this.refunds[b.bill_id]) }}</h5>  
+                            </div>
                         </div>
                         <div class="row pt-3 mx-1">
                             <div class="col-12" style="width: 100%; height: 25px; border: none;  background: #f2f2f2; border-radius: 15px;">
@@ -230,17 +235,17 @@
                     </div>
                 </div>
                 <button class="btn py-0 ml-5" @click="sendBillId2(b.bill_id)"
-                    :style="this.view == 2 ? { 'background-color': '#ffb3cc', 'border-end-end-radius': '10px', 'border-end-start-radius': '10px' , 
+                    :style="this.view[b.bill_id] == 2 ? { 'background-color': '#ffb3cc', 'border-end-end-radius': '10px', 'border-end-start-radius': '10px' , 
                     'border-start-start-radius': '0px', 'border-start-end-radius': '0px' } : ''">
                     <h4 style="font-weight: 800; color: #32CD32;">Thêm Dịch Vụ</h4>
                 </button>
                 <button class="btn py-0 ml-5 " @click="sendBillId3(b.bill_id)"
-                    :style="this.view == 3 ? { 'background-color': '#ffb3cc', 'border-end-end-radius': '10px', 'border-end-start-radius': '10px' , 
+                    :style="this.view[b.bill_id] == 3 ? { 'background-color': '#ffb3cc', 'border-end-end-radius': '10px', 'border-end-start-radius': '10px' , 
                     'border-start-start-radius': '0px', 'border-start-end-radius': '0px' } : ''">
                     <h4 style="font-weight: 800; color: #32CD32;">Thêm Dịch Vụ Tự Chọn</h4>
                 </button>
-                <button v-if="b.bill_status>=3 && this.refunds[b.bill_id]==true" class="btn py-0 ml-5 " @click="sendBillId4(b.bill_id)"
-                    :style="this.view == 4 ? { 'background-color': '#ffb3cc', 'border-end-end-radius': '10px', 'border-end-start-radius': '10px' , 
+                <button v-if="b.bill_status>=3 && this.refunds[b.bill_id]!=0" class="btn py-0 ml-5 " @click="sendBillId4(b.bill_id)"
+                    :style="this.view[b.bill_id] == 4 ? { 'background-color': '#ffb3cc', 'border-end-end-radius': '10px', 'border-end-start-radius': '10px' , 
                     'border-start-start-radius': '0px', 'border-start-end-radius': '0px' } : ''">
                     <h4 style="font-weight: 800; color: #32CD32;">Xem Dịch Vụ Đã Hoàn Trả</h4>
                 </button>
@@ -273,9 +278,9 @@ export default {
             showAddMealSet : false,
             tempGuest: '',
             tempTime: '',
-            tableNum: '',
-            priceOfTable:'',
-            view: 1,
+            tableNum: [],
+            priceOfTable:[],
+            view: [],
             sendId: null,
             showPayment: false,
             interval: "",
@@ -298,6 +303,7 @@ export default {
     mounted: function () {
         this.getAllBills();
         this.autoUpdate();
+        this.getTable();
     },
 
     beforeUnmount() {
@@ -311,15 +317,12 @@ export default {
             return this.allBills.filter((b) => b.bill_status <= 4 && b.bill_status >= 0);
         },
 
-        formattedStartDate: {
-          get() {
+        formattedStartDate: function() {
+       
             // Chuyển đổi giá trị ngày từ đối tượng Date sang chuỗi có định dạng "yyyy-MM-dd"
             return this.date ? this.formatDate(this.date) : null;
-          },
-          set(value) {
-            // Chuyển đổi giá trị ngày từ chuỗi có định dạng "yyyy-MM-dd" sang đối tượng Date
-            this.date = value ? new Date(value) : null;
-          },
+        
+          
         },
     },
 
@@ -328,15 +331,47 @@ export default {
             if (this.user) {
                 let bills = (await axios.get('/billstatus/user/' + this.user.user_id)).data;
                 this.allBills = bills;
-                
-                for (const bill of this.allBills) {
-                    console.log('TP');                     
-                    // Gọi hàm để lấy thông tin set thịt
-                    this.getMeatSet(bill.date_id, bill.bill_id);
-                    let checkRF = await axios.get(`/billdetails/refund/${bill.bill_id}`);
-                    if (checkRF.data.length > 0) {
-                        this.refunds[bill.bill_id] = true;
+                for (let index = 0; index < this.allBills.length; index++) {
+                    const bill = this.allBills[index];
+                    this.view[bill.bill_id] = 1;
+                    this.refunds[bill.bill_id] = 0;
+                    this.getDate(bill.date_id,bill.bill_id);
+                    let checkRF = await axios.get(`/billdetails/refund/${bill.bill_id}`)
+                    if (checkRF.data.length>0) {
+                        this.refunds[bill.bill_id] = checkRF.data.reduce((total, item) => total + item.value_refund, 0);
                     }
+                    let response = await axios.get(`/datedetails/${bill.date_id}`);
+                    let data = response.data;
+                    this.selectedTime[index] = data
+                    
+                } 
+                console.log(this.selectedTime)
+            }
+        },
+
+        async getTable(){
+            await this.getAllBills();
+            for (let index = 0; index < this.selectedTime.length; index++) {
+                this.tableNum[index] = 0 ;
+                const element = this.selectedTime[index];
+                for (let i = 0; i < element.length; i++) {
+                    const e = element[i];
+                    this.tableNum[index]+= parseInt(e.dd_guest);
+                }
+            }
+        },
+        
+        async getDate(date_id,bill_id) {
+            if (date_id) {
+                const response = await axios.get('/datebill/' + bill_id);
+                if (response.data.length > 0) {
+                    const dateString = response.data[0].date_date;
+                    const parts = dateString.split("-");
+                    const year = parseInt(parts[2]);
+                    const month = parseInt(parts[0]) - 1; // Trừ đi 1 vì tháng trong JavaScript bắt đầu từ 0
+                    const day = parseInt(parts[1]);
+                    let date = new Date(year, month, day);
+                    this.date[bill_id] = date ? this.formatDate(date) : null;
                 }
             }
         },
@@ -378,23 +413,23 @@ export default {
             return null;
         },
 
-        closeView: function () {
-            this.view = 1;
+        closeView: function (id) {
+            this.view[id] = 1;
         },
         sendBillId2: function (id) {
             this.sendId = id
-            if (this.view!=2) this.view = 2; 
+            if (this.view[id]!=2) this.view[id] = 2; 
             else this.closeView();
         },
         sendBillId3: function (id) {
             this.sendId = id
-            if (this.view!=3) this.view = 3;
+            if (this.view[id]!=3) this.view[id] = 3;
             else this.closeView();
         },
         sendBillId4: function (id) {
             this.sendId = id
-            if (this.view!=4) this.view = 4;
-            else this.closeView();
+            if (this.view[id]!=4) this.view[id] = 4;
+            else this.closeView(id);
         },
 
         showAddMealSetFunction() {
@@ -415,9 +450,9 @@ export default {
             }.bind(this), 1000);
         },
 
-        handlePriceFromChild(price) {
+        handlePriceFromChild(price,id) {
             // Bắt sự kiện từ component con và cập nhật giá trị trong component cha
-            this.priceOfTable = price;
+            this.priceOfTable[id] = price;
         },
 
         async sendMomo(bill_status , bill_id, bill_total , bill_deposits) {
@@ -464,49 +499,9 @@ export default {
                 console.error('Error in send VN Pay: ', error);
             }
         },
+        
 
-        async getMeatSet(date_id,bill_id) {
-            let table = 0;
-            if (date_id) {
-                const response = await axios.get('/datebill/' + bill_id);
-                if (response.data.length > 0) {
-                    const dateString = response.data[0].date_date;
-                    const parts = dateString.split("-");
-                    const year = parseInt(parts[2]);
-                    const month = parseInt(parts[0]) - 1; // Trừ đi 1 vì tháng trong JavaScript bắt đầu từ 0
-                    const day = parseInt(parts[1]);
-                    this.date = new Date(year, month, day);
-                }
-                try {
-                    let response = await axios.get(`/datedetails/${date_id}`);
-                    let data = response.data;
-                    console.log(data)
-                    // this.date = this.formatDate(data[0].date_date);
-                    
-                    if (Array.isArray(data) && data.length > 0) {
-                        // Khởi tạo các mảng để lưu trữ dữ liệu từ mỗi phần tử
-                        let selectedTimes = [];
-                        let selectedGuests = [];
-                        // Lặp qua mỗi phần tử trong mảng data
-                        data.forEach(item => {
-                            selectedTimes.push(item.dd_time);
-                            selectedGuests.push(item.dd_guest);
-                            table+=item.dd_guest;
-                        });
-                        // Gán giá trị của các mảng cho selectedTime và selectedGuest
-                        this.selectedTime = selectedTimes;
-                        this.selectedGuest = selectedGuests;
-                    } else {
-                        this.selectedTime = []; 
-                        this.selectedGuest = []; 
-                    }
-                    this.tableNum =  Math.ceil(table/10);
-                } catch (error) {
-                    console.error('Lỗi khi lấy dữ liệu từ API:', error);
-                }
-                
-            }
-        },
+        
         
         async hideBill(id,bill_status) {
             if (bill_status==4) {
@@ -542,11 +537,10 @@ export default {
         },
         
         async sendDate(bill_id,status){
-            let year = this.date.getFullYear();
-            let month = this.date.getMonth() + 1;
-            let day = this.date.getDate();
-            month = month < 10 ? `0${month}` : month;
-            day = day < 10 ? `0${day}` : day;
+            const parts = this.date[bill_id].split("-");
+            const year = parts[0];
+            const month = parts[1]; 
+            const day = parts[2];
             const Dateformat = `${day}-${month}-${year}`;
             if (status>=2 && status<=3) {
                 let confirmResult = window.confirm(`Thay đổi Ngày tổ chức? Thời gian:`+Dateformat+`. Yêu cầu sẽ được gửi cho cửa hàng!` );
@@ -611,19 +605,18 @@ export default {
             else window.confirm(`Bạn Không Thể Thay Đổi Thông Tin` );
         },
 
-        updateDateBtn(index,bill_id,status) {
+        updateDateBtn(i,time,guest,bill_id,status) {
             if (status>=2 && status<=3) {
-                let temp = index + 1 ;
-                let confirmResult = window.confirm(`Hủy Suất thứ ` + temp +`? Yêu cầu sẽ được gửi cho cửa hàng!` );
+                let confirmResult = window.confirm(`Cập nhật Suất đãi khách thứ ${parseInt(i + 1)} thành ${time} với số lượng khách ${guest}? Yêu cầu sẽ được gửi cho cửa hàng!` );
                 if (confirmResult) {
                     let data = {
-                        dd_time: this.selectedTime[index],
-                        dd_guest: this.selectedGuest[index],
+                        dd_time: time,
+                        dd_guest: guest,
                     };
                     let data1 = {
                         email: '',
                         title:`Đơn hàng #${bill_id} được yêu cầu cập nhật!`,
-                        content: `Nội dung: Cập nhật Suất đãi khách thứ ${parseInt(index + 1)} thành ${data.dd_time} với số lượng khách ${data.dd_guest}.`,
+                        content: `Nội dung: Cập nhật Suất đãi khách thứ ${parseInt(i + 1)} thành ${data.dd_time} với số lượng khách ${data.dd_guest}.`,
                         auth: `Khách hàng `+this.user.user_name+`.`,
                     }
                     try {
