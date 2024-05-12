@@ -38,7 +38,7 @@
                     </ProductNew>    
                 </div>
                 <div class="col-4 pt-3" style="background-color: #f08faf; border-radius: 20px;">
-                    <div class="container-info" style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
+                    <div class="container-info" style="background-color: #d9d9d9; border-radius: 20px; padding: 10px;">
                         <div class="row">
                             <div class="col-10 form-group" style="padding-right: 0; margin: 0;">
                             <textarea name="txtMsg" class="form-control" placeholder="Ghi chú của khách hàng..." 
@@ -53,7 +53,7 @@
                     </div>
 
                     <hr style="background-color: #ffccdd;">
-                    <div class="container-info" style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
+                    <div class="container-info" style="background-color: #d9d9d9; border-radius: 20px; padding: 10px;">
                         <div class="row mt-2 m-1">
                             <div class="col-9" style="background-color: #f08faf; border-radius: 15px;">
                                 <div class="row d-flex justify-content-around p-2">
@@ -120,7 +120,7 @@
                 
                     </div>
                     <hr style="background-color: #ffccdd;">
-                    <div class="container-info" style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
+                    <div class="container-info" style="background-color: #d9d9d9; border-radius: 20px; padding: 10px;">
                         <div class="row">
                             <div class="col-10 pr-0">
                                 <textarea name="txtMsg" class="form-control text-center" placeholder="Những điều bạn yêu cầu hoặc lưu ý" 
@@ -144,7 +144,7 @@
                         </div>
                     </div>
                     <br>
-                    <div class="container-info" style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
+                    <div class="container-info" style="background-color: #d9d9d9; border-radius: 20px; padding: 10px;">
                         <div class="mx-1" style="background: #f2f2f2; border-radius: 15px;">
                             <div class="row mx-1 p-1 d-flex justify-content-between">
                                 <h5 style="font-weight: 900;">{{ this.number*10 }} khách mời</h5>
@@ -177,7 +177,7 @@
                         </div>
                     </div>
                     <br>
-                    <div style="background-color: #d3d3d3; border-radius: 20px; padding: 10px;">
+                    <div style="background-color: #d9d9d9; border-radius: 20px; padding: 10px;">
                         <div v-if="this.refund!=0" class="row pb-3 mx-1">
                             <div class="col-12" style="width: 100%; height: 25px; border: none;  background: #f2f2f2; border-radius: 15px;">
                                 <h5 class="text-center pt-2" style="font-weight: 900;">Số tiền đã hoàn lại: +{{ formatCurrency(this.refund) }}</h5> 
@@ -300,13 +300,13 @@ export default {
             if (this.bill[0]) {
                 let rsp = await axios.get(`/billstatus/bill/${this.bill[0]}`)
                 let data = rsp.data;
-                this.billMatch = rsp.data[0];
-                this.notes = data[0].bill_notes;
-                this.address = data[0].bill_address;
-                this.phone = data[0].bill_phone;
-                this.deposits = data[0].bill_deposits;
-                this.total = data[0].bill_total;
-                this.status = data[0].bill_status;
+                this.billMatch = rsp.data;
+                this.notes = data.bill_notes;
+                this.address = data.bill_address;
+                this.phone = data.bill_phone;
+                this.deposits = data.bill_deposits;
+                this.total = data.bill_total;
+                this.status = data.bill_status;
                 let checkRF = await axios.get(`/billdetails/refund/${this.bill[0]}`)
                 if (checkRF.data.length>0) {
                     this.refund = checkRF.data.reduce((total, item) => total + item.value_refund, 0);
@@ -650,7 +650,7 @@ export default {
 .order-details .order-details-inner {
     width: 80%;
     height: 80%;
-    background-color: #d3d3d3;
+    background-color: #d9d9d9;
     padding: 32px;
     border: none; /* Clear border */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow for better visibility */

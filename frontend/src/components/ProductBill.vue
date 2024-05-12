@@ -13,7 +13,7 @@
                         </div>
                         <div class="col-md-3 col-lg-3 col-xl-4">
                             <h4 class="font-weight-bold mb-0" style="color: #d35ea4;">{{ f.product_name }}</h4>
-                            <h6 class="mb-0" style="color: black; font-size: 15px;">Đơn giá: {{ formatCurrency(f.product_price) }}</h6>
+                            <h6 class="mb-0" style="color: black; font-size: 15px;">Đơn giá: {{ formatCurrency(item_price[index]) }}</h6>
                         </div>
                         <div class="col-md-3 col-lg-2 col-xl-2">
                             <input type="number" id="number" v-model="item_qty[index]" @change="onQtyChange(index,f.product_name)"
@@ -61,6 +61,7 @@ export default {
             allProductsInBill: [],
             item_qty: [],
             itemNotes: [],
+            item_price: [],
             tablePrice:'',
         }
     },
@@ -116,6 +117,7 @@ export default {
                     this.allProductsInBill.push(element.product_id);
                     this.item_qty.push(element.item_qty)
                     this.itemNotes.push(element.item_notes)
+                    this.item_price.push(element.product_price)
                 });
             }
         },
@@ -162,7 +164,7 @@ export default {
             let i = 0;
             while (i < this.item_qty.length) { // Sửa lại thành this.item_qty
                 if (this.filterProducts[i].product_category=="Khai Vị" || this.filterProducts[i].product_category=="Món Chính" || this.filterProducts[i].product_category=="Tráng Miệng") {
-                    subtotal = subtotal + parseInt(this.filterProducts[i].product_price);
+                    subtotal = subtotal + parseInt(this.item_price[i]);
                 }
                 i = i + 1;
             }

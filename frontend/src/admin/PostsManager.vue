@@ -6,9 +6,9 @@
         <br>
         <div class="p-5" style="border-radius: 20px; background-color: #f2f2f2;box-shadow: 0 1px 1px #999999; height: 785px;">  
            <div class="row justify-content-center">
-                <div class="col-7 p-5">
+                <div class="col-7">
                     <div class="pr-5 pl-5">
-                        <div class="" style="overflow-y: auto; height: 700px; background-color: white; border-radius: 20px;">
+                        <div class="" style="overflow-y: auto; height: 730px; background-color: #f2f2f2; border-radius: 20px;">
                             <div style="width: 90%; margin-left: 4%;">
                                 <div v-for="(p, index) in postList.slice().reverse()" :key="index">
                                     <div class="PostCard p-3 mt-3" style="background-color: #ffccdd; border-radius: 20px;">
@@ -21,8 +21,8 @@
                                                 <h5 style="font-weight: 800;">{{p.post_when}}</h5>
                                             </div>
                                             <div class="col-1 text-right pt-2">
-                                                <i v-if="p.post_hide==0" @click="hidePost(index)" class="fa fa-lock" aria-hidden="true" style="font-size: 25px;"></i>
-                                                <i v-if="p.post_hide!=0" @click="hidePost(index)" class="fa fa-unlock-alt" aria-hidden="true" style="font-size: 25px;"></i>
+                                                <i v-if="p.post_hide==0" @click="hidePost(postList.length-index-1)" class="fa fa-lock" aria-hidden="true" style="font-size: 25px;"></i>
+                                                <i v-if="p.post_hide!=0" @click="hidePost(postList.length-index-1)" class="fa fa-unlock-alt" aria-hidden="true" style="font-size: 25px;"></i>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -40,6 +40,7 @@
                                                 <img :src="p.post_img" alt="Selected image" style="width: 100%; border-radius: 10px;">
                                             </div>
                                         </div>
+                                        <br>
                                     </div>     
                                 </div>
                             </div>

@@ -33,6 +33,11 @@
         </div>
         <div class="row">
           <button class="btn">
+            <router-link to="/admin/vouchermanager"><h2>Voucher</h2></router-link>
+          </button>
+        </div>
+        <div class="row">
+          <button class="btn">
             <router-link to="/admin/postsmanager"><h2>Posts</h2></router-link>
           </button>
         </div>
@@ -42,12 +47,21 @@
           </button>
         </div>
       </div>
+      <div class="menu" style="margin-top: 310px;">
+          <div class="row">  
+            <button class="btn">
+              <router-link to="/admin/" ><h2>Log Out</h2></router-link>
+            </button>
+          </div>
+      </div>
     </aside>
   </template>
   
   <script>
   export default {
     name: 'Sidebar'
+
+
   };
   </script>
   

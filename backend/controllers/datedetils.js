@@ -61,8 +61,7 @@ export const updateDateDetails=(req,res)=>{
 
 // delete a item in cart
 export const deleteDateDetailsbyName=(req,res)=>{
-    const data = req.body;
-    deleteItemIndatedetails(data,(err,results)=> {
+    deleteItemIndatedetails(req.params.id,(err,results)=> {
         if (err) {
             res.send(err);
         }else {

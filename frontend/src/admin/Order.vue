@@ -48,7 +48,7 @@
                             <div class="col-10 pt-3">
                                 <div class="row">
                                     <div class="col-1 text-right">
-                                        <button class="btn">
+                                        <button class="btn" @click="sendBillId(b.bill_id,b.user_id,b.date_id)">
                                             <h5 style="font-weight: 900;">#{{ b.bill_id }}</h5>
                                         </button>
                                     </div>
@@ -79,15 +79,15 @@
                                 </div>
                             </div>
                             <div class="col-1 px-0">
-                                <button v-if="b.bill_status==1" class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id,b.voucher_id)" 
+                                <button v-if="b.bill_status==1" class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id,b.voucher_id,b.bill_total)" 
                                     style="height: 50%;width: 70%; background-color: #40bf77; border-radius: 15px; margin-top: 15%; color: black;">
                                     Chấp Nhận
                                 </button>
-                                <button v-if="b.bill_status==2" class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id,b.voucher_id)" 
+                                <button v-if="b.bill_status==2" class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id,b.voucher_id,b.bill_total)" 
                                     style="height: 50%;width: 70%; background-color: #999999; border-radius: 15px; margin-top: 15%; color: black;">
                                     Xác Nhận
                                 </button>
-                                <button v-if="b.bill_status==3" class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id,b.voucher_id)" 
+                                <button v-if="b.bill_status==3" class="p-2" @click="nextStatusBtn(b.bill_id,b.bill_status,b.user_id,b.voucher_id,b.bill_total)" 
                                     style="height: 50%;width: 70%; background-color: #bfbfbf; border-radius: 15px; margin-top: 15%; color: black;">
                                     Hoàn Thành
                                 </button>
@@ -134,7 +134,7 @@ export default {
             showOrderDetails: false,
             sendId1: undefined,
             sendId2: undefined,
-            sendId3: undefined 
+            sendId3: undefined, 
         }
     },
 
@@ -150,7 +150,7 @@ export default {
     },
 
     computed: {
-        ...mapState(["allProducts", "admin"]),
+        ...mapState(["allProducts", "admin","voucher_value"]),
 
         orderCounts: function() {
             const counts = [];
@@ -258,7 +258,7 @@ export default {
         return null;
         },
 
-        async nextStatusBtn(id,bill_status,user_id,voucher_id) {
+        async nextStatusBtn(id,bill_status,user_id,voucher_id,total) {
             if (bill_status==1) {
                 let voucher = {
                     vc_status: 0,
@@ -283,10 +283,10 @@ export default {
                     console.error("Error Send email:", error);
                 }
             }
-            if (bill_status==3) {
+            if (bill_status==3 && total>=10000000) {
                 let voucher = {
                     user_id: user_id,
-                    vc_value: 1000000,
+                    vc_value: this.voucher_value,
                     vc_status:1
                 }
                 try {

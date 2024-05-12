@@ -9,17 +9,17 @@ import {
 
 // Hàm tính toán sự tương đồng cosine giữa hai người dùng
 function cosineSimilarity(user1, user2, data, totalProductCount) {
-    console.log(`=============${user2}================`);
+    console.log(`=============user_id:${user2}================`);
     // Lấy danh sách sản phẩm mà cả hai người dùng đều đã mua
     const user1Products = data.filter(entry => entry.user_id === user1).map(entry => entry.product_id);
     const user2Products = data.filter(entry => entry.user_id === user2).map(entry => entry.product_id);
-    console.log(`user1Products`,user1Products);
-    console.log(`user2Products`,user2Products);
+    console.log(`user ${user1} Products`,user1Products);
+    console.log(`user ${user2} Products`,user2Products);
     // Tính vector của mỗi người dùng
     const user1Vector = _.range(1, totalProductCount+1).map(product_id => user1Products.includes(product_id) ? 1 : 0);
     const user2Vector = _.range(1, totalProductCount+1).map(product_id => user2Products.includes(product_id) ? 1 : 0);
-    console.log(`user1Vector`,user1Vector);
-    console.log(`user2Vector`,user2Vector);
+    console.log(`Vector user ${user1} `,user1Vector);
+    console.log(`Vector user ${user2} `,user2Vector);
     // Tính toán cosine similarity
     const dotProduct = _.sum(_.zip(user1Vector, user2Vector).map(([a, b]) => a * b));
     console.log(`dotProduct`,dotProduct);
@@ -43,13 +43,11 @@ function recommendProducts(user, data, totalProductCount) {
             });
         }
     }
-
     // Sắp xếp các người dùng khác theo sự tương đồng giảm dần
     const sortedSimilarities = similarities.sort((a, b) => b.similarity - a.similarity);
     console.log(`sortedSimilarities`,sortedSimilarities);
     // Lấy lịch sử mua hàng của người dùng cụ thể
     const userProducts = data.filter(entry => entry.user_id === user).map(entry => entry.product_id);
-    
     // Tạo một tập hợp chứa tất cả các product_id đã mua bởi các người dùng có sự tương đồng cao
     const similarUsersProducts = new Set();
     for (let i = 0; i < sortedSimilarities.length; i++) {
@@ -59,44 +57,25 @@ function recommendProducts(user, data, totalProductCount) {
             similarUserProducts.forEach(product => similarUsersProducts.add(product));
         }
     }
-    
     // Lọc ra các product_id mà người dùng cụ thể chưa mua nhưng đã được mua bởi các người dùng có sự tương đồng cao
     const recommended = Array.from(similarUsersProducts).filter(product => !userProducts.includes(product));
     const recommendedProducts = recommended.slice(0,8);
     return recommendedProducts;
 }
 
-
-
-
-// export const recommended = (req, res) => { 
-//     const user = 0;
-//     console.log("total: ",total.total_product)
-//     createData((err, results) => {
-//         if (err) {
-//             console.error("Error fetching data from database:", error);
-//             res.status(500).json({ error: "Internal server error" });
-//         } else {
-//             res.json(recommendProducts(user, results));
-//         }
-//     });
-// }
-
 export const recommended = (req, res) => { 
     const user = parseInt(req.params.id, 10);
     console.log(`user: '${user}'`);
-    // Gọi hàm total_product để lấy tổng số sản phẩm
+   
     total_product((err, totalProductResult) => {
         if (err) {
             console.error("Error fetching total product count:", err);
             res.status(500).json({ error: "Internal server error" });
             return;
         }
-        
-        // Trích xuất giá trị tổng số sản phẩm từ kết quả
         const totalProductCount = totalProductResult.total_product;
         console.log("total: ",totalProductCount)
-        // Gọi hàm createData để lấy dữ liệu sản phẩm
+ 
         createData((err, dataResult) => {
             if (err) {
                 console.error("Error fetching data from database:", err);
@@ -104,10 +83,8 @@ export const recommended = (req, res) => {
                 return;
             }
 
-            // Gọi hàm recommendProducts để đề xuất sản phẩm cho người dùng
             const recommendations = recommendProducts(user, dataResult, totalProductCount);
-
-            // Trả về kết quả đề xuất
+        
             res.json(recommendations);
         });
     });

@@ -55,8 +55,8 @@ export const updatedatedetails = (data,result) => {
 
 
 // delete datedetails item
-export const deleteItemIndatedetails = (data,result) => {
-    db.query("DELETE FROM datedetails WHERE date_id = ? AND dd_name = ?;",[data.date_id, data.dd_name], (err,results)=> {
+export const deleteItemIndatedetails = (id,result) => {
+    db.query("DELETE FROM datedetails WHERE dd_id = ?;",[id], (err,results)=> {
         if (err){
             console.log(err);
             result(err,null);

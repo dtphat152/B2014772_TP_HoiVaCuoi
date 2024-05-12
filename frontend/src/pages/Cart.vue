@@ -15,8 +15,14 @@
 
                         <div class="col-lg-8">
                             <div class="p-5">
-                            <div class="d-flex justify-content-between align-items-center mb-5">
+                            <div class="d-flex justify-content-between align-items-center mb-5 row">
                                 <h1 class="mb-0" style="color: #FF0099; font-weight: 900;">Dánh sách Dịch Vụ</h1>
+                                <button class="btn mr-4 px-5 py-0" style="background-color: #999999; border-radius: 15px;">
+                                    <div class="row" @click="setQuantity()">
+                                        <h6 style="padding-top: 5px; font-weight: 800; margin-right: 3px; color: #f2f2f2;">Điền số lượng</h6>
+                                        <i class="fa-solid fa-feather" style="font-size: 20px; color: #f2f2f2;"></i>
+                                    </div>
+                                </button>
                             </div>
                             <hr class="my-4">
 
@@ -75,13 +81,11 @@
                                 </template>
                                 </div>
                             </div>
-                        <div class="pt-5">
-                            <router-link to="/booking" class="text-black-50"><h5 style="font-weight: 800;">Tiếp tục Đặt hàng</h5>
-                            </router-link>
+                        <div class="pt-5 row">
+                            <router-link to="/booking" class=""><h5 style="font-weight: 800; color: #999999;">Tiếp tục đặt hàng</h5></router-link>       
                         </div>
                     </div>
                 </div>
-
                 <div class="col-lg-4 bg-grey">
                     <div class="p-5">
                     <h3 class="mb-5 mt-2 pt-1" style="color: #FF0099; font-weight: 900; ">Thông tin</h3>
@@ -133,7 +137,7 @@
                                 <input type="time" :id="'time-' + index" v-model="this.selectedTime[index]" style=" background: #f2f2f2; font-weight: 900; font-size: 14px; margin-bottom: 5px;">
                             </div>
                             <div class="col-1 ">
-                                <button class="btn" @click="removeDateBtn(index)"
+                                <button class="btn" @click="removeDateBtn(this.selectedId[index],index)"
                                     style="border-radius: 10px; background-color: #f2f2f2;">
                                     <h5 style="font-weight: 900;">Xóa</h5>
                                 </button>
@@ -257,6 +261,7 @@ export default {
             checkoutObj: {notes:"", phone: "", address: ""},
             dateID: '',
             date: '',
+            selectedId: [],
             selectedTime: [],
             selectedGuest: [],
             tempGuest: '',
@@ -281,6 +286,13 @@ export default {
         this.getNum();
         this.getVoucher();
     },
+
+    // watch : {
+    //     selectedGuest: {
+    //         handler: 'setQuantity', 
+    //         immediate: true 
+    //     },
+    // },
 
     computed: {
         ...mapState(["allProducts", "user"]),
@@ -445,27 +457,21 @@ export default {
             } 
         },
 
-        async removeDateBtn(index) {
+        async removeDateBtn(id,index) {
             let temp = index + 1 ;
+            console.log(id)
             let confirmResult = window.confirm("Xác Nhận Hủy Suất Thứ " + temp );
             if (confirmResult) {
-                let data = {
-                    date_id: this.dateID,
-                    dd_name: temp,
-                };
-                console.log(data);
-                try {
-                    await axios.delete(`/datedetails/detail/`, { data });            
-                        console.log("Xóa thành công")
-                        this.$refs.alert.showAlert('success', 'Success!', 'The Meat Set is deleted!')
-                        this.selectedTime.splice(index, 1)
-                        this.selectedGuest.splice(index, 1)                          
-                } catch (error) {
-                    console.error("Lỗi khi thực hiện xóa: ", error);
-                }
-
-                this.getNum();
-                // this.setQuantity();
+            try {
+                await axios.delete(`/datedetails/detail/${id}`);            
+                    console.log("Xóa thành công")
+                    this.$refs.alert.showAlert('success', 'Success!', 'Suất đãi tiệc đã được xóa!')
+                    this.selectedTime.splice(index, 1)
+                    this.selectedGuest.splice(index, 1)   
+                    this.getNum();                    
+            } catch (error) {
+                console.error("Lỗi khi thực hiện xóa: ", error);
+            }
             }
         },
         async updateDateBtn(index) {
@@ -522,22 +528,24 @@ export default {
                     let response = await axios.get(`/datedetailsnobill/${this.dateID}`);
                     let data = response.data;
                     if (data && data.length > 0) {
+                        let selectedIds = [];
                         let selectedTimes = [];
                         let selectedGuests = [];
                         this.tableNum=0;
                         // Lặp qua mỗi phần tử trong mảng data
                         data.forEach(item => {
+                            selectedIds.push(item.dd_id);
                             selectedTimes.push(item.dd_time);
                             selectedGuests.push(item.dd_guest);
                             this.tableNum += item.dd_guest
                         });
                         // Gán giá trị của các mảng cho selectedTime và selectedGuest
+                        this.selectedId = selectedIds;
                         this.selectedTime = selectedTimes;
                         this.selectedGuest = selectedGuests;
 
                         
                         this.tableNum =  Math.ceil(this.tableNum / 10);
-                        this.setQuantity();
                     } else {
                         this.tableNum = 0;
                     }
@@ -548,42 +556,52 @@ export default {
         },
 
         async setQuantity(){
+            let maxElement = 0
+            if (this.selectedGuest.length > 0) {
+                maxElement = Math.max(...this.selectedGuest);
+            } else {
+                maxElement = 0
+            }
             try {
                 this.itemQuantity.forEach((qty, index) => {
-                            if (this.filterProducts[index].product_category === 'Khai Vị' 
-                             || this.filterProducts[index].product_category === 'Món Chính'
-                             || this.filterProducts[index].product_category === 'Tráng Miệng') {
-                                this.itemQuantity[index] = this.tableNum;
-                            }
-                            if (this.filterProducts[index].product_category === 'Rạp Che' ) {
-                                // if (this.itemQuantity[index] < Math.ceil(this.tableNum / 2)) 
-                                this.itemQuantity[index] = Math.ceil(this.tableNum / 2);
-                            }
-                            if (this.filterProducts[index].product_category === 'Bàn Ghế' ) {
-                                this.itemQuantity[index] =this.tableNum;
-                            }
-                            let data = {
-                                user_id: parseInt(this.user.user_id),
-                                product_id: parseInt(this.cartItem[index]),
-                                item_qty: this.itemQuantity[index],
-                                item_notes: this.itemNotes[index]
-                            };
-                            axios.put("/cartItem/", data)
-                            
-                        });
+                    if (this.filterProducts[index].product_category === 'Khai Vị' 
+                        || this.filterProducts[index].product_category === 'Món Chính'
+                        || this.filterProducts[index].product_category === 'Tráng Miệng') {
+                        this.itemQuantity[index] = this.tableNum;
+                    }
+                    if (this.filterProducts[index].product_category === 'Rạp Che' ) {
+                        // if (this.itemQuantity[index] < Math.ceil(this.tableNum / 2)) 
+                        this.itemQuantity[index] = Math.ceil(maxElement / 20);
+                    }
+                    if (this.filterProducts[index].product_category === 'Thức Uống' ) {
+                        this.itemQuantity[index] = this.tableNum;
+                    }
+                    let data = {
+                        user_id: parseInt(this.user.user_id),
+                        product_id: parseInt(this.cartItem[index]),
+                        item_qty: this.itemQuantity[index],
+                        item_notes: this.itemNotes[index]
+                    };
+                    axios.put("/cartItem/", data)
+                    
+                });
             } catch (error) {
                 console.error('Lỗi khi cài Số Lượng:', error);
             }
         },
 
         async saveDateBtn() {
+            const response = await axios.get('/date/' + this.user.user_id);
+            if (response.data.length > 0) {
+                this.dateID = response.data[0].date_id;
+            } 
+            
             let data = {
                 date_id: this.dateID,
                 dd_name: this.selectedTime.length + 1,
                 dd_time: this.tempTime,
                 dd_guest: this.tempGuest,
             };
-
             try {
                 await axios.post('/datedetails/', data);
                 console.log('Dữ liệu đã được submit thành công:');
@@ -596,6 +614,7 @@ export default {
             } catch (error) {
                 console.error('Lỗi khi submit dữ liệu:', error);
             }
+            
         },
 
         async onQtyChange(i) {
@@ -654,15 +673,22 @@ export default {
             this.itemQuantity.splice(index, 1);
         },
 
-        async sendBillDetails(billId, productId, qty , notes) {
+        async sendBillDetails(billId, productId, qty , notes, price) {
             let billDetails = {
                 bill_id: parseInt(billId),
                 product_id: parseInt(productId),
                 item_qty: parseInt(qty),
                 item_notes: notes,
+                product_price: price
             }
 
             await axios.post("/billdetails", billDetails);
+        },
+
+        async getProductPrice(id){
+            let rsp = axios.get(`/products/${id}`);
+            let price = rsp.data.product_price;
+            return price;
         },
 
         async checkOutBtn() {
@@ -677,7 +703,7 @@ export default {
                 }
 
                 this.cartItem.forEach((productId, index) => {
-                    this.sendBillDetails(billId, productId, this.itemQuantity[index], this.itemNotes[index])
+                    this.sendBillDetails(billId, productId, this.itemQuantity[index], this.itemNotes[index],this.getProductPrice(productId))
                 });
 
                 var now = new Date();
@@ -731,4 +757,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+#btnnone:hover {
+    all: initial;
+}
+
+</style>

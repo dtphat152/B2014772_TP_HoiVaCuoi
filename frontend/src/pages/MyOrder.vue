@@ -18,14 +18,14 @@
                             class="col-1 btn ml-1" style="background-color:MediumSeaGreen; border-radius: 10px;"> Thanh Toán Cọc</button>
                             <button v-if="showPayment && b.bill_status==2" @click="sendMomo(b.bill_status,b.bill_id,b.bill_total,b.bill_deposits)"
                             class="col-1 btn ml-1" style="background-color:white; border-radius: 10px; color: Violet; font-weight: 900;">MOMO</button>
-                            <button v-if="showPayment && b.bill_status==2" @click="sendVnPay(b.bill_status,b.bill_id,b.bill_total)"
+                            <button v-if="showPayment && b.bill_status==2" @click="sendVnPay(b.bill_status,b.bill_id,b.bill_total,b.bill_deposits)"
                             class="col-1 btn ml-1" style="background-color:white; border-radius: 10px; color: Violet; font-weight: 900;">VN PAY</button>
 
                         <button v-if="b.bill_status==3" @click="showPaymentBTN()"
                             class="col-1 btn ml-1" style="background-color:SteelBlue; border-radius: 10px;"> Thanh Toán Đơn</button>
                             <button v-if="showPayment && b.bill_status==3" @click="sendMomo(b.bill_status,b.bill_id,b.bill_total,b.bill_deposits)"
                             class="col-1 btn ml-1 " style="background-color:white; border-radius: 10px; color: Violet; font-weight: 900;">MOMO</button>
-                            <button v-if="showPayment && b.bill_status==3" @click="sendVnPay(b.bill_status,b.bill_id,b.bill_total)"
+                            <button v-if="showPayment && b.bill_status==3" @click="sendVnPay(b.bill_status,b.bill_id,b.bill_total,b.bill_deposits)"
                             class="col-1 btn ml-1 " style="background-color:white; border-radius: 10px; color: Violet; font-weight: 900;">VN PAY</button>
                     </div>
                 </div>

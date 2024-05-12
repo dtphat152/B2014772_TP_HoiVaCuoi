@@ -72,7 +72,10 @@ export default {
         ...mapState(["allProducts", "user"]),
 
         filterProducts: function () {
-            return this.allProducts.filter((f) => f.product_name.toLowerCase().match(this.productObj.name.toLowerCase()))
+            return this.allProducts.filter((f) => 
+                f.product_name.toLowerCase().includes(this.productObj.name.toLowerCase()) ||
+                f.product_category.toLowerCase().includes(this.productObj.name.toLowerCase())
+            );
         },
         
     },

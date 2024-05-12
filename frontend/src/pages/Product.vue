@@ -31,7 +31,29 @@
             <div class="row">
                 <div class="col-2 d-flex justify-content-end"></div>
                 <div class="col-8"> 
-                    <Date></Date>
+                    <br>
+                    <div class="row d-flex justify-content-center" style="margin-top: 0px;">
+                        <br>
+                        <div class="col-8" style="width: 150px;">
+                        <br>
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-7 form-group py-0">
+                                <label style="width: 100%; padding: 0;" for="startDateInput">
+                                <h2 class="text-center" style="color: #FF0099; font-weight: 900;">Ngày Tổ Chức Tiệc Cưới</h2>
+                                </label>
+                                <input type="date" class="form-control" id="startDateInput" v-model="formattedStartDate"
+                                style="border: none; text-align: center; background: #ffb3cc; border-radius: 10px; font-weight: 900; font-size: 15px;" >
+                                <br>
+                            </div>
+                        </div>
+                        <div class="py-0" style="text-align: center;">
+                            <button type="button" class="btn" style="background-color: #FFC0CB; color: black; border-radius: 10px; font-weight: 900;" 
+                            @click="submitDate">Xác Nhận
+                            </button>
+                        </div>
+                        </div>
+                    </div>
+                    <br><br>
                 </div>
                 <div class="col-2 d-flex justify-content-start"></div>
                 <br>
@@ -187,7 +209,6 @@
 </template>
 
 <script>
-import Date from "@/components/Date.vue"
 import DateDetails from "@/components/DateDetails.vue"
 import Combo from "@/components/Combo.vue"
 import QuickView from "@/components/QuickView.vue";
@@ -214,12 +235,16 @@ export default {
 
             timecolor: '#FF0099',
 
+            selectedDate: { date: null },
+            checkDate: true,
+
         };
     },
 
     created() {
         this.$store.dispatch('autoUpdateProductsData'); // Gọi action để bắt đầu cập nhật tự động
         this.Time();
+        this.getDate();
     },
 
     computed: {
@@ -240,7 +265,6 @@ export default {
                     }
                 });
             }
-            
             return filteredProducts;
         },
 
@@ -259,8 +283,20 @@ export default {
 
         imageHeight() {
             return `calc(100% * 2 / 3)`;
-        }
+        },
+
+        formattedStartDate: {
+          get() {
+            // Chuyển đổi giá trị ngày từ đối tượng Date sang chuỗi có định dạng "yyyy-MM-dd"
+            return this.selectedDate.date ? this.formatDate(this.selectedDate.date) : null;
+          },
+          set(value) {
+            // Chuyển đổi giá trị ngày từ chuỗi có định dạng "yyyy-MM-dd" sang đối tượng Date
+            this.selectedDate.date = value ? new Date(value) : null;
+          },
+        },
     },
+
     methods: {
         formatCurrency(amount) {
           if (!amount) return '';
@@ -338,8 +374,96 @@ export default {
         closeView: function () {
             this.showQuickView = !this.showQuickView;
         },
+
+        async getDate() {
+            if (this.user) {
+                try {
+                let existDate = await axios.get('/date/' + this.user.user_id);
+                if (existDate.data.length > 0) {
+                    this.selectedDate.date = new Date(existDate.data[0].date_date);  
+                } else {
+                    // Gán giá trị mặc định nếu không có dữ liệu
+                    this.selectedDate.date = new Date('');
+                    console.log('Không có dữ liệu ngày tháng.');
+                }
+                } catch (error) {
+                console.error('Lỗi khi lấy ngày tháng:', error);
+                }
+            }
+        },
+        formatDate(date) {
+            if (date) {
+                const year = date.getFullYear();
+                let month = date.getMonth() + 1;
+                let day = date.getDate();
+
+                month = month < 10 ? `0${month}` : month;
+                day = day < 10 ? `0${day}` : day;
+
+                // Trả về chuỗi có định dạng "yyyy-MM-dd"
+                return `${year}-${month}-${day}`;
+            }
+            return null;
+        },
+        formatDateToSubmit(date) {
+            if (date) {
+                const year = date.getFullYear();
+                let month = date.getMonth() + 1;
+                let day = date.getDate();
+
+                month = month < 10 ? `0${month}` : month;
+                day = day < 10 ? `0${day}` : day;
+
+                // Trả về chuỗi có định dạng "yyyy-MM-dd"
+                return `${month}-${day}-${year}`;
+            }
+            return null;
+        },
+        async submitDate() {
+            if (this.user) {
+                const today = new Date();
+                const yesterday = new Date(today);
+                yesterday.setDate(yesterday.getDate() - 1);
+
+                if (this.selectedDate.date < yesterday) {
+                    this.$refs.alert.showAlert('error', 'Vui lòng chọn lại ngày khác!', 'Bạn đã chọn ngày ở quá khứ!');
+                    return;
+                }
+                // Kiểm tra ngày không quá xa sau 2 tháng
+                const twoMonthsLater = new Date(today);
+                twoMonthsLater.setMonth(twoMonthsLater.getMonth() + 2);
+
+                if (this.selectedDate.date.getTime() > twoMonthsLater.getTime()) {
+                    this.$refs.alert.showAlert('error', 'Vui lòng chọn lại ngày khác!', 'Ngày quá xa sau 2 tháng!');
+                    return;
+                }
+
+                let dateSelect = {
+                date_date: this.formatDateToSubmit(this.selectedDate.date),
+                user_id: parseInt(this.user.user_id),
+                };
+
+                try {
+                let existDate = await axios.get('/date/' + this.user.user_id);
+
+                if (existDate.data.length > 0) {
+                    await axios.put("/date", dateSelect);
+                    this.$refs.alert.showAlert('success', 'Thành công!', 'Ngày Tổ Chức đã được thay đổi!');
+                } else {
+                    await axios.post("/date", dateSelect);
+                    this.$refs.alert.showAlert('success', 'Success!', 'Ngày Tổ Chức đã được lưu lại!');
+                }
+                } catch (error) {
+                console.error('Error submitting date:', error);
+                this.$refs.alert.showAlert('error', 'Error!', 'Lỗi khi xác nhận ngày Tổ chức!');
+                }
+            } else {
+                this.$refs.alert.showAlert('warning', 'Xin lỗi!', 'Bạn chưa đăng nhập!');
+            }
+        },
+
     },
-    components: { VueBasicAlert, QuickView , Date, DateDetails, Combo }
+    components: { VueBasicAlert, QuickView, DateDetails, Combo }
 };
 </script>
 

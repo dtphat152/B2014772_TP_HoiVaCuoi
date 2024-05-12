@@ -73,6 +73,8 @@ export default {
             transId: null,
             message: null,
             payType: null,
+
+            voucher_value: 0
         };
     },
 
@@ -103,9 +105,17 @@ export default {
        
         if (this.Amount!='' && this.TransactionStatus=='00') this.sendInfoPayment();
         if (this.amount!='' && this.message=='Successful.') this.sendMoMoPayment();
+
+        this.getVoucher();
     },
 
+    
     methods: {
+        async getVoucher(){
+            let rsp = await axios.get(`/voucher/value`)
+            this.voucher_value = rsp.data.vv_value
+        },
+
         async sendInfoPayment() {
             console.log("sendInfoPayment");
 
@@ -141,6 +151,25 @@ export default {
                         // } catch (error) {
                         //     console.error("Error send mail:", error);
                         // }
+                        if (this.OrderInfo.includes('Kết Sổ')){
+                            let rsp = await axios.get(`/billstatus/bill/${id}`)
+                            console.log("RSP: ",rsp.data);
+                            let total = rsp.data.bill_total
+                            let user_id = rsp.data.user_id
+                            if (total>=10000000) {
+                                let voucher = {
+                                    user_id: user_id,
+                                    vc_value: this.voucher_value,
+                                    vc_status:1
+                                }
+                                console.log("VC: ",voucher)
+                                try {
+                                    await axios.post(`/voucher`,voucher)
+                                } catch (error) {
+                                    console.error('Error in crate voucher',error)
+                                }
+                            }
+                        }
                     } catch (error) {
                         console.error("Error updating bill status:", error);
                     }
@@ -151,6 +180,7 @@ export default {
             window.confirm("Giao Dịch Không Thành Công (Transaction Failed)");
             }
         },
+
 
         extractIdFromTxnRef(txnRef, startChar = 'o', endChar = 'i') {
             const startIndex = txnRef.indexOf(startChar) + 1;
@@ -179,6 +209,24 @@ export default {
                 // } catch (error) {
                 //     console.error("Error send mail:", error);
                 // }
+                if (this.orderInfo.includes('Kết Sổ')){
+                            let rsp = await axios.get(`/billstatus/bill/${id}`)
+                            let total = rsp.data.bill_total
+                            let user_id = rsp.data.user_id
+                            if (total>=10000000) {
+                                let voucher = {
+                                    user_id: user_id,
+                                    vc_value: this.voucher_value,
+                                    vc_status:1
+                                }
+                                console.log("VC: ",voucher)
+                                try {
+                                    await axios.post(`/voucher`,voucher)
+                                } catch (error) {
+                                    console.error('Error in crate voucher',error)
+                                }
+                            }
+                        }
             } catch (error) {
                 console.error("Error updating bill status:", error);
             }

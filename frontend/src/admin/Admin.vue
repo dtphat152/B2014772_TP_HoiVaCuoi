@@ -30,6 +30,7 @@
 
 <script>
 import { mapMutations } from "vuex";
+import axios from "axios"
 export default {
     name: 'Admin',
 
@@ -44,9 +45,9 @@ export default {
     },
 
     methods: {
-        ...mapMutations(["setAdmin"]),
+        ...mapMutations(["setAdmin","setVoucherValue"]),
 
-        handleSubmit(e) {
+        async handleSubmit(e) {
             this.errors = [];
             if (!this.adminObj.pass) {
                 this.errors.push('Password is required');
@@ -60,6 +61,9 @@ export default {
                 if (this.adminObj.pass === this.keypass && this.adminObj.name === this.keyname) {
                     this.matchAdmin={"name":this.keyname};
                     this.setAdmin(this.matchAdmin);
+                    let rsp = await axios.get(`/voucher/value`)
+                    let data = rsp.data
+                    this.setVoucherValue(data.vv_value);
                     this.$router.push("/admin/adminHome");
                 }
                 else {

@@ -7,6 +7,7 @@ const store = createStore({
             allProducts: [],
             user: undefined,
             admin: undefined,
+            voucher_value: null
         }
     },
     mutations: {
@@ -18,24 +19,27 @@ const store = createStore({
         },
         setAdmin(state, payload){
             state.admin = payload;
+        },
+        setVoucherValue(state, value) {
+          state.voucher_value = value;
         }
     },
     actions: {
-        autoUpdateProductsData({ dispatch }) {
-            setInterval(() => {
-              dispatch('getProductsData'); // Gọi action để lấy dữ liệu từ server
-            }, 1000); // Gọi lại action mỗi 1000ms (1 giây)
-          },
-          async getProductsData(context){
-            await axios.get('/products')
-              .then(function (response) {
-                context.commit("setProductsData", response.data);
-              })
-              .catch(function (error) {
-                console.log(error);
-              });
-          },
+      autoUpdateProductsData({ dispatch }) {
+        setInterval(() => {
+            dispatch('getProductsData'); // Gọi action để lấy dữ liệu từ server
+          }, 1000); // Gọi lại action mỗi 1000ms (1 giây)
+      },
 
+      async getProductsData(context){
+        await axios.get('/products')
+          .then(function (response) {
+            context.commit("setProductsData", response.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
     }
 })
 

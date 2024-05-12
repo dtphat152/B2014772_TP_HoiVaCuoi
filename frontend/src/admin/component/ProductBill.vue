@@ -13,7 +13,7 @@
                         </div>
                         <div class="col-md-3 col-lg-3 col-xl-4">
                             <h4 class="text-black mb-0" style="color: #660066; font-weight: 900;">{{ f.product_name }}</h4>
-                            <h5 class="mb-0" style="font-weight: 900;">Đơn giá: {{ formatCurrency(f.product_price) }}</h5>
+                            <h5 class="mb-0" style="font-weight: 900;">Đơn giá: {{ formatCurrency(item_price[index]) }}</h5>
                         </div>
                         <div class="col-md-3 col-lg-2 col-xl-2">
                             <input type="number" id="number" v-model="item_qty[index]" @change="onQtyChange(index,f.product_name)"
@@ -70,6 +70,7 @@ export default {
             allProductsInBill: [],
             item_qty: [],
             itemNotes: [],
+            item_price: [],
             tablePrice: '',
             quantity: [],
         }
@@ -114,6 +115,7 @@ export default {
                 data.forEach(element => {
                     this.allProductsInBill.push(element.product_id);
                     this.item_qty.push(element.item_qty);
+                    this.item_price.push(element.product_price);
                     this.itemNotes.push(element.item_notes);
                     this.quantity.push(element.refund);
                 });
@@ -200,14 +202,14 @@ export default {
                             bill_id: this.Bill[0],
                             product_id: this.allProductsInBill[index],
                             refund: this.quantity[index],
-                            value_refund : parseInt(this.filterProducts[index].product_price) * this.quantity[index]
+                            value_refund : parseInt(this.item_price[index]) * this.quantity[index]
                         }
                         await axios.put("/billdetails/refund", data); 
                         console.log("Successfully add product to refund:", this.Bill[0] , this.allProductsInBill[index], this.quantity[index], data.value_refund);
                     } catch (error) {
                         console.error("Error add product to refund:", error);
                     }
-                    let amount = parseInt(this.filterProducts[index].product_price) * this.quantity[index];
+                    let amount = parseInt(this.item_price[index]) * this.quantity[index];
                     console.log(amount)
                     let billdata = { 
                         bill_total: parseInt(this.calculateSummaryPrice() - amount),
@@ -262,7 +264,7 @@ export default {
         },
 
         calculateItemPrice: function (index) {
-            let a = parseInt(this.filterProducts[index].product_price) * this.item_qty[index];
+            let a = parseInt(this.item_price[index]) * this.item_qty[index];
             return a;
         },
 

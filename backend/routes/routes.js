@@ -116,6 +116,19 @@ import {
 } from "../controllers/post.js";
 
 import {
+    getToltalLoveController,
+    checkUserLoveController,
+    insertLoveController,
+    unLoveController
+} from "../controllers/love.js";
+
+import {
+    getToltalCommentController,
+    getCommentController,
+    insertCommentController,
+} from "../controllers/comment.js";
+
+import {
     sendEmailStatusController,
     sendEmailUpdateController,
     sendEmailRequestController,
@@ -154,13 +167,16 @@ import {
     updateStaffScheduleController,
     deleteAStaffScheduleController,
     deleteAllAStaffScheduleController,
-    deleteAllStaffScheduleByBillController
+    deleteAllStaffScheduleByBillController,
 } from "../controllers/staffschedule.js"
 
 import {
+    getAllVoucherController,
     getUserVoucherController,
     insertVoucherController,
-    updateVoucherStatusController
+    updateVoucherStatusController,
+    updateValueVoucherController,
+    getValueVoucherController
 } from "../controllers/voucher.js"
 
 const router = express.Router();
@@ -177,6 +193,20 @@ router.delete("/api/post/:id", deletePost);
 router.get("/api/postimage/:id", showImagesByPostId);
 router.post("/api/postimage", createImage);
 router.delete("/api/postimage/:id", deleteImage);
+
+
+////////////////////////// LOVE ////////////////////////////////
+
+router.get("/api/love/:id", getToltalLoveController);
+router.get("/api/love/check/:pid/:uid", checkUserLoveController);
+router.post("/api/love", insertLoveController);
+router.delete("/api/love/:pid/:uid", unLoveController);
+
+////////////////////////// COMMENT ////////////////////////////////
+
+router.get("/api/comment/total/:id", getToltalCommentController);
+router.get("/api/comment/:id", getCommentController);
+router.post("/api/comment", insertCommentController);
 
 ////////////////////////// Product ////////////////////////////////
 
@@ -224,7 +254,7 @@ router.get("/api/datedetails/:id", getDateDetails);
 router.get("/api/datedetailsnobill/:id", getDateDetailsNobillController);
 router.post("/api/datedetails/", addDateDetails);
 router.put("/api/datedetails/", updateDateDetails);
-router.delete("/api/datedetails/detail/", deleteDateDetailsbyName);
+router.delete("/api/datedetails/detail/:id", deleteDateDetailsbyName);
 router.delete("/api/datedetails/:id", deleteDateDetails);
 
 ////////////////////////// CART ////////////////////////////////
@@ -322,11 +352,12 @@ router.delete("/api/staffschedule/all/:id", deleteAllAStaffScheduleController);
 router.delete("/api/staffschedule/allbybill/:id", deleteAllStaffScheduleByBillController);  
     
 ////////////////////////// Voucher ////////////////////////////////
-
+router.get("/api/voucher/", getAllVoucherController);
 router.get("/api/voucher/user/:id", getUserVoucherController);
 router.post("/api/voucher", insertVoucherController);
 router.put("/api/voucher/status", updateVoucherStatusController);
-
+router.put("/api/voucher/value", updateValueVoucherController);
+router.get("/api/voucher/value", getValueVoucherController);
 // export default router
 export default router;
 

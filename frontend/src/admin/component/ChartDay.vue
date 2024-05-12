@@ -95,7 +95,7 @@ export default {
                 data: {
                     labels: labels,
                     datasets: [{
-                    label: 'Doanh thu theo ngày',
+                    label: 'Doanh Thu Theo Ngày',
                     data: data,
                     backgroundColor: '#ffb3cc',
                     borderRadius: 15,
@@ -120,7 +120,7 @@ export default {
                     plugins: {
                         legend: {
                             labels: {
-                                color: 'black' // Thiết lập màu chữ là trắng
+                                color: 'black' 
                             }
                         }
                     }

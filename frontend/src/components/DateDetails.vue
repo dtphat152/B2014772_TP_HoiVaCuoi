@@ -37,7 +37,7 @@
                         </div>
                         
                         <div class="col-3">
-                            <button class="btn" @click="removeBtn(index)"
+                            <button class="btn" @click="removeBtn(this.selectedId[index],index)"
                             style="background-color: #ffb3cc; border-radius: 10px; color: #404040;" >
                                 <i class="fa fa-trash"></i>
                             </button>
@@ -73,6 +73,7 @@
       return {
         selectedNum: 0,
         guestTotal: 0,
+        selectedId: [],
         selectedGuest: [],
         selectedTime: [],
         dateID: '',
@@ -144,10 +145,12 @@
                             if(response.data.length > 0){
                                 let data = response.data;
                                 if (data && data.length >= index) {
+                                    this.selectedId[index] = data[index - 1].dd_id;
                                     this.selectedTime[index] = data[index - 1].dd_time;
                                     this.selectedGuest[index] = data[index - 1].dd_guest;
                                     this.guestTotal += this.selectedGuest[index];
                                 } else {
+                                    this.selectedId[index] = '';
                                     this.selectedTime[index] = ''; 
                                     this.selectedGuest[index] = ''; 
                                 }
@@ -161,15 +164,11 @@
             }
         },
 
-        async removeBtn(index) {
+        async removeBtn(id,index) {
             let confirmResult = window.confirm("Xác Nhận Hủy Suất Thứ " + index);
             if (confirmResult) {
-                let data = {
-                    date_id: parseInt(this.dateID),
-                    dd_name: parseInt(index),
-                };
                 try {
-                    let response = await axios.delete(`/datedetails/detail/`, { data });
+                    let response = await axios.delete(`/datedetails/detail/${id}`); 
                     if (response.status >= 200 && response.status < 300) {
                         console.log("Xóa thành công");
                         this.$refs.alert.showAlert('success', 'Success!', 'Đã xóa suất đãi khách!');

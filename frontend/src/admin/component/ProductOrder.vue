@@ -92,8 +92,12 @@ export default {
         ...mapState(["allProducts"]),
 
         filterProducts: function () {
-            return this.allProducts.filter((f) => f.product_name.toLowerCase().match(this.productObj.name.toLowerCase()))
+            return this.allProducts.filter((f) => 
+                f.product_name.toLowerCase().includes(this.productObj.name.toLowerCase()) ||
+                f.product_category.toLowerCase().includes(this.productObj.name.toLowerCase())
+            );
         },
+
 
         currentRoute() {
             return this.$route.path;

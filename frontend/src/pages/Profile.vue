@@ -1,4 +1,5 @@
 <template>
+    <vue-basic-alert :duration="300" :closeIn="2000" ref="alert" />
     <div class="" style="padding-left: 250px; padding-right: 250px;">
         <div class="heading">
                 <h3 style="font-weight: 800;">Xin chào {{ this.user.user_name }}</h3><br>
@@ -162,8 +163,8 @@
                                         <h5 style="font-weight: 800;">{{p.post_when}}</h5>
                                     </div>
                                     <div class="col-1 text-right pt-2">
-                                        <i v-if="p.post_hide==0" @click="hidePost(index)" class="fa fa-lock" aria-hidden="true" style="font-size: 25px;"></i>
-                                        <i v-if="p.post_hide!=0" @click="hidePost(index)" class="fa fa-unlock-alt" aria-hidden="true" style="font-size: 25px;"></i>
+                                        <i v-if="p.post_hide==0" @click="hidePost(postList.length-index-1)" class="fa fa-lock" aria-hidden="true" style="font-size: 25px;"></i>
+                                        <i v-if="p.post_hide!=0" @click="hidePost(postList.length-index-1)" class="fa fa-unlock-alt" aria-hidden="true" style="font-size: 25px;"></i>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -282,6 +283,7 @@
 </template>
 
 <script>
+import VueBasicAlert from 'vue-basic-alert';
 import { mapState } from "vuex";
 import axios from "axios";
 export default {
@@ -391,11 +393,22 @@ export default {
                 }
                 await axios.put(`/post/${this.postList[index].post_id}`,data)
                 this.postList[index].post_hide = 0
-            } else window.confirm('Bạn không thể bỏ ẩn bài đăng này!')
+            } else this.$refs.alert.showAlert('warning', 'Xin lỗi!', 'Bạn không thể bỏ ẩn bài đăng này!')
         },
-        showUpPost(){
-            if (this.view==3) this.view=0 
-            else this.view = 3;
+        async showUpPost(){
+            let check = false
+            for (let index = 0; index < this.billList.length; index++) {
+                if (this.billList[index].bill_status>=4) {
+                    check = true
+                }  
+            }
+            let rsp = await axios.get(`/users/byid/${this.user.user_id}`)
+            let status = rsp.data.user_status
+            if (check && status=='active') {
+                console.log(this.user.user_status)
+                if (this.view==3) this.view=0 
+                else this.view = 3;
+            } else this.$refs.alert.showAlert('warning', 'Xin lỗi!', 'Bạn chưa thể Chia sẻ cảm xúc!')
         },
         openPostImage() {
             this.$refs.fileInput.click();
@@ -478,8 +491,14 @@ export default {
             let data = await axios.get('/users/' + this.user.user_email);
             let password = data.data.user_password;
             if (this.checkPass==password) this.view=2;
-            else if(this.checkPass=='') this.errPass = 'Vui lòng nhập Mật Khẩu!'
-            else this.errPass = 'Mật Khẩu Không Đúng! Vui lòng nhập lại!'
+            else if(this.checkPass=='') {
+                this.errPass = 'Vui lòng nhập Mật Khẩu!';
+                this.$refs.alert.showAlert('warning', 'Xin lỗi!', 'Mật Khẩu Không được bỏ trống!')
+            }
+            else {
+                this.errPass = 'Mật Khẩu Không Đúng! Vui lòng nhập lại!';
+                this.$refs.alert.showAlert('warning', 'Xin lỗi!', 'Mật Khẩu Không Đúng!')
+            }
             console.log("this.view",this.view)
         },
         async showEdit(){
@@ -539,7 +558,8 @@ export default {
                 console.log(data)
                 await axios.put("/users/", data);
                 this.showEdit();
-                }
+                this.$refs.alert.showAlert('success', 'Thành công!', 'Thông tin được thay đổi!')
+            }
         },
 
         handleFileChange(event) {
@@ -587,7 +607,9 @@ export default {
             }
         },
     },
-
+    components: {
+        VueBasicAlert
+    }
 };
 </script>
 

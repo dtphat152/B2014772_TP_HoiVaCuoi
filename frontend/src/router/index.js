@@ -30,6 +30,7 @@ import EditProduct from '../admin/EditProduct.vue';
 import EditCombo from '../admin/EditCombo.vue';
 import UserManager from "../admin/UserManager.vue";
 import PostsManager from "../admin/PostsManager.vue";
+import VoucherManager from "../admin/Voucher.vue";
 import Notfound from "../pages/Notfound.vue";
 
 const routes = [
@@ -162,6 +163,11 @@ const routes = [
     path: "/admin/postsmanager",
     name: "PostsManager",
     component: PostsManager,
+  },
+  {
+    path: "/admin/vouchermanager",
+    name: "VoucherManager",
+    component: VoucherManager,
   },
   {
     path: '/:pathMatch(.*)*',

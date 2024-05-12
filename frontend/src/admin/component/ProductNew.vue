@@ -136,7 +136,7 @@ export default {
         },
 
         async handleSubmit() {
-            let confirmResult = window.confirm(`Nội dung: Thêm mới ${this.productObj.name} với giá ${this.formatCurrency(this.productObj.price)} vào đơn hàng của bạn với số lượng ${this.ID[2]}?`);
+            let confirmResult = window.confirm(`Nội dung: Thêm mới ${this.productObj.name} với giá ${this.formatCurrency(this.productObj.price)} vào đơn hàng #${this.ID[0]} với số lượng ${this.ID[2]}?`);
             if (confirmResult && this.productObj.price!='') {
                 if (this.productObj.src!=this.images) {
                     let urlimg = '';

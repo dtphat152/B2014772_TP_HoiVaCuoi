@@ -60,7 +60,7 @@ export const getBillsByBill = (id,result) => {
             result(err,null);
         }
         else{
-            result(null,results);
+            result(null,results[0]);
         }
     });
 };
