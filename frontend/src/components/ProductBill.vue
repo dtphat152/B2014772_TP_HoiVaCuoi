@@ -3,25 +3,25 @@
         <div style="width: 95%;">
             <template v-for="(category, catIndex) in ['Khai Vị', 'Món Chính', 'Tráng Miệng','Thức Uống','Bàn Ghế','Rạp Che','Cổng Hoa','Sảnh Tiệc','Gia Tiên','Mâm Quả','Xe Hoa']" :key="catIndex">
                 <h3 class="mb-2 mb-2 font-weight-bold" style="color: #d35ea4;">{{ category }}</h3> 
-                <div v-for="(f, index) in filterProducts" :key="index">
-                    <div v-if="f.product_category === category" 
+                <div v-for="(f, index) in item_name" :key="index">
+                    <div v-if="item_category[index] === category" 
                     class="row mb-1 d-flex justify-content-between align-items-center" style="background-color: #f2f2f2; margin-left: 10px; border-radius: 10px;">
                         
                         <div class="col-md-2 col-lg-2 col-xl-2" style="padding-left: 0px;">
-                            <img :src="f.product_src" alt="" class="cart-product-img" 
+                            <img :src="item_src[index]" alt="" class="cart-product-img" 
                             style="width: 100px; border-radius: 10px; ">
                         </div>
                         <div class="col-md-3 col-lg-3 col-xl-4">
-                            <h4 class="font-weight-bold mb-0" style="color: #d35ea4;">{{ f.product_name }}</h4>
+                            <h4 class="font-weight-bold mb-0" style="color: #d35ea4;">{{ f }}</h4>
                             <h6 class="mb-0" style="color: black; font-size: 15px;">Đơn giá: {{ formatCurrency(item_price[index]) }}</h6>
                         </div>
                         <div class="col-md-3 col-lg-2 col-xl-2">
-                            <input type="number" id="number" v-model="item_qty[index]" @change="onQtyChange(index,f.product_name)"
+                            <input type="number" id="number" v-model="item_qty[index]" @change="onQtyChange(index,f)"
                             class="form-control " 
                             style="border: none; text-align: center; background:#ffb3cc; border-radius: 10px; color: black; font-weight: 900;">
                         </div>
                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                            <button class="btn font-weight-bold" @click="removeBtn(f.product_name)" 
+                            <button class="btn font-weight-bold" @click="removeBtn(f)" 
                              style="background-color: #ffb3cc; color: black; border-radius: 10px;">
                                 <i class="fa fa-trash"></i>
                             </button>
@@ -62,6 +62,9 @@ export default {
             item_qty: [],
             itemNotes: [],
             item_price: [],
+            item_category: [],
+            item_name: [],
+            item_src: [],
             tablePrice:'',
         }
     },
@@ -118,6 +121,9 @@ export default {
                     this.item_qty.push(element.item_qty)
                     this.itemNotes.push(element.item_notes)
                     this.item_price.push(element.product_price)
+                    this.item_name.push(element.product_name)
+                    this.item_category.push(element.product_category)
+                    this.item_src.push(element.product_src)
                 });
             }
         },

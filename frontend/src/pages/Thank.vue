@@ -152,8 +152,10 @@ export default {
                         //     console.error("Error send mail:", error);
                         // }
                         if (this.OrderInfo.includes('Kết Sổ')){
+                            await this.getVoucher()
                             let rsp = await axios.get(`/billstatus/bill/${id}`)
                             console.log("RSP: ",rsp.data);
+                            console.log("this.voucher_value: ",this.voucher_value);
                             let total = rsp.data.bill_total
                             let user_id = rsp.data.user_id
                             if (total>=10000000) {

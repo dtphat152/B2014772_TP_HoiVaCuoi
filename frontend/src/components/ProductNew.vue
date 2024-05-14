@@ -23,6 +23,7 @@
                                             <option>Khai Vị</option>
                                             <option>Món Chính</option>
                                             <option>Tráng Miệng</option>
+                                            <option>Thức Uống</option>
                                             <option>Bàn Ghế</option>
                                             <option>Rạp Che</option>
                                             <option>Cổng Hoa</option>

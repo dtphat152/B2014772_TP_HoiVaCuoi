@@ -23,6 +23,7 @@
                                             <option>Khai Vị</option>
                                             <option>Món Chính</option>
                                             <option>Tráng Miệng</option>
+                                            <option>Thức Uống</option>
                                             <option>Bàn Ghế</option>
                                             <option>Rạp Che</option>
                                             <option>Cổng Hoa</option>
@@ -167,10 +168,19 @@ export default {
                 let billDetails = {
                     bill_id: parseInt(this.ID[0]),
                     product_id: parseInt(this.productObj.id),
-                    item_qty: parseInt(this.ID[2])
+                    item_qty: parseInt(this.ID[2]),
+                    product_price: this.productObj.price,
+                    product_name: this.productObj.name,
+                    product_category: this.productObj.cat,
+                    product_src: this.productObj.src,
                 };
                 try {
-                    await axios.post("/billdetails", billDetails);
+                    try {
+                        await axios.post("/billdetails", billDetails);
+                    } catch (error) {
+                        console.error("Error billdetails:", error);
+                    }
+                    
                     let billdata = { 
                         bill_total: this.ID[3] + parseInt(this.productObj.price*this.ID[2]),
                     };

@@ -57,18 +57,48 @@ export default {
             checkOTP: false,
             errorObj: { passErr: [], confirmErr: [], },
             user_id: '',
+            check: '',
         }
     },
 
     created() {
-        const hash = this.$route.params.token;
-        const zIndex = hash.indexOf('z');
-        if (zIndex !== -1) {
-            this.user_id = hash.substring(0, zIndex);
-        }
+        this.getToken();
     },
 
     methods: {
+
+        async getToken() {
+    const hash = this.$route.params.token;
+    const zIndex = hash.indexOf('z');
+    if (zIndex !== -1) {
+        this.user_id = hash.substring(0, zIndex);
+        console.log("Extracted user_id:", this.user_id);  // Debugging line
+    }
+    try {
+        const rsp = await axios.get(`/resetpass/${this.user_id}`);
+        if (rsp.data && rsp.data.length > 0) {
+            const resetToken = `${this.user_id}z${rsp.data[0].resetToken}`;
+            if (this.$route.params.token === resetToken) {
+                // Token hợp lệ, cho phép truy cập vào route
+                console.log("HOP LE");
+                this.check = true;
+            } else {
+                // Token không hợp lệ
+                this.check = false;
+                this.$router.push('/notfound');
+            }
+        } else {
+            // Không có dữ liệu
+            this.check = false;
+            this.$router.push('/notfound');
+        }
+    } catch (error) {
+        console.error('Error in getToken:', error);
+        this.check = false;
+        this.$router.push('/notfound');
+    }
+},
+
 
         async handleSubmitOTP(e) {
             e.preventDefault();

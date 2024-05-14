@@ -3,30 +3,30 @@
         <div style="width: 95%;">
             <template v-for="(category, catIndex) in ['Khai Vị', 'Món Chính', 'Tráng Miệng','Thức Uống','Bàn Ghế','Rạp Che','Cổng Hoa','Sảnh Tiệc','Gia Tiên','Mâm Quả','Xe Hoa']" :key="catIndex">
                 <h3 class="mb-2 mb-2" style="color: #d35ea4; font-weight: 900;">{{ category }}</h3>
-                <div v-for="(f, index) in filterProducts" :key="index">
-                    <div v-if="f.product_category === category" 
+                <div v-for="(f, index) in item_name" :key="index">
+                    <div v-if="item_category[index] === category" 
                     class="row mb-1 d-flex justify-content-between align-items-center" style="background-color: #f08faf; margin-left: 10px; border-radius: 10px;">
                         
                         <div class="col-md-2 col-lg-2 col-xl-2" style="padding-left: 0px;">
-                            <img :src="f.product_src" alt="" class="cart-product-img" 
+                            <img :src="item_src[index]" alt="" class="cart-product-img" 
                             style="width: 100px; border-radius: 10px; ">
                         </div>
                         <div class="col-md-3 col-lg-3 col-xl-4">
-                            <h4 class="text-black mb-0" style="color: #660066; font-weight: 900;">{{ f.product_name }}</h4>
+                            <h4 class="text-black mb-0" style="color: #660066; font-weight: 900;">{{ f }}</h4>
                             <h5 class="mb-0" style="font-weight: 900;">Đơn giá: {{ formatCurrency(item_price[index]) }}</h5>
                         </div>
                         <div class="col-md-3 col-lg-2 col-xl-2">
-                            <input type="number" id="number" v-model="item_qty[index]" @change="onQtyChange(index,f.product_name)"
+                            <input type="number" id="number" v-model="item_qty[index]" @change="onQtyChange(index,f)"
                             class="form-control " min="0" max="1000" 
                             style="border: none; text-align: center; background: #d3d3d3; border-radius: 10px; color: black; font-weight: 900;">
                         </div>
                         <div class="col-md-2 col-lg-2 col-xl-2 text-end">
                             <div class="row">
-                                <button class="btn" @click="removeBtn(index,f.product_name)" style="background-color: #d3d3d3; color: black; border-radius: 10px;">
+                                <button class="btn" @click="removeBtn(index,f)" style="background-color: #d3d3d3; color: black; border-radius: 10px;">
                                     <i class="fa fa-trash"></i>
                                 </button>
-                                <div class="row ml-2" v-if="f.product_category=='Thức Uống' && this.Bill[2]>=3">
-                                    <button class="btn" @click="refundBtn(index,f.product_name)" style="background-color: #d3d3d3; color: black; border-radius: 10px;">
+                                <div class="row ml-3" v-if="item_category[index]=='Thức Uống' && this.Bill[2]>=3">
+                                    <button class="btn" @click="refundBtn(index,f)" style="background-color: #d3d3d3; color: black; border-radius: 10px;">
                                         <i class="fa-solid fa-rotate-right"></i>
                                     </button>
                                     <input type="number" id="number" v-model="quantity[index]" class="form-control " min="0" max="1000"
@@ -43,8 +43,8 @@
                             style="border: none; font-weight: bold; background-color: #f08faf;" v-model="itemNotes[index]">
                         </div>
                         <div class="col-2 text-right">
-                            <button @click="updateItemNotes(index,f.product_name)" style="background-color: #f08faf; padding: 5px;">Cập Nhật</button>
-                            <button @click="deleteNotes(index,f.product_name)" style="background-color: #f08faf; padding: 5px;">Xóa</button>
+                            <button @click="updateItemNotes(index,f)" style="background-color: #f08faf; padding: 5px;">Cập Nhật</button>
+                            <button @click="deleteNotes(index,f)" style="background-color: #f08faf; padding: 5px;">Xóa</button>
                         </div>
                         <br>
                     </div>
@@ -72,6 +72,9 @@ export default {
             itemNotes: [],
             item_price: [],
             tablePrice: '',
+            item_category: [],
+            item_name: [],
+            item_src: [],
             quantity: [],
         }
     },
@@ -159,6 +162,9 @@ export default {
                     this.allProductsInBill.push(element.product_id);
                     this.item_qty.push(element.item_qty);
                     this.item_price.push(element.product_price);
+                    this.item_name.push(element.product_name)
+                    this.item_category.push(element.product_category)
+                    this.item_src.push(element.product_src)
                     this.itemNotes.push(element.item_notes);
                     this.quantity.push(element.refund);
                 });

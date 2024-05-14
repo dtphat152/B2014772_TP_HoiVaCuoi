@@ -282,7 +282,7 @@ export default {
             showQuickView: false,
             sendId: null,
 
-            perPage: 12,
+            perPage: 24,
             pageNum: 0,
             previousCategoryClicked: "",
             

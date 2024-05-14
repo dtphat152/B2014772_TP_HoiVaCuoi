@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 
 import { computed } from 'vue';
 
@@ -180,59 +180,59 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach(async (to, from, next) => {
-  // Kiểm tra nếu route yêu cầu token
-  if (to.meta.requiresToken) {
-    try {
-      // Lấy token từ route params
-      const hash = to.params.token;
+// router.beforeEach(async (to, from, next) => {
+//   // Kiểm tra nếu route yêu cầu token
+//   if (to.meta.requiresToken) {
+//     try {
+//       // Lấy token từ route params
+//       const hash = to.params.token;
       
-      // Tìm vị trí của ký tự 'z' đầu tiên
-      const zIndex = hash.indexOf('z');
+//       // Tìm vị trí của ký tự 'z' đầu tiên
+//       const zIndex = hash.indexOf('z');
       
-      // Nếu tìm thấy ký tự 'z', lấy user_id và token
-      if (zIndex !== -1) {
-        const user_id = hash.substring(0, zIndex);
-        const token = hash.substring(zIndex + 1);
+//       // Nếu tìm thấy ký tự 'z', lấy user_id và token
+//       if (zIndex !== -1) {
+//         const user_id = hash.substring(0, zIndex);
+//         const token = hash.substring(zIndex + 1);
         
-        // Gửi request để kiểm tra token
-        const rsp = await axios.get(`/resetpass/${user_id}`);
+//         // Gửi request để kiểm tra token
+//         const rsp = await axios.get(`/resetpass/${user_id}`);
 
-        // Kiểm tra xem response có dữ liệu không
-        if (rsp.data && rsp.data.length > 0) {
-          const resetToken = rsp.data[0].resetToken;
+//         // Kiểm tra xem response có dữ liệu không
+//         if (rsp.data && rsp.data.length > 0) {
+//           const resetToken = rsp.data[0].resetToken;
 
-          // So sánh token từ route params với token trong cơ sở dữ liệu
-          if (token === resetToken) {
-            // Token hợp lệ, cho phép truy cập vào route
-            console.log("HOP LE");
-            next();
-          } else {
-            // Token không hợp lệ, hiển thị cảnh báo và chuyển hướng đến trang lỗi
-            alert('Route Không Hợp Lệ');
-            next('/error'); // Chuyển hướng đến trang lỗi
-          }
-        } else {
-          // Không tìm thấy dữ liệu, chuyển hướng đến trang lỗi
-          alert('Route Không Hợp Lệ');
-          next('/notfound');
-        }
-      } else {
-        // Nếu không tìm thấy ký tự 'z', hiển thị cảnh báo và chuyển hướng đến trang lỗi
-        alert('Route Không Hợp Lệ');
-        next('/error'); // Chuyển hướng đến trang lỗi
-      }
-    } catch (error) {
-      console.error('Error in beforeEach:', error);
-      // Xử lý lỗi nếu có
-      alert('Route Không Hợp Lệ');
-      next('/notfound');
-    }
-  } else {
-    // Nếu route không yêu cầu token, cho phép truy cập
-    next();
-  }
-});
+//           // So sánh token từ route params với token trong cơ sở dữ liệu
+//           if (token === resetToken) {
+//             // Token hợp lệ, cho phép truy cập vào route
+//             console.log("HOP LE");
+//             next();
+//           } else {
+//             // Token không hợp lệ, hiển thị cảnh báo và chuyển hướng đến trang lỗi
+//             alert('Route Không Hợp Lệ');
+//             next('/error'); // Chuyển hướng đến trang lỗi
+//           }
+//         } else {
+//           // Không tìm thấy dữ liệu, chuyển hướng đến trang lỗi
+//           alert('Route Không Hợp Lệ');
+//           next('/notfound');
+//         }
+//       } else {
+//         // Nếu không tìm thấy ký tự 'z', hiển thị cảnh báo và chuyển hướng đến trang lỗi
+//         alert('Route Không Hợp Lệ');
+//         next('/error'); // Chuyển hướng đến trang lỗi
+//       }
+//     } catch (error) {
+//       console.error('Error in beforeEach:', error);
+//       // Xử lý lỗi nếu có
+//       alert('Route Không Hợp Lệ');
+//       next('/notfound');
+//     }
+//   } else {
+//     // Nếu route không yêu cầu token, cho phép truy cập
+//     next();
+//   }
+// });
 
 
 

@@ -131,7 +131,7 @@
                                     <input type="number" v-model="this.value" class="text-center" style="width: 40%; margin-left: 30%; border-radius: 15px; font-size: 20px;"><br><br>
                                     <h4 v-if="this.value!=''" class="text-center" style="font-weight: 800; color: #228B22;">( {{ formatCurrency(this.value) }} )</h4>
                                     <button class="btn" @click="giveVoucher()" 
-                                        style="width: 20%; margin-left: 40%; background-color: #ffb3cc; border-radius: 10px; font-weight: 800;">Submit</button>
+                                        style="width: 20%; margin-left: 40%; background-color: #ffb3cc; border-radius: 10px; font-weight: 800;">Give</button>
                                 </div>
                                 <div class="col-2"></div>
                             </div>

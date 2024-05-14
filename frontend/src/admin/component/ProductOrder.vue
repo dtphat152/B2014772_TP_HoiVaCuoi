@@ -136,7 +136,10 @@ export default {
                             bill_id: parseInt(this.ID[0]),
                             product_id: parseInt(this.filterProducts[i].product_id),
                             item_qty: parseInt(this.itemQuantity[i]),
-                            product_price: this.filterProducts[i].product_price
+                            product_price: this.filterProducts[i].product_price,
+                            product_name: this.filterProducts[i].product_name,
+                            product_category: this.filterProducts[i].product_category,
+                            product_src: this.filterProducts[i].product_src
                         };
                         try {
                             await axios.post("/billdetails", billDetails);

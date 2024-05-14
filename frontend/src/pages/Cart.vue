@@ -714,14 +714,17 @@ export default {
             this.itemQuantity.splice(index, 1);
         },
 
-        async sendBillDetails(billId, productId, qty , notes, price) {
+        async sendBillDetails(billId, productId, qty , notes, price, name, category, src) {
             console.log("PRICE: ",price);
             let billDetails = {
                 bill_id: parseInt(billId),
                 product_id: parseInt(productId),
                 item_qty: parseInt(qty),
                 item_notes: notes,
-                product_price: price
+                product_price: price,
+                product_name: name,
+                product_category: category,
+                product_src: src
             }
             await axios.post("/billdetails", billDetails);
         },
@@ -732,6 +735,27 @@ export default {
             let price = data.product_price;
             console.log('Price: ',price)
             return price;
+        },
+        async getProductName(id){
+            let rsp = await axios.get(`/products/${id}`);
+            let data = rsp.data;
+            let name = data.product_name;
+            console.log('Name: ',name)
+            return name;
+        },
+        async getProductCat(id){
+            let rsp = await axios.get(`/products/${id}`);
+            let data = rsp.data;
+            let category = data.product_category;
+            console.log('categor: ',category)
+            return category;
+        },
+        async getProductSrc(id){
+            let rsp = await axios.get(`/products/${id}`);
+            let data = rsp.data;
+            let src = data.product_src;
+            console.log('src: ',src)
+            return src;
         },
 
         async checkOutBtn() {
@@ -751,8 +775,11 @@ export default {
                         
                         for (let index = 0; index < this.cartItem.length; index++) {
                             let productId = this.cartItem[index];
-                            let price = await this.getProductPrice(productId); // Chờ hàm trả về giá trị
-                            this.sendBillDetails(billId, productId, this.itemQuantity[index], this.itemNotes[index], price);
+                            let price = await this.getProductPrice(productId); 
+                            let name = await this.getProductName(productId);
+                            let category = await this.getProductCat(productId);
+                            let src = await this.getProductSrc(productId);
+                            this.sendBillDetails(billId, productId, this.itemQuantity[index], this.itemNotes[index], price, name, category, src);
                         }
 
                         var now = new Date();
