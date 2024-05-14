@@ -601,7 +601,7 @@ export default {
                         this.itemQuantity[index] = Math.ceil(maxElement / 20);
                     }
                     if (this.filterProducts[index].product_category === 'Bàn Ghế' ) {
-                        this.itemQuantity[index] = this.tableNum;
+                        this.itemQuantity[index] = Math.ceil(maxElement / 10);
                     }
                     if (this.filterProducts[index].product_category === 'Thức Uống' ) {
                         this.itemQuantity[index] = this.tableNum;
@@ -736,68 +736,70 @@ export default {
 
         async checkOutBtn() {
             if (this.user) {
-                let confirmResult = window.confirm("Xác Nhận Gửi Yêu Cầu" );
-                if (confirmResult) {
-                    let billId = (await axios.get("/billstatus/new")).data;
+                let rsp = await axios.get(`/users/byid/${this.user.user_id}`)
+                let status = rsp.data.user_status
+                if (status=='active'){
+                    let confirmResult = window.confirm("Xác Nhận Gửi Yêu Cầu" );
+                    if (confirmResult) {
+                        let billId = (await axios.get("/billstatus/new")).data;
 
-                    if (billId == "") {
-                        billId = 1
-                    } else {
-                        billId = parseInt(billId.bill_id) + 1
+                        if (billId == "") {
+                            billId = 1
+                        } else {
+                            billId = parseInt(billId.bill_id) + 1
+                        }
+                        
+                        for (let index = 0; index < this.cartItem.length; index++) {
+                            let productId = this.cartItem[index];
+                            let price = await this.getProductPrice(productId); // Chờ hàm trả về giá trị
+                            this.sendBillDetails(billId, productId, this.itemQuantity[index], this.itemNotes[index], price);
+                        }
+
+                        var now = new Date();
+                        var day = ("0" + now.getDate()).slice(-2);
+                        var month = ("0" + (now.getMonth() + 1)).slice(-2);
+                        var hour = ("0" + (now.getHours())).slice(-2);
+                        var min = ("0" + (now.getMinutes())).slice(-2);
+                        var currentTime = day + "/" + month + "/" + now.getFullYear() + " - " + hour + ":" + min;
+
+
+                        let billStatus = {
+                            bill_id: parseInt(billId),
+                            user_id: parseInt(this.user.user_id),
+                            date_id: this.dateID,
+                            voucher_id: this.selectedVoucher_id,
+                            bill_phone: this.checkoutObj.phone,
+                            bill_address: this.checkoutObj.address,
+                            bill_when: currentTime,
+                            bill_discount: this.selectedVoucher,
+                            bill_deposits: parseInt(this.calculateSummaryPrice()/10),
+                            bill_total: parseInt(this.calculateSummaryPrice()),
+                            bill_notes: this.checkoutObj.notes,
+                            bill_status: 1
+                        }
+
+                        axios.post("/billstatus", billStatus);
+                        axios.delete("/cartItem/" + this.user.user_id);
+                        let dataDateBill = {
+                            date_id: this.dateID,
+                            date_date: this.formatDateToSubmit(this.date),
+                            bill_id: parseInt(billId)
+                        }
+                        axios.post("/datebill",dataDateBill)
+                        let voucher = {
+                            vc_status: 2,
+                            vc_id: this.selectedVoucher_id,
+                        }
+                        axios.put(`/voucher/status`,voucher)
+                        axios.delete(`/date/${this.user.user_id}`)
+                        this.cartItem = [];
+                        this.itemQuantity = [];
+
+                        this.$router.push("/myorder");
                     }
-                    
-                    for (let index = 0; index < this.cartItem.length; index++) {
-                        let productId = this.cartItem[index];
-                        let price = await this.getProductPrice(productId); // Chờ hàm trả về giá trị
-                        this.sendBillDetails(billId, productId, this.itemQuantity[index], this.itemNotes[index], price);
-                    }
-
-                    var now = new Date();
-                    var day = ("0" + now.getDate()).slice(-2);
-                    var month = ("0" + (now.getMonth() + 1)).slice(-2);
-                    var hour = ("0" + (now.getHours())).slice(-2);
-                    var min = ("0" + (now.getMinutes())).slice(-2);
-                    var currentTime = day + "/" + month + "/" + now.getFullYear() + " - " + hour + ":" + min;
-
-
-                    let billStatus = {
-                        bill_id: parseInt(billId),
-                        user_id: parseInt(this.user.user_id),
-                        date_id: this.dateID,
-                        voucher_id: this.selectedVoucher_id,
-                        bill_phone: this.checkoutObj.phone,
-                        bill_address: this.checkoutObj.address,
-                        bill_when: currentTime,
-                        bill_discount: this.selectedVoucher,
-                        bill_deposits: parseInt(this.calculateSummaryPrice()/10),
-                        bill_total: parseInt(this.calculateSummaryPrice()),
-                        bill_notes: this.checkoutObj.notes,
-                        bill_status: 1
-                    }
-
-                    axios.post("/billstatus", billStatus);
-                    axios.delete("/cartItem/" + this.user.user_id);
-                    let dataDateBill = {
-                        date_id: this.dateID,
-                        date_date: this.formatDateToSubmit(this.date),
-                        bill_id: parseInt(billId)
-                    }
-                    axios.post("/datebill",dataDateBill)
-                    let voucher = {
-                        vc_status: 2,
-                        vc_id: this.selectedVoucher_id,
-                    }
-                    axios.put(`/voucher/status`,voucher)
-                    axios.delete(`/date/${this.user.user_id}`)
-                    this.cartItem = [];
-                    this.itemQuantity = [];
-
-                    this.$router.push("/myorder");
-                }
-            } this.$refs.alert.showAlert('error', 'Xin Lỗi!', 'Bạn chưa đăng nhập!');
+                } else this.$refs.alert.showAlert('error', 'Xin Lỗi!', 'Bạn không thể gửi yêu cầu này!');
+            } else this.$refs.alert.showAlert('error', 'Xin Lỗi!', 'Bạn chưa đăng nhập!');
         }
-
-
     },
     components: { VueBasicAlert }
 

@@ -100,6 +100,49 @@ export default {
             console.log("Email: "+this.Bill[1]);
         },
 
+        setQuantity(selectedGuest,tableNum){
+            let maxElement = 0
+            if (selectedGuest.length > 0) {
+                maxElement = Math.max(...selectedGuest);
+            } else {
+                maxElement = 0
+            }
+            try {
+                this.item_qty.forEach((qty, index) => {
+                    if (this.filterProducts[index].product_category === 'Khai Vị' 
+                        || this.filterProducts[index].product_category === 'Món Chính'
+                        || this.filterProducts[index].product_category === 'Tráng Miệng') {
+                        this.item_qty[index] = tableNum;
+                    }
+                    if (this.filterProducts[index].product_category === 'Rạp Che' ) {
+                        // if (this.item_qty[index] < Math.ceil(tableNum / 2)) 
+                        this.item_qty[index] = Math.ceil(maxElement / 20);
+                    }
+                    if (this.filterProducts[index].product_category === 'Bàn Ghế' ) {
+                        this.item_qty[index] =Math.ceil(maxElement/10);
+                    }
+                    if (this.filterProducts[index].product_category === 'Thức Uống' ) {
+                        this.item_qty[index] = tableNum;
+                    }
+                    let data = {
+                        bill_id: parseInt(this.Bill[0]),
+                        product_id: parseInt(this.filterProducts[index].product_id),
+                        item_qty: this.item_qty[index],
+                        item_notes: this.itemNotes[index]
+                    };
+                    axios.put("/billdetails/", data);
+                    let billdata = { 
+                        bill_total: parseInt(this.calculateSummaryPrice()),
+                    };      
+                    axios.put(`/billstatus/billtotal/${this.Bill[0]}`, billdata);
+                    console.log("Successfully updated bill total:", billdata);
+                    this.$emit('childEvent');
+                });
+            } catch (error) {
+                console.error('Lỗi khi cài Số Lượng:', error);
+            }
+        },
+
         formatCurrency(amount) {
           if (!amount) return '';
           return parseFloat(amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });

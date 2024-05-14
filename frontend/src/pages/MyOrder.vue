@@ -358,6 +358,7 @@ export default {
                     const e = element[i];
                     this.tableNum[index]+= parseInt(e.dd_guest);
                 }
+                this.tableNum[index] = Math.ceil(this.tableNum[index]/10)
             }
         },
         
@@ -549,7 +550,7 @@ export default {
                         email: '',
                         title:`Đơn hàng #${bill_id} được yêu cầu cập nhật!`,
                         content: `Nội dung: Thay đổi Ngày tổ chức thành ${Dateformat}.`,
-                        auth: `Khách hàng `+this.user.user_name+`.`,
+                        auth: this.user.user_name,
                     }
                     try {
                         axios.post(`/sendemail/request`,data1);
@@ -569,7 +570,7 @@ export default {
                         email: '',
                         title:`Đơn hàng #${bill_id} được yêu cầu cập nhật!`,
                         content: `Nội dung: Thêm Suất đãi khách, thời gian là ${this.tempTime} và số lượng khách ${this.tempGuest}.`,
-                        auth: `Khách hàng `+this.user.user_name+`.`,
+                        auth: this.user.user_name,
                     }
                     try {
                         axios.post(`/sendemail/request`,data1);
@@ -593,7 +594,7 @@ export default {
                         email: '',
                         title:`Đơn hàng #${bill_id} được yêu cầu cập nhật!`,
                         content: `Nội dung: Xóa Suất đãi khách thứ ${parseInt(index + 1)}.`,
-                        auth: `Khách hàng `+this.user.user_name+`.`,
+                        auth: this.user.user_name,
                     }
                     try {
                         axios.post(`/sendemail/request`,data1);
@@ -617,7 +618,7 @@ export default {
                         email: '',
                         title:`Đơn hàng #${bill_id} được yêu cầu cập nhật!`,
                         content: `Nội dung: Cập nhật Suất đãi khách thứ ${parseInt(i + 1)} thành ${data.dd_time} với số lượng khách ${data.dd_guest}.`,
-                        auth: `Khách hàng `+this.user.user_name+`.`,
+                        auth: this.user.user_name,
                     }
                     try {
                         axios.post(`/sendemail/request`,data1);
@@ -637,7 +638,7 @@ export default {
                         email: '',
                         title:`Đơn hàng #${bill_id} được yêu cầu cập nhật!`,
                         content: `Nội dung: Cập nhật Địa chỉ khách hàng thành ${address}.`,
-                        auth: `Khách hàng `+this.user.user_name+`.`,
+                        auth: this.user.user_name,
                     }
                     try {
                         axios.post(`/sendemail/request`,data1);
@@ -657,7 +658,7 @@ export default {
                         email: '',
                         title:`Đơn hàng #${bill_id} được yêu cầu cập nhật!`,
                         content: `Nội dung: Cập nhật Số điện thoại khách hàng thành ${phone}.`,
-                        auth: `Khách hàng `+this.user.user_name+`.`,
+                        auth: this.user.user_name,
                     }
                     try {
                         axios.post(`/sendemail/request`,data1);

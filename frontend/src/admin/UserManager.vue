@@ -11,8 +11,8 @@
                         <!-- Display user details here -->
                         <div v-if="selectedUser">
                             <div class="row justify-content-between py-3">
-                                <div v-if="selectedUser.user_status=='active'" class="col-1"><h5 style="text-align: center; font-weight: 900; color: #00FF7F;">{{ selectedUser.user_status }}</h5></div>
-                                <div v-if="selectedUser.user_status=='blocked'" class="col-1"><h5 style="text-align: center; font-weight: 900; color: #DC143C;">{{ selectedUser.user_status }}</h5></div>
+                                <div v-if="selectedUser.user_status=='active'" class="col-1"><h4 style="text-align: center; font-weight: 900; color: #00FF7F;">{{ selectedUser.user_status }}</h4></div>
+                                <div v-if="selectedUser.user_status=='blocked'" class="col-1"><h4 style="text-align: center; font-weight: 900; color: #DC143C;">{{ selectedUser.user_status }}</h4></div>
                                 <div class="col-2 text-center">
                                     <img :src="selectedUser.user_avt" alt="Mô tả hình ảnh" :style="{ width: '70%', 'border-radius': '50px'}"/>
 
@@ -24,7 +24,8 @@
                                     <i v-if="selectedUser.user_status=='active'" @click="blockUser(selectedUser.user_id)" class="fa fa-lock pt-3" aria-hidden="true" 
                                         style="font-size: 23px; color: #DC143C;"></i>
                                     <i v-if="selectedUser.user_status=='blocked'" @click="unBlockUser(selectedUser.user_id)" class="fa fa-unlock-alt pt-3" aria-hidden="true" style="font-size: 23px; color: #00FF7F;"></i>
-                                    <br><i class="fa fa-info-circle pt-3" aria-hidden="true" style="font-size: 22px; color: #48D1CC;"></i>
+                                    <br>
+                                    <i class="fa-solid fa-ticket pt-3" @click="showVoucher()" aria-hidden="true" style="font-size: 19px; color: #48D1CC;"></i>
                                 </div>
                             </div>
                             <h2 class="text-center pb-3" style="font-weight: 900;">{{ selectedUser.user_name }}</h2>
@@ -45,7 +46,7 @@
                             </h4>
                             <hr style="width: 80%; margin-left: 10%;">
                             <!-- Hiển thị các thông tin khác về người dùng -->
-                            <div v-if="!edit">
+                            <div v-if="view==1">
                                 <h2 class="text-center" style="font-weight: 900;">Bill List</h2> <br>
                                 <div class="" style="overflow-y: auto; height: 380px;">
                                     <div style="width: 90%; margin-left: 4%;">
@@ -94,7 +95,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="edit" class="px-5">
+                            <div v-if="view==2" class="px-5">
                                 <form id="editForm" @submit.prevent="handleEditSubmit" novalidate autocomplete="off">
                                     <h3 style="font-weight: 900;color: #d35ea4;">Chỉnh Sửa Tài Khoản</h3>
                                     <div class="form-group">
@@ -121,6 +122,43 @@
                                     </div>
                                 </form>
                             </div>
+                            <div v-if="view==3">
+                            <div class="row mx-5">
+                                <div class="col-8 p-3 offset-2" style="background-color: #e6e6e6; border-radius: 20px;">
+                                    <h2 class="text-center" style="font-weight: 900; color: #228B22;">Voucher Value</h2>
+                                    <br>
+                                    <h4 class="text-center" style="font-weight: 800;">Giá trị voucher gửi tặng khách hàng</h4>
+                                    <input type="number" v-model="this.value" class="text-center" style="width: 40%; margin-left: 30%; border-radius: 15px; font-size: 20px;"><br><br>
+                                    <h4 v-if="this.value!=''" class="text-center" style="font-weight: 800; color: #228B22;">( {{ formatCurrency(this.value) }} )</h4>
+                                    <button class="btn" @click="giveVoucher()" 
+                                        style="width: 20%; margin-left: 40%; background-color: #ffb3cc; border-radius: 10px; font-weight: 800;">Submit</button>
+                                </div>
+                                <div class="col-2"></div>
+                            </div>
+                            <br><hr style="width: 60%; margin-left: 20%;">
+                            <div class="row justify-content-center">
+                                <div v-if="voucherList.length==0"><h3 style="font-weight: 800; color: red; padding-top: 10px;">Không có voucher nào cả</h3></div>
+                                <div v-else class="col-10" >
+                                    <h3 style="font-weight: 800; color: black; padding-top: 10px; text-align: center;">Danh sách các voucher của khách hàng</h3>
+                                    <div v-for="(v, index) in voucherList.slice().reverse()" :key="index">
+                                        <div class="voucher row mt-3" style="background-color: #ffccdd; border-radius: 15px;">
+                                            <div class="col-5">
+                                                <h5 class="text-center" style="font-weight: 900; color: #ff667d;">TP-Voucher</h5>
+                                                <h5 v-if="v.voucher_status==1" class="text-center" style="font-weight: 900; color: #2E8B57;">Chưa sử dụng</h5>
+                                                <h5 v-if="v.voucher_status==2" class="text-center" style="font-weight: 900;">Đang sử dụng</h5>
+                                                <h5 v-if="v.voucher_status==0" class="text-center" style="font-weight: 900;">Đã sử dụng</h5>
+                                            </div>
+                                            <div class="col-5 pt-3">
+                                                <h3 class="text-center" style="font-weight: 900;">{{ formatCurrency(v.voucher_value) }}</h3>
+                                            </div>
+                                            <div class="col-2" style="padding-top: 5px;">
+                                            </div>
+                                        </div>
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -206,10 +244,12 @@ export default {
            userList: [],
            selectedUser: null,
            selectedRow: -1,
-           edit: false,
+           view: 1,
            errorObj: { emailErr: [], phoneErr: [],  },
            selectedFile: null,
            billList: [],
+           voucherList: [],
+           value: ''
         }
     },
 
@@ -266,14 +306,52 @@ export default {
             }
         },
 
+        async getVoucher(user_id){
+            try {
+                let rsp = await axios.get(`/voucher/user/${user_id}`);
+                this.voucherList = rsp.data.map(voucher => ({
+                    voucher_id : voucher.vc_id,
+                    voucher_value: voucher.vc_value,
+                    voucher_status: voucher.vc_status,
+                }));
+                console.log(this.voucherList)
+            } catch (error) {
+                console.error('Error while get Voucher:', error);
+            }
+        },
+
         showDetails(user,index) {
             this.selectedUser = user;
             this.selectedRow = index;
             this.getAllBillInfo(this.selectedUser.user_id);
+            this.getVoucher(this.selectedUser.user_id);
         },
 
-        async showEdit(){
-            this.edit = !this.edit;
+        showEdit(){
+            if (this.view == 2) this.view = 1
+            else this.view = 2;
+        },
+        
+        showVoucher(){
+            if (this.view == 3) this.view = 1
+            else this.view = 3;
+        },
+        async giveVoucher() {
+            let ok = window.confirm(`Xác nhận tặng voucher trị giá ${this.formatCurrency(this.value)} cho khách hàng`)
+            if (ok) {
+                let voucher = {
+                    user_id: this.selectedUser.user_id,
+                    vc_value: this.value,
+                    vc_status:1
+                }
+                console.log("VC: ",voucher)
+                try {
+                    await axios.post(`/voucher`,voucher)
+                    this.value = ''
+                } catch (error) {
+                    console.error('Error in crate voucher',error)
+                }
+            }
         },
 
         resetCheckErr: function () {

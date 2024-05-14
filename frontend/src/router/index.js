@@ -186,41 +186,55 @@ router.beforeEach(async (to, from, next) => {
     try {
       // Lấy token từ route params
       const hash = to.params.token;
-      const user_id = hash.substring(0, 1);
-      const token = hash.substring(1);
+      
+      // Tìm vị trí của ký tự 'z' đầu tiên
+      const zIndex = hash.indexOf('z');
+      
+      // Nếu tìm thấy ký tự 'z', lấy user_id và token
+      if (zIndex !== -1) {
+        const user_id = hash.substring(0, zIndex);
+        const token = hash.substring(zIndex + 1);
+        
+        // Gửi request để kiểm tra token
+        const rsp = await axios.get(`/resetpass/${user_id}`);
 
-      // Gửi request để kiểm tra token
-      const rsp = await axios.get(`/resetpass/${user_id}`);
+        // Kiểm tra xem response có dữ liệu không
+        if (rsp.data && rsp.data.length > 0) {
+          const resetToken = rsp.data[0].resetToken;
 
-      // Kiểm tra xem response có dữ liệu không
-      if (rsp.data.length > 0) {
-        const resetToken = rsp.data[0].resetToken;
-
-        // So sánh token từ route params với token trong cơ sở dữ liệu
-        if (token === resetToken) {
-          // Token hợp lệ, cho phép truy cập vào route
-          next();
+          // So sánh token từ route params với token trong cơ sở dữ liệu
+          if (token === resetToken) {
+            // Token hợp lệ, cho phép truy cập vào route
+            console.log("HOP LE");
+            next();
+          } else {
+            // Token không hợp lệ, hiển thị cảnh báo và chuyển hướng đến trang lỗi
+            alert('Route Không Hợp Lệ');
+            next('/error'); // Chuyển hướng đến trang lỗi
+          }
         } else {
-          // Token không hợp lệ, hiển thị cảnh báo và chuyển hướng đến trang lỗi
-          window.confirm('Route Không Hợp Lệ');
-          next('/');
+          // Không tìm thấy dữ liệu, chuyển hướng đến trang lỗi
+          alert('Route Không Hợp Lệ');
+          next('/notfound');
         }
       } else {
-        // Không tìm thấy dữ liệu, chuyển hướng đến trang lỗi
-        window.confirm('Route Không Hợp Lệ');
-        next('/');
+        // Nếu không tìm thấy ký tự 'z', hiển thị cảnh báo và chuyển hướng đến trang lỗi
+        alert('Route Không Hợp Lệ');
+        next('/error'); // Chuyển hướng đến trang lỗi
       }
     } catch (error) {
       console.error('Error in beforeEach:', error);
       // Xử lý lỗi nếu có
-      window.confirm('Route Không Hợp Lệ');
-      next('/');
+      alert('Route Không Hợp Lệ');
+      next('/notfound');
     }
   } else {
     // Nếu route không yêu cầu token, cho phép truy cập
     next();
   }
 });
+
+
 
 router.beforeEach(async (to, from, next) => {
   // Kiểm tra nếu route không phải là trang /admin

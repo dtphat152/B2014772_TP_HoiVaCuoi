@@ -69,7 +69,7 @@
                                     <br>
                                     <h4 class="text-center" style="font-weight: 800;">Giá trị voucher tặng khách hàng sau khi giao dịch thành công</h4>
                                     <input type="number" v-model="this.value" class="text-center" style="width: 40%; margin-left: 30%; border-radius: 15px; font-size: 20px;"><br><br>
-                                    <h4 class="text-center" style="font-weight: 800; color: #228B22;">( {{ formatCurrency(this.value) }} )</h4>
+                                    <h4 v-if="this.value!=''" class="text-center" style="font-weight: 800; color: #228B22;">( {{ formatCurrency(this.value) }} )</h4>
                                     <button class="btn" @click="changeValueVoucher()" 
                                         style="width: 20%; margin-left: 40%; background-color: #ffb3cc; border-radius: 10px; font-weight: 800;">Submit</button>
                                 </div>

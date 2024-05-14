@@ -62,7 +62,10 @@ export default {
 
     created() {
         const hash = this.$route.params.token;
-        this.user_id = hash.substring(0,1);
+        const zIndex = hash.indexOf('z');
+        if (zIndex !== -1) {
+            this.user_id = hash.substring(0, zIndex);
+        }
     },
 
     methods: {
@@ -75,7 +78,7 @@ export default {
                 let otp = rsp.data[0].OTP;
                 console.log('otp: ',otp);
                 console.log('otpInput',this.otpInput);
-                if ( this.otpInput === otp ) {
+                if ( this.otpInput == otp ) {
                     this.checkOTP = true;
                 } else window.confirm('OTP Không Chính Xác');
             } else window.confirm('OTP Không Chính Xác');

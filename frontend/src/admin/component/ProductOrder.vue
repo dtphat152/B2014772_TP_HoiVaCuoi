@@ -135,7 +135,8 @@ export default {
                         let billDetails = {
                             bill_id: parseInt(this.ID[0]),
                             product_id: parseInt(this.filterProducts[i].product_id),
-                            item_qty: parseInt(this.itemQuantity[i])
+                            item_qty: parseInt(this.itemQuantity[i]),
+                            product_price: this.filterProducts[i].product_price
                         };
                         try {
                             await axios.post("/billdetails", billDetails);
@@ -143,7 +144,7 @@ export default {
                             // Kích hoạt sự kiện và truyền thông tin sản phẩm đã thêm
                             this.$emit('productAdded');
                             let billdata = { 
-                                bill_total: this.ID[2] + parseInt(this.filterProducts[i].product_price*this.itemQuantity[i]),
+                                bill_total: this.ID[2] + parseInt(this.filterProducts[i].product_price)*parseInt(this.itemQuantity[i]),
                             };
                             await axios.put(`/billstatus/billtotal/${this.ID[0]}`, billdata);
                             let data1 = {

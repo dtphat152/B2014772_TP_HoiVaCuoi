@@ -27,7 +27,7 @@
                         <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
                     </Staff>
                     
-                    <ProductBill v-if="showProductBill==1" :Bill=[this.bill[0],this.email,this.status] @childEvent="getBillStatus"></ProductBill>
+                    <ProductBill v-if="showProductBill==1" :Bill=[this.bill[0],this.email,this.status] @childEvent="getBillStatus" ref="childRef"></ProductBill>
 
                     <ProductOrder v-if="showProductBill==2" :ID=[this.sendId,this.email,this.total] >
                         <button class="btn" style="background-color: #DC143C; border-radius: 10px;" @click="closeView">Trở Về</button>
@@ -111,7 +111,7 @@
                                 </div>
                                 <div class="col-1 ">
                                     <button class="btn p-1" style="border-radius: 10px; background-color: #f08faf; font-weight: 900;" 
-                                        @click="removeDateBtn(index)">
+                                        @click="removeDateBtn(this.selectedId[index],index)">
                                         Xóa
                                     </button>
                                 </div>
@@ -394,16 +394,19 @@ export default {
                     let response = await axios.get(`/datedetails/${this.bill[2]}`);
                     let data = response.data;
                     if (Array.isArray(data) && data.length > 0) {
-                        // Khởi tạo các mảng để lưu trữ dữ liệu từ mỗi phần tử
+                        this.number = 0 ;
+                        let selectedIds = [];
                         let selectedTimes = [];
                         let selectedGuests = [];
                         // Lặp qua mỗi phần tử trong mảng data
                         data.forEach(item => {
+                            selectedIds.push(item.dd_id)
                             selectedTimes.push(item.dd_time);
                             selectedGuests.push(item.dd_guest);
                             this.number += parseInt(item.dd_guest);
                         });
                         // Gán giá trị của các mảng cho selectedTime và selectedGuest
+                        this.selectedId = selectedIds;
                         this.selectedTime = selectedTimes;
                         this.selectedGuest = selectedGuests;
                     } else {
@@ -467,21 +470,18 @@ export default {
             }
         },
 
-        async removeDateBtn(index) {
+        async removeDateBtn(id,index) {
             let temp = index + 1 ;
             let confirmResult = window.confirm("Xác Nhận Hủy Suất Thứ " + temp );
-            if (confirmResult) {
-                let data = {
-                    date_id: parseInt(this.bill[2]),
-                    dd_name: parseInt(index + 1),
-                };
+            if (confirmResult) { 
                 try {
-                    let response = await axios.delete(`/datedetails/detail/`, { data });
-                    if (response.status >= 200 && response.status < 300) {
+                    await axios.delete(`/datedetails/detail/${id}`);
                         console.log("Xóa thành công");
                         this.$refs.alert.showAlert('success', 'Success!', 'Suất Đãi đã được xóa!');
                         this.selectedTime.splice(index, 1);
                         this.selectedGuest.splice(index, 1);
+                        await this.getMeatSet();
+                        this.$refs.childRef.setQuantity(this.selectedGuest,this.number);
                         this.deleteStaff();
                         let data1 = {
                             email: this.email,
@@ -493,15 +493,9 @@ export default {
                         } catch (error) {
                             console.error("Error Send email update:", error);
                         }
-                            
-                    } else {
-                        console.error("Xóa không thành công, mã trạng thái: ", response.status);
-                    }
                 } catch (error) {
                     console.error("Lỗi khi thực hiện xóa: ", error);
                 }
-
-                this.getMeatSet();
             }
         },
         async updateDateBtn(index) {
@@ -519,6 +513,7 @@ export default {
                 // Sau khi cập nhật thành công, gọi hàm để lấy lại dữ liệu
                 await this.getMeatSet();
                 this.deleteStaff();
+                this.$refs.childRef.setQuantity(this.selectedGuest,this.number);
                 let data1 = {
                     email: this.email,
                     title:`Đơn hàng #${this.bill[0]} của bạn đã được cập nhật!`,
